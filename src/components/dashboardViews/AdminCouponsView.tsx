@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,20 +14,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { AlertCircle, CheckCircle, Copy, Trash2 } from "lucide-react";
+import { AlertCircle, CheckCircle, Copy, Trash2, ChevronDown } from "lucide-react";
 import { format } from "date-fns";
-
-interface Coupon {
-  id: string;
-  code: string;
-  discount: number;
-  discountType: "percentage" | "fixed";
-  maxUses: number;
-  usedCount: number;
-  expiryDate: string;
-  isActive: boolean;
-  createdDate: string;
-}
+import { destinations } from "@/data/destinations";
+import { Coupon, getCouponsFromStorage, saveCouponsToStorage } from "@/utils/couponUtils";
 
 interface AdminCouponsViewProps {
   initialCoupons?: Coupon[];
@@ -35,11 +25,20 @@ interface AdminCouponsViewProps {
 
 export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps) {
   const { toast } = useToast();
-  const [coupons, setCoupons] = useState<Coupon[]>(initialCoupons);
+  const [coupons, setCoupons] = useState<Coupon[]>(() => {
+    // Load coupons from localStorage on component mount
+    const stored = getCouponsFromStorage();
+    return stored.length > 0 ? stored : initialCoupons;
+  });
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  // Save coupons to localStorage whenever they change
+  useEffect(() => {
+    saveCouponsToStorage(coupons);
+  }, [coupons]);
 
   const [formData, setFormData] = useState({
     code: "",
@@ -47,7 +46,45 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
     discountType: "percentage" as "percentage" | "fixed",
     maxUses: "100",
     expiryDate: "",
+    applicablePackages: "all" as "all" | string[],
   });
+
+  const [packageSearch, setPackageSearch] = useState("");
+  const [showPackageDropdown, setShowPackageDropdown] = useState(false);
+
+  // Get all packages from all destinations
+  const allPackages = destinations.flatMap((destination) =>
+    destination.packages.map((pkg) => ({
+      slug: pkg.slug,
+      name: pkg.name,
+      destination: destination.name,
+    }))
+  );
+
+  // Filter packages based on search
+  const filteredPackages = allPackages.filter((pkg) =>
+    pkg.name.toLowerCase().includes(packageSearch.toLowerCase()) ||
+    pkg.destination.toLowerCase().includes(packageSearch.toLowerCase())
+  );
+
+  // Get selected packages display
+  const getSelectedPackagesDisplay = () => {
+    if (formData.applicablePackages === "all") {
+      return "All Packages";
+    }
+    if (Array.isArray(formData.applicablePackages) && formData.applicablePackages.length > 0) {
+      const selectedCount = formData.applicablePackages.length;
+      const maxDisplay = 2;
+      const selectedNames = formData.applicablePackages
+        .slice(0, maxDisplay)
+        .map((slug) => allPackages.find((p) => p.slug === slug)?.name)
+        .filter(Boolean)
+        .join(", ");
+      const remaining = selectedCount - maxDisplay;
+      return remaining > 0 ? `${selectedNames} +${remaining} more` : selectedNames;
+    }
+    return "Select Packages";
+  };
 
   const generateCouponCode = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -84,6 +121,14 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
       return;
     }
 
+    if (
+      formData.applicablePackages !== "all" &&
+      (Array.isArray(formData.applicablePackages) && formData.applicablePackages.length === 0)
+    ) {
+      setError("Please select at least one package or select All Packages");
+      return;
+    }
+
     setLoading(true);
     try {
       const newCoupon: Coupon = {
@@ -96,6 +141,7 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
         expiryDate: formData.expiryDate,
         isActive: true,
         createdDate: new Date().toISOString(),
+        applicablePackages: formData.applicablePackages,
       };
 
       setCoupons([...coupons, newCoupon]);
@@ -109,7 +155,10 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
         discountType: "percentage",
         maxUses: "100",
         expiryDate: "",
+        applicablePackages: "all",
       });
+      setPackageSearch("");
+      setShowPackageDropdown(false);
 
       setTimeout(() => {
         setShowForm(false);
@@ -185,7 +234,8 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
                       type="button"
                       variant="outline"
                       onClick={generateCouponCode}
-                      disabled={loading}
+                      disabled={loading || formData.code.trim().length > 0}
+                      title={formData.code.trim().length > 0 ? "Clear the field to generate a code" : "Generate a random coupon code"}
                     >
                       Generate
                     </Button>
@@ -247,6 +297,130 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
                 </div>
               </div>
 
+              {/* Package Selection */}
+              <div>
+                <Label htmlFor="packages">Applicable Packages</Label>
+                <div className="mt-1 relative">
+                  <button
+                    type="button"
+                    onClick={() => setShowPackageDropdown(!showPackageDropdown)}
+                    disabled={loading}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-left flex items-center justify-between hover:bg-gray-50 disabled:bg-gray-100"
+                  >
+                    <span className="text-gray-700">{getSelectedPackagesDisplay()}</span>
+                    <ChevronDown className="w-4 h-4 text-gray-500" />
+                  </button>
+
+                  {showPackageDropdown && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-xl z-10 max-h-64 overflow-hidden flex flex-col">
+                      {/* Search input */}
+                      <div className="p-3 border-b border-gray-200 bg-gray-50">
+                        <Input
+                          placeholder="Search packages..."
+                          value={packageSearch}
+                          onChange={(e) => setPackageSearch(e.target.value)}
+                          className="text-sm h-9"
+                        />
+                      </div>
+
+                      {/* Options */}
+                      <div className="overflow-y-auto flex-1">
+                        {/* All Packages option */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, applicablePackages: "all" });
+                            setShowPackageDropdown(false);
+                            setPackageSearch("");
+                          }}
+                          className={`w-full px-4 py-3 text-left text-sm flex items-center gap-3 transition-colors ${
+                            formData.applicablePackages === "all"
+                              ? "bg-blue-600 text-white font-medium"
+                              : "text-gray-900 hover:bg-gray-100"
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={formData.applicablePackages === "all"}
+                            readOnly
+                            className="w-4 h-4 rounded border-gray-300 cursor-pointer"
+                          />
+                          <span className="font-medium">All Packages</span>
+                        </button>
+
+                        {/* Individual packages with destination grouping */}
+                        {filteredPackages.length > 0 ? (
+                          <div>
+                            {Array.from(new Set(filteredPackages.map((p) => p.destination))).map(
+                              (destination) => (
+                                <div key={destination}>
+                                  {/* Destination header */}
+                                  <div className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-50 border-t border-gray-200">
+                                    {destination}
+                                  </div>
+                                  {/* Packages under destination */}
+                                  {filteredPackages
+                                    .filter((pkg) => pkg.destination === destination)
+                                    .map((pkg) => (
+                                      <button
+                                        key={pkg.slug}
+                                        type="button"
+                                        onClick={() => {
+                                          if (formData.applicablePackages === "all") {
+                                            setFormData({
+                                              ...formData,
+                                              applicablePackages: [pkg.slug],
+                                            });
+                                          } else {
+                                            const currentPackages = Array.isArray(
+                                              formData.applicablePackages
+                                            )
+                                              ? formData.applicablePackages
+                                              : [];
+                                            const isSelected = currentPackages.includes(pkg.slug);
+                                            const updated = isSelected
+                                              ? currentPackages.filter((p) => p !== pkg.slug)
+                                              : [...currentPackages, pkg.slug];
+                                            setFormData({
+                                              ...formData,
+                                              applicablePackages: updated,
+                                            });
+                                          }
+                                        }}
+                                        className={`w-full px-4 py-3 text-left text-sm flex items-center gap-3 transition-colors ${
+                                          Array.isArray(formData.applicablePackages) &&
+                                          formData.applicablePackages.includes(pkg.slug)
+                                            ? "bg-blue-50 text-blue-700 font-medium"
+                                            : "text-gray-900 hover:bg-gray-50"
+                                        }`}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={
+                                            Array.isArray(formData.applicablePackages) &&
+                                            formData.applicablePackages.includes(pkg.slug)
+                                          }
+                                          readOnly
+                                          className="w-4 h-4 rounded border-gray-300 cursor-pointer"
+                                        />
+                                        <span className="font-medium">{pkg.name}</span>
+                                      </button>
+                                    ))}
+                                </div>
+                              )
+                            )}
+                          </div>
+                        ) : (
+                          <div className="px-4 py-8 text-sm text-gray-500 text-center">
+                            No packages found
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="flex gap-2 pt-4">
                 <Button type="submit" disabled={loading} className="flex-1">
                   {loading ? "Creating..." : "Create Coupon"}
@@ -271,6 +445,7 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
                   <TableRow>
                     <TableHead>Code</TableHead>
                     <TableHead>Discount</TableHead>
+                    <TableHead>Applicable To</TableHead>
                     <TableHead>Used / Max</TableHead>
                     <TableHead>Expiry Date</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
@@ -285,6 +460,29 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
                           {coupon.discount}
                           {coupon.discountType === "percentage" ? "%" : "₹"}
                         </Badge>
+                      </TableCell>
+                      <TableCell className="text-gray-600 text-sm">
+                        {coupon.applicablePackages === "all" ? (
+                          <Badge variant="secondary">All Packages</Badge>
+                        ) : Array.isArray(coupon.applicablePackages) ? (
+                          <div className="flex flex-wrap gap-1">
+                            {coupon.applicablePackages.slice(0, 2).map((slug) => {
+                              const pkg = allPackages.find((p) => p.slug === slug);
+                              return (
+                                <Badge key={slug} variant="secondary" className="text-xs">
+                                  {pkg?.name}
+                                </Badge>
+                              );
+                            })}
+                            {coupon.applicablePackages.length > 2 && (
+                              <Badge variant="secondary" className="text-xs">
+                                +{coupon.applicablePackages.length - 2} more
+                              </Badge>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-gray-400">—</span>
+                        )}
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
@@ -337,6 +535,7 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
                   <TableRow>
                     <TableHead>Code</TableHead>
                     <TableHead>Discount</TableHead>
+                    <TableHead>Applicable To</TableHead>
                     <TableHead>Used / Max</TableHead>
                     <TableHead>Expired Date</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
@@ -351,6 +550,29 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
                           {coupon.discount}
                           {coupon.discountType === "percentage" ? "%" : "₹"}
                         </Badge>
+                      </TableCell>
+                      <TableCell className="text-gray-600 text-sm">
+                        {coupon.applicablePackages === "all" ? (
+                          <Badge variant="secondary">All Packages</Badge>
+                        ) : Array.isArray(coupon.applicablePackages) ? (
+                          <div className="flex flex-wrap gap-1">
+                            {coupon.applicablePackages.slice(0, 2).map((slug) => {
+                              const pkg = allPackages.find((p) => p.slug === slug);
+                              return (
+                                <Badge key={slug} variant="secondary" className="text-xs">
+                                  {pkg?.name}
+                                </Badge>
+                              );
+                            })}
+                            {coupon.applicablePackages.length > 2 && (
+                              <Badge variant="secondary" className="text-xs">
+                                +{coupon.applicablePackages.length - 2} more
+                              </Badge>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-gray-400">—</span>
+                        )}
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
