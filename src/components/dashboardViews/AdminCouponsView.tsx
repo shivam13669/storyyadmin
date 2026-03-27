@@ -237,7 +237,8 @@ export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps)
                       type="button"
                       variant="outline"
                       onClick={generateCouponCode}
-                      disabled={loading}
+                      disabled={loading || formData.code.trim().length > 0}
+                      title={formData.code.trim().length > 0 ? "Clear the field to generate a code" : "Generate a random coupon code"}
                     >
                       Generate
                     </Button>
