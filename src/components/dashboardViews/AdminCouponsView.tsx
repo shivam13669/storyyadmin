@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,19 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AlertCircle, CheckCircle, Copy, Trash2, ChevronDown } from "lucide-react";
 import { format } from "date-fns";
 import { destinations } from "@/data/destinations";
-
-interface Coupon {
-  id: string;
-  code: string;
-  discount: number;
-  discountType: "percentage" | "fixed";
-  maxUses: number;
-  usedCount: number;
-  expiryDate: string;
-  isActive: boolean;
-  createdDate: string;
-  applicablePackages: "all" | string[]; // "all" for all packages or array of package slugs
-}
+import { Coupon, getCouponsFromStorage, saveCouponsToStorage } from "@/utils/couponUtils";
 
 interface AdminCouponsViewProps {
   initialCoupons?: Coupon[];
@@ -37,11 +25,20 @@ interface AdminCouponsViewProps {
 
 export function AdminCouponsView({ initialCoupons = [] }: AdminCouponsViewProps) {
   const { toast } = useToast();
-  const [coupons, setCoupons] = useState<Coupon[]>(initialCoupons);
+  const [coupons, setCoupons] = useState<Coupon[]>(() => {
+    // Load coupons from localStorage on component mount
+    const stored = getCouponsFromStorage();
+    return stored.length > 0 ? stored : initialCoupons;
+  });
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  // Save coupons to localStorage whenever they change
+  useEffect(() => {
+    saveCouponsToStorage(coupons);
+  }, [coupons]);
 
   const [formData, setFormData] = useState({
     code: "",

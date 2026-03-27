@@ -1,6 +1,11 @@
 import { CheckCircle2 } from "lucide-react";
 import { BookingFormData, GuestData } from "@/pages/BookingPage";
 import { DestinationPackage, BikeOption, Destination } from "@/data/destinations";
+import { Coupon } from "@/utils/couponUtils";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface ConfirmationStepProps {
   formData: BookingFormData;
@@ -8,6 +13,14 @@ interface ConfirmationStepProps {
   destination: Destination;
   selectedBike: BikeOption | undefined;
   finalPrice: number;
+  baseTotal: number;
+  appliedCoupon: Coupon | null;
+  couponCode: string;
+  couponError: string;
+  discountAmount: number;
+  onApplyCoupon: () => void;
+  onRemoveCoupon: () => void;
+  onCouponCodeChange: (code: string) => void;
 }
 
 const ConfirmationStep = ({
@@ -16,6 +29,14 @@ const ConfirmationStep = ({
   destination,
   selectedBike,
   finalPrice,
+  baseTotal,
+  appliedCoupon,
+  couponCode,
+  couponError,
+  discountAmount,
+  onApplyCoupon,
+  onRemoveCoupon,
+  onCouponCodeChange,
 }: ConfirmationStepProps) => {
   const travelDateObj = new Date(formData.travelDate);
   const formattedDate = travelDateObj.toLocaleDateString("en-IN", {
@@ -151,6 +172,63 @@ const ConfirmationStep = ({
             </div>
           )}
 
+          {/* Coupon Code Section */}
+          <div>
+            <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wide mb-4 pb-3 border-b border-gray-200">
+              Apply Discount Coupon
+            </h3>
+
+            {couponError && (
+              <Alert className="mb-4 bg-red-50 border-red-200">
+                <AlertCircle className="h-4 w-4 text-red-600" />
+                <AlertDescription className="text-red-800">{couponError}</AlertDescription>
+              </Alert>
+            )}
+
+            {appliedCoupon ? (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-green-900">Coupon Applied</p>
+                    <p className="text-lg font-bold text-green-700 mt-1">{appliedCoupon.code}</p>
+                    <p className="text-sm text-green-600 mt-1">
+                      Discount: ₹{discountAmount.toLocaleString("en-IN")}
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onRemoveCoupon}
+                    className="border-red-300 text-red-600 hover:bg-red-50"
+                  >
+                    Remove
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Enter coupon code"
+                  value={couponCode}
+                  onChange={(e) => onCouponCodeChange(e.target.value.toUpperCase())}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      onApplyCoupon();
+                    }
+                  }}
+                  className="text-sm"
+                />
+                <Button
+                  type="button"
+                  onClick={onApplyCoupon}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Apply
+                </Button>
+              </div>
+            )}
+          </div>
+
           {/* Price Breakdown Section */}
           <div>
             <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wide mb-4 pb-3 border-b border-gray-200">
@@ -190,9 +268,20 @@ const ConfirmationStep = ({
                 </div>
               )}
 
+              {appliedCoupon && (
+                <div className="flex justify-between items-center pb-3 border-b border-gray-200">
+                  <span className="text-gray-700 font-medium">
+                    Discount ({appliedCoupon.code})
+                  </span>
+                  <span className="font-semibold text-green-600">
+                    -₹{discountAmount.toLocaleString("en-IN")}
+                  </span>
+                </div>
+              )}
+
               <div className="flex justify-between items-center pt-3">
                 <span className="text-lg font-bold text-gray-900">Total Price</span>
-                <span className="text-3xl font-bold text-blue-600">
+                <span className={`text-3xl font-bold ${appliedCoupon ? "text-green-600" : "text-blue-600"}`}>
                   ₹{finalPrice.toLocaleString("en-IN")}
                 </span>
               </div>

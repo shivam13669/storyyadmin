@@ -16,6 +16,7 @@ import {
 import { parsePrice } from "@/context/CurrencyContext";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
+import { validateCoupon, calculateDiscount, Coupon, incrementCouponUsage } from "@/utils/couponUtils";
 
 // Email validation function
 const validateEmail = (email: string) => {
@@ -114,6 +115,11 @@ const BookingPage = () => {
     return 1;
   });
 
+  // Coupon state
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
+  const [couponError, setCouponError] = useState("");
+
   // Find package data
   let destination: Destination | undefined;
   let travelPackage: DestinationPackage | undefined;
@@ -150,7 +156,37 @@ const BookingPage = () => {
   }
 
   const totalTravelers = 1 + formData.guests.length; // Primary traveler + co-travelers
-  const finalPrice = Math.round(bikePrice * totalTravelers);
+  const baseTotal = Math.round(bikePrice * totalTravelers);
+
+  // Calculate discount from coupon
+  const discountAmount = appliedCoupon ? calculateDiscount(appliedCoupon, baseTotal) : 0;
+  const finalPrice = Math.max(0, baseTotal - discountAmount);
+
+  // Handle coupon application
+  const handleApplyCoupon = () => {
+    setCouponError("");
+
+    if (!couponCode.trim()) {
+      setCouponError("Please enter a coupon code");
+      return;
+    }
+
+    const validation = validateCoupon(couponCode, packageSlug || "");
+    if (!validation.valid) {
+      setCouponError(validation.error || "Invalid coupon code");
+      setAppliedCoupon(null);
+      return;
+    }
+
+    setAppliedCoupon(validation.coupon!);
+    setCouponCode("");
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponError("");
+  };
 
   const handleStepChange = (step: BookingStep) => {
     setCurrentStep(step);
@@ -253,8 +289,15 @@ const BookingPage = () => {
           : '₹0',
         pricePerTraveler: `₹${Math.round(bikePrice).toLocaleString("en-IN")}`,
         travelersPrice: `₹${Math.round(bikePrice).toLocaleString("en-IN")} × ${totalTravelers}`,
+        couponCode: appliedCoupon ? appliedCoupon.code : 'None',
+        couponDiscount: appliedCoupon ? `₹${discountAmount.toLocaleString("en-IN")}` : '₹0',
         totalPrice: `₹${finalPrice.toLocaleString("en-IN")}`,
       };
+
+      // Increment coupon usage if applied
+      if (appliedCoupon) {
+        incrementCouponUsage(appliedCoupon.id);
+      }
 
       // Send email via EmailJS
       await emailjs.send(
@@ -364,6 +407,14 @@ const BookingPage = () => {
                 destination={destination}
                 selectedBike={selectedBike}
                 finalPrice={finalPrice}
+                baseTotal={baseTotal}
+                appliedCoupon={appliedCoupon}
+                couponCode={couponCode}
+                couponError={couponError}
+                discountAmount={discountAmount}
+                onApplyCoupon={handleApplyCoupon}
+                onRemoveCoupon={handleRemoveCoupon}
+                onCouponCodeChange={setCouponCode}
               />
             )}
 
