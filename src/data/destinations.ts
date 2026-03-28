@@ -108,7 +108,7 @@ export const destinations: Destination[] = [
         duration: "5 nights · 6 days",
         description:
           "Embark on a breathtaking 6-day journey through the majestic landscapes of Ladakh. Experience high-altitude adventure with the legendary Khardungla and Changla passes, serene Pangong Lake, mystical monasteries, and the enchanting Nubra Valley. This is not just about luxury or budget—it's about reconnecting with nature, embracing challenges, and finding joy in the unexpected.",
-        price: "₹21,299",
+        price: "₹16,499",
         oldPrice: "₹42,000",
         badge: "Save 8%",
         rating: 4.9,
@@ -339,6 +339,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.35,
             cc: "452cc",
             features: ["Maximum power", "Advanced suspension", "Best for experts", "Handles all terrains"],
+            seatingPrices: {
+              solo: 25499,
+              "dual-sharing": 18499,
+              "seat-in-backup": 16499,
+            },
           },
           {
             id: "himalayan-411",
@@ -348,6 +353,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.15,
             cc: "411cc",
             features: ["Better ground clearance", "Improved suspension", "More powerful engine", "Ideal for rough terrain"],
+            seatingPrices: {
+              solo: 21499,
+              "dual-sharing": 16999,
+              "seat-in-backup": 16499,
+            },
           },
           {
             id: "classic-350",
@@ -357,6 +367,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.0,
             cc: "350cc",
             features: ["Best for beginners", "Comfortable seating", "Excellent fuel efficiency", "Classic design"],
+            seatingPrices: {
+              solo: 21499,
+              "dual-sharing": 16999,
+              "seat-in-backup": 16499,
+            },
           },
           {
             id: "seat-in-backup",
@@ -366,6 +381,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.0,
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
+            seatingPrices: {
+              solo: 16499,
+              "dual-sharing": 16499,
+              "seat-in-backup": 16499,
+            },
           },
         ],
         availableDates: [
@@ -384,7 +404,7 @@ export const destinations: Destination[] = [
         duration: "6 nights · 7 days",
         description:
           "Experience the ultimate Ladakh adventure with this 7-day expedition through legendary passes and pristine landscapes. Ride across Khardungla, Diskit Monastery, explore Turtuk village at the Indo-Pak border, traverse Pangong Lake, and return via Changla Pass discovering monasteries and cultural landmarks.",
-        price: "₹26,299",
+        price: "₹19,999",
         oldPrice: "₹36,900",
         badge: "Popular",
         rating: 4.8,
@@ -650,6 +670,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.35,
             cc: "452cc",
             features: ["Maximum power", "Advanced suspension", "Best for experts", "Handles all terrains"],
+            seatingPrices: {
+              solo: 31999,
+              "dual-sharing": 23499,
+              "seat-in-backup": 19999,
+            },
           },
           {
             id: "himalayan-411",
@@ -659,6 +684,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.15,
             cc: "411cc",
             features: ["Better ground clearance", "Improved suspension", "More powerful engine", "Ideal for rough terrain"],
+            seatingPrices: {
+              solo: 26999,
+              "dual-sharing": 20999,
+              "seat-in-backup": 19999,
+            },
           },
           {
             id: "classic-350",
@@ -668,6 +698,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.0,
             cc: "350cc",
             features: ["Best for beginners", "Comfortable seating", "Excellent fuel efficiency", "Classic design"],
+            seatingPrices: {
+              solo: 26999,
+              "dual-sharing": 20999,
+              "seat-in-backup": 19999,
+            },
           },
           {
             id: "seat-in-backup",
@@ -677,6 +712,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.0,
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
+            seatingPrices: {
+              solo: 19999,
+              "dual-sharing": 19999,
+              "seat-in-backup": 19999,
+            },
           },
         ],
         availableDates: [
@@ -695,7 +735,7 @@ export const destinations: Destination[] = [
         duration: "7 nights · 8 days",
         description:
           "An unforgettable 8-day adventure through the heart of Ladakh, where breathtaking landscapes, ancient monasteries, and thrilling high-altitude passes await. This expedition is perfect for adrenaline seekers and nature lovers, offering a mix of scenic beauty, historical landmarks, and the world's highest motorable pass experience at Mig La.",
-        price: "₹33,199",
+        price: "₹25,999",
         oldPrice: "₹43,500",
         badge: "Premium",
         rating: 4.7,
@@ -1008,6 +1048,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.35,
             cc: "452cc",
             features: ["Maximum power", "Advanced suspension", "Best for experts", "Handles all terrains"],
+            seatingPrices: {
+              solo: 39499,
+              "dual-sharing": 29199,
+              "seat-in-backup": 25999,
+            },
           },
           {
             id: "himalayan-411",
@@ -1017,6 +1062,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.15,
             cc: "411cc",
             features: ["Better ground clearance", "Improved suspension", "More powerful engine", "Ideal for rough terrain"],
+            seatingPrices: {
+              solo: 33499,
+              "dual-sharing": 26499,
+              "seat-in-backup": 25999,
+            },
           },
           {
             id: "classic-350",
@@ -1026,6 +1076,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.0,
             cc: "350cc",
             features: ["Best for beginners", "Comfortable seating", "Excellent fuel efficiency", "Classic design"],
+            seatingPrices: {
+              solo: 33499,
+              "dual-sharing": 26499,
+              "seat-in-backup": 25999,
+            },
           },
           {
             id: "seat-in-backup",
@@ -1035,6 +1090,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.0,
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
+            seatingPrices: {
+              solo: 25999,
+              "dual-sharing": 25999,
+              "seat-in-backup": 25999,
+            },
           },
         ],
         availableDates: [
@@ -1051,7 +1111,7 @@ export const destinations: Destination[] = [
         duration: "7 nights · 8 days",
         description:
           "An unforgettable 8-day adventure through the heart of Ladakh, where breathtaking landscapes, ancient monasteries, and thrilling high-altitude passes await. This expedition is perfect for adrenaline seekers and nature lovers, offering a mix of scenic beauty, historical landmarks, and unparalleled stargazing opportunities at Umling La and Tso Moriri.",
-        price: "₹33,199",
+        price: "₹25,999",
         oldPrice: "₹49,900",
         badge: "Best Value",
         rating: 4.9,
@@ -1378,6 +1438,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.35,
             cc: "452cc",
             features: ["Maximum power", "Advanced suspension", "Best for experts", "Handles all terrains"],
+            seatingPrices: {
+              solo: 39499,
+              "dual-sharing": 29199,
+              "seat-in-backup": 25999,
+            },
           },
           {
             id: "himalayan-411",
@@ -1387,6 +1452,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.15,
             cc: "411cc",
             features: ["Better ground clearance", "Improved suspension", "More powerful engine", "Ideal for rough terrain"],
+            seatingPrices: {
+              solo: 33499,
+              "dual-sharing": 26499,
+              "seat-in-backup": 25999,
+            },
           },
           {
             id: "classic-350",
@@ -1396,6 +1466,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.0,
             cc: "350cc",
             features: ["Best for beginners", "Comfortable seating", "Excellent fuel efficiency", "Classic design"],
+            seatingPrices: {
+              solo: 33499,
+              "dual-sharing": 26499,
+              "seat-in-backup": 25999,
+            },
           },
           {
             id: "seat-in-backup",
@@ -1405,6 +1480,11 @@ export const destinations: Destination[] = [
             priceMultiplier: 1.0,
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
+            seatingPrices: {
+              solo: 25999,
+              "dual-sharing": 25999,
+              "seat-in-backup": 25999,
+            },
           },
         ],
         availableDates: [
@@ -1919,8 +1999,8 @@ export const destinations: Destination[] = [
             cc: "452cc",
             features: ["Maximum power", "Advanced suspension", "Best for experts", "Handles all terrains"],
             seatingPrices: {
-              solo: 73499,
-              "dual-sharing": 50599,
+              solo: 62249,
+              "dual-sharing": 44799,
               "seat-in-backup": 27999,
             },
           },
@@ -1933,8 +2013,8 @@ export const destinations: Destination[] = [
             cc: "411cc",
             features: ["Better ground clearance", "Improved suspension", "More powerful engine", "Ideal for rough terrain"],
             seatingPrices: {
-              solo: 55199,
-              "dual-sharing": 41499,
+              solo: 50099,
+              "dual-sharing": 38799,
               "seat-in-backup": 27999,
             },
           },
@@ -1947,8 +2027,8 @@ export const destinations: Destination[] = [
             cc: "350cc",
             features: ["Best for beginners", "Comfortable seating", "Excellent fuel efficiency", "Classic design"],
             seatingPrices: {
-              solo: 52899,
-              "dual-sharing": 40399,
+              solo: 48599,
+              "dual-sharing": 37899,
               "seat-in-backup": 27999,
             },
           },
@@ -1960,9 +2040,9 @@ export const destinations: Destination[] = [
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
             seatingPrices: {
-              solo: 27499,
-              "dual-sharing": 27499,
-              "seat-in-backup": 27499,
+              solo: 27999,
+              "dual-sharing": 27999,
+              "seat-in-backup": 27999,
             },
           },
         ],
@@ -1970,7 +2050,8 @@ export const destinations: Destination[] = [
           "2026-05-30",
           "2026-06-13", "2026-06-27",
           "2026-07-11", "2026-07-25",
-          "2026-09-19",
+          "2026-08-08", "2026-08-22",
+          "2026-09-05", "2026-09-19",
         ],
       },
     ],

@@ -1,7 +1,7 @@
 /**
  * Region configuration
  * All prices are in INR (base currency)
- * Non-Indian users see prices with 20% markup applied
+ * Non-Indian users see prices with 50% markup applied
  */
 
 export type RegionPricing = {
@@ -22,7 +22,7 @@ export type RegionPricing = {
  * Keys: ISO country codes (e.g., 'IN', 'US', 'GB', etc.)
  * Values: Region configuration with INR as base price
  *
- * All basePrice values are in INR. Non-Indian users see 20% markup applied.
+ * All basePrice values are in INR. Non-Indian users see 50% markup applied.
  * Add new regions as needed - the system is scalable and country-agnostic
  */
 export const REGION_PRICING_MAP: Record<string, RegionPricing> = {
@@ -274,14 +274,8 @@ export const REGION_PRICING_MAP: Record<string, RegionPricing> = {
 export const DEFAULT_REGION_CODE = "IN";
 
 /**
- * Special marker for unknown/undetected regions
- * These get 20% markup applied
- */
-export const UNKNOWN_REGION_CODE = "UNKNOWN";
-
-/**
  * Get pricing configuration for a country
- * If not found, returns a special unknown region config with markup flag
+ * If not found, returns default region
  */
 export function getRegionPricing(countryCode?: string): RegionPricing {
   if (!countryCode) {
@@ -289,20 +283,7 @@ export function getRegionPricing(countryCode?: string): RegionPricing {
   }
 
   const normalized = countryCode.toUpperCase();
-  const found = REGION_PRICING_MAP[normalized];
-
-  if (found) {
-    return found;
-  }
-
-  // Unknown region - use default base price but mark as unknown so markup is applied
-  return {
-    countryCode: normalized,
-    baseCurrency: "INR",
-    basePrice: 9999,
-    locale: "en-US",
-    regionName: normalized,
-  };
+  return REGION_PRICING_MAP[normalized] || REGION_PRICING_MAP[DEFAULT_REGION_CODE]!;
 }
 
 /**

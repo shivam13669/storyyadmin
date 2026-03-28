@@ -14,7 +14,7 @@ import { MobileSortSheet } from "@/components/MobileSortSheet";
 const DestinationsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { slug: urlSlug } = useParams<{ slug?: string }>();
+  const params = useParams();
   const { formatPrice } = useCurrency();
   const destinationScrollRef = useRef<HTMLDivElement>(null);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
@@ -28,13 +28,16 @@ const DestinationsPage = () => {
     }
   }, [location.key, location.pathname]);
 
-  // Determine the active slug from URL parameter or default to "all"
-  const activeSlug = useMemo(() => {
-    if (!urlSlug) return "all";
-    // Validate that the slug exists in destinations
-    const isValidSlug = destinations.some((d) => d.slug === urlSlug);
-    return isValidSlug ? urlSlug : "all";
-  }, [urlSlug]);
+  // Read the 'dest' path parameter or 'dest' query parameter to set initial destination
+  const pathDest = params.dest;
+  const searchParams = new URLSearchParams(location.search);
+  const queryDest = searchParams.get("dest");
+  const destParam = pathDest || queryDest;
+  const initialSlug = destParam && destinations.some((d) => d.slug === destParam)
+    ? destParam
+    : "all";
+
+  const [activeSlug, setActiveSlug] = useState(initialSlug);
 
   const [filters, setFilters] = useState<FilterState>({
     search: "",
@@ -214,8 +217,9 @@ const DestinationsPage = () => {
                 WebkitOverflowScrolling: 'touch',
               }}
             >
-            <button
-              onClick={() => navigate("/destinations")}
+            <Link
+              to="/destinations"
+              onClick={() => setActiveSlug("all")}
               aria-pressed={activeSlug === "all"}
               className={[
                 "inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200 snap-start min-w-max",
@@ -225,14 +229,15 @@ const DestinationsPage = () => {
               ].join(" ")}
             >
               <span>All Destinations</span>
-            </button>
+            </Link>
             {destinations.map((d) => {
               const Icon = destinationIconMap[d.icon];
               const active = d.slug === activeSlug;
               return (
-                <button
+                <Link
                   key={d.slug}
-                  onClick={() => navigate(`/destinations/${d.slug}`)}
+                  to={`/destinations/${d.slug}`}
+                  onClick={() => setActiveSlug(d.slug)}
                   aria-pressed={active}
                   className={[
                     "inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200 snap-start min-w-max",
@@ -243,7 +248,7 @@ const DestinationsPage = () => {
                 >
                   <Icon className="h-5 w-5" />
                   <span>{d.name}</span>
-                </button>
+                </Link>
               );
             })}
             </div>
@@ -351,11 +356,17 @@ const DestinationsPage = () => {
                         </Link>
                       </Button>
                       <Button
+                        asChild
                         variant="outline"
                         className="flex-1"
                         onClick={(event) => event.stopPropagation()}
                       >
-                        Request callback
+                        <Link
+                          to={`/booking/${pkg.slug}`}
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          Book Now
+                        </Link>
                       </Button>
                     </div>
                   </div>

@@ -50,26 +50,25 @@ const BikeSelectionStep = ({
   const backupVehicle = travelPackage.bikes?.find(bike => bike.isBackupVehicle);
 
   const getBikePrice = (bike: any) => {
-    // For backup vehicle with seating prices
+    // For backup vehicle, use seating prices
     if (bike.isBackupVehicle && bike.seatingPrices && seatingPreference in bike.seatingPrices) {
       return bike.seatingPrices[seatingPreference];
     }
-    // For trans-himalayan ride, use seating-based prices if available
-    if (isTransHimalayan && bike.seatingPrices && seatingPreference in bike.seatingPrices) {
+    // For regular bikes, use seating prices for solo/dual-sharing only, not seat-in-backup
+    if (!bike.isBackupVehicle && bike.seatingPrices && seatingPreference !== "seat-in-backup" && seatingPreference in bike.seatingPrices) {
       return bike.seatingPrices[seatingPreference];
+    }
+    // For regular bikes with seat-in-backup selected, show their solo price
+    if (!bike.isBackupVehicle && seatingPreference === "seat-in-backup" && bike.seatingPrices && "solo" in bike.seatingPrices) {
+      return bike.seatingPrices["solo"];
     }
     // Otherwise use the traditional multiplier method
     return Math.round(basePrice * (bike.priceMultiplier || 1.0));
   };
 
   const handleBikeSelect = (bikeId: string) => {
-    // If selecting a bike other than "seat-in-backup", reset seating preference to solo
-    if (bikeId !== "seat-in-backup") {
-      setSeatingPreference("solo");
-      onFormDataChange({ selectedBikeId: bikeId, seatingPreference: "solo" });
-    } else {
-      onFormDataChange({ selectedBikeId: bikeId });
-    }
+    // When selecting a bike, just update the selectedBikeId, keep the current seating preference
+    onFormDataChange({ selectedBikeId: bikeId });
   };
 
   const handleScroll = (direction: "left" | "right") => {
@@ -115,7 +114,7 @@ const BikeSelectionStep = ({
             {/* Carousel Container */}
             <div
               ref={scrollContainerRef}
-              className="flex gap-6 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory px-4 sm:px-0"
+              className="flex gap-6 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory px-4 sm:pl-6 sm:pr-6"
               style={{ scrollBehavior: 'smooth' }}
             >
               {/* Own Bike Option - Only for Trans Himalayan Ride */}
