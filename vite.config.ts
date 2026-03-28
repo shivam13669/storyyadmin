@@ -34,14 +34,17 @@ export default defineConfig(({ mode }) => {
       // Ensure HMR is completely disabled in builds
       minify: 'terser',
       sourcemap: false,
-      // Increase chunk size warning limit (default 500kb)
-      chunkSizeWarningLimit: 1000,
-      // Don't include dev code in production
+      // Optimize chunk splitting with proper code splitting
       rollupOptions: {
         output: {
-          // Optimize chunk splitting
           manualChunks: {
-            'vendor': ['react', 'react-dom', 'react-router-dom'],
+            // Core vendor chunks
+            'react-vendor': ['react', 'react-dom'],
+            'routing': ['react-router-dom'],
+            'ui-framework': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select', '@radix-ui/react-scroll-area'],
+            'forms': ['@hookform/resolvers', 'react-hook-form', 'zod'],
+            'charts': ['recharts'],
+            'utils': ['date-fns', 'clsx', 'tailwind-merge'],
           }
         }
       }
