@@ -19,25 +19,19 @@ const Footer = () => {
               <p className="text-white/80 mb-6 leading-relaxed">
                 Your gateway to extraordinary adventures. We create unforgettable experiences that connect you with nature and push your boundaries.
               </p>
-              <div className="flex space-x-4">
-                <Button asChild variant="ghost" size="icon" className="text-white hover:text-adventure-gold hover:bg-white/10">
-                  <a href="https://www.facebook.com/share/1JwPjtgkdq/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                    <Facebook className="h-5 w-5" />
-                  </a>
-                </Button>
-                <Button asChild variant="ghost" size="icon" className="text-white hover:text-adventure-gold hover:bg-white/10">
-                  <a href="https://www.instagram.com/storiesbyfoot/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                    <Instagram className="h-5 w-5" />
-                  </a>
-                </Button>
-                <Button asChild variant="ghost" size="icon" className="text-white hover:text-adventure-gold hover:bg-white/10">
-                  <a href="https://wa.me/916205129118" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                    <WhatsAppIcon className="h-5 w-5 scale-90" />
-                  </a>
-                </Button>
-                <Button variant="ghost" size="icon" className="text-white hover:text-adventure-gold hover:bg-white/10">
+              <div className="flex space-x-3">
+                <a href="https://www.facebook.com/share/1JwPjtgkdq/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-nature text-white hover:opacity-80 transition-all duration-300 hover:scale-110">
+                  <Facebook className="h-5 w-5" />
+                </a>
+                <a href="https://www.instagram.com/storiesbyfoot/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-nature text-white hover:opacity-80 transition-all duration-300 hover:scale-110">
+                  <Instagram className="h-5 w-5" />
+                </a>
+                <a href="https://wa.me/916205129118" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-nature text-white hover:opacity-80 transition-all duration-300 hover:scale-110">
+                  <WhatsAppIcon className="h-5 w-5" />
+                </a>
+                <a href="https://www.youtube.com/@StoriesbyFoot" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-nature text-white hover:opacity-80 transition-all duration-300 hover:scale-110">
                   <Youtube className="h-5 w-5" />
-                </Button>
+                </a>
               </div>
             </div>
 
