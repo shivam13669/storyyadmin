@@ -12,48 +12,9 @@ export default defineConfig(({ mode }) => {
   // IMPORTANT: HMR should ALWAYS be disabled for production builds
   let hmrConfig;
 
-  // Production build: Always disable HMR
-  if (mode === 'production' || process.env.NODE_ENV === 'production') {
-    hmrConfig = false;
-  }
-  // Priority 1: Explicit HMR configuration via environment variables (for Replit, Render, etc.)
-  else if (process.env.VITE_HMR_HOST && process.env.VITE_HMR_PORT) {
-    hmrConfig = {
-      host: process.env.VITE_HMR_HOST,
-      port: parseInt(process.env.VITE_HMR_PORT),
-      protocol: process.env.VITE_HMR_PROTOCOL || 'ws',
-    };
-  }
-  // Priority 2: Explicitly disabled via env variable
-  else if (process.env.VITE_DISABLE_HMR === 'true') {
-    hmrConfig = false;
-  }
-  // Priority 3: Auto-detect - only enable for true local development
-  // Disable in: Builder.io preview, Replit, or any remote environment
-  else {
-    // Check for known remote environments
-    const isKnownRemote =
-      process.env.REPLIT_OWNER ||           // Replit
-      process.env.RENDER ||                  // Render
-      process.env.RAILWAY_ENVIRONMENT_NAME || // Railway
-      process.env.VERCEL ||                  // Vercel
-      process.env.NETLIFY ||                 // Netlify
-      process.env.CI ||                      // CI/CD
-      process.env.BUILDER ||                 // Builder.io
-      process.env.CODESANDBOX_SSE;           // CodeSandbox
-
-    if (isKnownRemote) {
-      // Disable HMR in remote environments
-      hmrConfig = false;
-    } else {
-      // Enable HMR only for true local development
-      hmrConfig = {
-        host: 'localhost',
-        port: port,
-        protocol: 'ws',
-      };
-    }
-  }
+  // Always disable HMR - it causes issues in remote environments
+  // This prevents fetch errors from trying to connect to unreachable HMR servers
+  hmrConfig = false;
 
   return {
     server: {
