@@ -1,4 +1,4 @@
-import { SQLiteDatabase } from './SQLiteDatabase.js';
+import { PostgresDatabase } from './PostgresDatabase.js';
 
 let database = null;
 
@@ -8,7 +8,7 @@ let database = null;
 export async function initDB() {
   if (database) return database;
 
-  database = new SQLiteDatabase();
+  database = new PostgresDatabase();
   await database.init();
   return database;
 }
