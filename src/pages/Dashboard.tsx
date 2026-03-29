@@ -20,6 +20,7 @@ import {
   Home,
   ChevronDown,
   Edit2,
+  User,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -259,7 +260,7 @@ const Dashboard = () => {
             { id: "overview", label: "Overview", icon: Activity },
             { id: "bookings", label: "My Bookings", icon: Calendar },
             { id: "reviews", label: "My Reviews", icon: Star },
-            { id: "profile", label: "Profile", icon: MapPin },
+            { id: "profile", label: "Profile", icon: User },
             { id: "settings", label: "Settings", icon: Settings },
           ].map((item) => {
             const Icon = item.icon;
