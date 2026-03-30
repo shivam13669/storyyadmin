@@ -123,6 +123,78 @@ export async function login(data: LoginData): Promise<{ user: AuthUser; message:
   }
 }
 
+export async function sendOTP(email: string): Promise<{ message: string; email: string; expiresIn: string }> {
+  try {
+    const response = await fetch(`${API_URL}/auth/send-otp`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      if (!response.ok) {
+        throw new Error(`Failed to send OTP with status ${response.status}`);
+      }
+      throw new Error('Invalid response from server');
+    }
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Failed to send OTP');
+    }
+
+    return result;
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes('Failed to fetch')) {
+        throw new Error(`Cannot connect to API at ${API_URL}. Make sure the backend server is running.`);
+      }
+      throw error;
+    }
+    throw new Error('Send OTP failed: Unknown error');
+  }
+}
+
+export async function verifyOTP(email: string, otp: string): Promise<{ message: string; email: string; verified: boolean }> {
+  try {
+    const response = await fetch(`${API_URL}/auth/verify-otp`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, otp }),
+    });
+
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      if (!response.ok) {
+        throw new Error(`Failed to verify OTP with status ${response.status}`);
+      }
+      throw new Error('Invalid response from server');
+    }
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Failed to verify OTP');
+    }
+
+    return result;
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes('Failed to fetch')) {
+        throw new Error(`Cannot connect to API at ${API_URL}. Make sure the backend server is running.`);
+      }
+      throw error;
+    }
+    throw new Error('Verify OTP failed: Unknown error');
+  }
+}
+
 export async function getUser(userId: number): Promise<{ user: AuthUser }> {
   try {
     const response = await fetch(`${API_URL}/auth/user/${userId}`, {

@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { Eye, EyeOff, Mail, Lock, ArrowRight, CheckCircle, User, Phone, Search, ChevronDown, X } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, ArrowRight, CheckCircle, User, Phone, Search, ChevronDown, X, Loader } from "lucide-react";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { toast } from "sonner";
-import { signup } from "@/lib/api";
+import { signup, sendOTP, verifyOTP } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import {
   Dialog,
@@ -131,6 +131,12 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   const [forgotPasswordEmailError, setForgotPasswordEmailError] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
+  const [showOTPVerification, setShowOTPVerification] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [isVerifyingOTP, setIsVerifyingOTP] = useState(false);
+  const [isSendingOTP, setIsSendingOTP] = useState(false);
+  const [otpEmail, setOtpEmail] = useState("");
+  const [signupFormData, setSignupFormData] = useState<any>(null);
 
   const filteredCountries = COUNTRIES.filter(country =>
     country.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
@@ -196,8 +202,10 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     }
 
     setIsSigningUp(true);
+    setIsSendingOTP(true);
     try {
-      const result = await signup({
+      // Store form data for later use
+      setSignupFormData({
         fullName,
         email: signupEmail,
         password: signupPassword,
@@ -205,37 +213,140 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
         countryCode: selectedCountry.code,
       });
 
-      toast.success("Account created successfully! Please log in now.");
+      // Send OTP to email
+      setOtpEmail(signupEmail);
+      await sendOTP(signupEmail);
 
-      // Reset form and switch to login tab
-      setFullName("");
-      setSignupEmail("");
-      setSignupPassword("");
-      setConfirmPassword("");
-      setMobileNumber("");
-      setSelectedCountry(COUNTRIES[0]);
-      setAgreeTerms(false);
-      setSignupEmailError("");
-      setMobileNumberError("");
+      toast.success("OTP sent to your email!");
 
-      // Switch to login tab
-      setActiveTab('login');
+      // Show OTP verification screen
+      setShowOTPVerification(true);
+      setOtpCode("");
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Signup failed';
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send OTP';
       toast.error(errorMessage);
-      console.error('Signup error:', error);
+      console.error('Send OTP error:', error);
     } finally {
       setIsSigningUp(false);
+      setIsSendingOTP(false);
     }
   };
 
-  const handleForgotPassword = (e: React.FormEvent) => {
+  const handleOTPVerification = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!otpCode || otpCode.length !== 6) {
+      toast.error("Please enter a valid 6-digit OTP");
+      return;
+    }
+
+    setIsVerifyingOTP(true);
+    try {
+      // Verify OTP
+      await verifyOTP(otpEmail, otpCode);
+
+      toast.success("OTP verified successfully!");
+
+      // Check if this is password reset or signup
+      if (signupFormData?.isPasswordReset) {
+        // For password reset: show password reset form
+        // For now, just show success and return to login
+        toast.success("Email verified! Please reset your password.");
+
+        // Reset forgot password form
+        setForgotPasswordEmail("");
+        setForgotPasswordEmailError("");
+        setShowForgotPassword(false);
+        setShowOTPVerification(false);
+        setOtpCode("");
+        setOtpEmail("");
+        setSignupFormData(null);
+
+        // Switch back to login tab
+        setActiveTab('login');
+      } else if (signupFormData) {
+        // For signup: create the account with the stored form data
+        const result = await signup(signupFormData);
+        toast.success("Account created successfully! Please log in now.");
+
+        // Reset form
+        setFullName("");
+        setSignupEmail("");
+        setSignupPassword("");
+        setConfirmPassword("");
+        setMobileNumber("");
+        setSelectedCountry(COUNTRIES[0]);
+        setAgreeTerms(false);
+        setSignupEmailError("");
+        setMobileNumberError("");
+        setShowOTPVerification(false);
+        setOtpCode("");
+        setOtpEmail("");
+        setSignupFormData(null);
+
+        // Switch to login tab
+        setActiveTab('login');
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'OTP verification failed';
+      toast.error(errorMessage);
+      console.error('OTP verification error:', error);
+    } finally {
+      setIsVerifyingOTP(false);
+    }
+  };
+
+  const handleResendOTP = async () => {
+    if (!otpEmail) return;
+
+    setIsSendingOTP(true);
+    try {
+      await sendOTP(otpEmail);
+      toast.success("OTP resent to your email!");
+      setOtpCode("");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to resend OTP';
+      toast.error(errorMessage);
+      console.error('Resend OTP error:', error);
+    } finally {
+      setIsSendingOTP(false);
+    }
+  };
+
+  const handleBackToSignup = () => {
+    setShowOTPVerification(false);
+    setOtpCode("");
+    setOtpEmail("");
+    setSignupFormData(null);
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateEmail(forgotPasswordEmail)) {
       setForgotPasswordEmailError("Please enter a valid email address (e.g., you@example.com)");
       return;
     }
-    console.log("Reset password for:", forgotPasswordEmail);
+
+    setIsSendingOTP(true);
+    try {
+      // Send OTP for password reset
+      await sendOTP(forgotPasswordEmail);
+
+      toast.success("OTP sent to your email!");
+
+      // Show OTP verification screen for password reset
+      setOtpEmail(forgotPasswordEmail);
+      // We'll need to track that this is for password reset, not signup
+      setSignupFormData({ isPasswordReset: true });
+      setShowOTPVerification(true);
+      setOtpCode("");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send OTP';
+      toast.error(errorMessage);
+      console.error('Send OTP error:', error);
+    } finally {
+      setIsSendingOTP(false);
+    }
   };
 
   const handleCountrySelect = (country: typeof COUNTRIES[0]) => {
@@ -496,6 +607,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
 
                 {/* Sign Up Tab */}
                 <TabsContent value="signup" className="mt-0 flex-1 overflow-y-auto">
+                  {!showOTPVerification ? (
                   <div className="p-7 space-y-6">
                     <div>
                       <h2 className="text-2xl font-bold text-gray-900 mb-1">
@@ -871,6 +983,88 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                       </a>
                     </p>
                   </div>
+                  ) : (
+                  // OTP Verification Screen
+                  <div className="p-7 space-y-6 flex flex-col">
+                    <div className="text-center space-y-3">
+                      <div className="w-16 h-16 mx-auto bg-gradient-to-br from-orange-50 to-orange-100 rounded-full flex items-center justify-center">
+                        <Mail className="w-8 h-8 text-orange-600" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900">Verify Your Email</h2>
+                        <p className="text-sm text-gray-600 mt-2">
+                          We've sent a 6-digit OTP to<br />
+                          <span className="font-semibold text-gray-900">{otpEmail}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <form onSubmit={handleOTPVerification} className="space-y-4 flex-1">
+                      {/* OTP Input */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-900">
+                          Enter OTP Code
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="000000"
+                          value={otpCode}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                            setOtpCode(value);
+                          }}
+                          maxLength={6}
+                          className="w-full text-center text-2xl font-bold tracking-widest px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 bg-gray-50/50 transition-all"
+                          required
+                        />
+                        <p className="text-xs text-gray-600 text-center">The OTP expires in 5 minutes</p>
+                      </div>
+
+                      {/* Verify Button */}
+                      <button
+                        type="submit"
+                        disabled={isVerifyingOTP || otpCode.length !== 6}
+                        className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl"
+                      >
+                        {isVerifyingOTP ? (
+                          <>
+                            <Loader className="h-5 w-5 animate-spin" />
+                            Verifying...
+                          </>
+                        ) : (
+                          <>
+                            Verify OTP
+                            <ArrowRight className="h-5 w-5" />
+                          </>
+                        )}
+                      </button>
+                    </form>
+
+                    {/* Resend OTP */}
+                    <div className="text-center space-y-3 pt-4 border-t border-gray-200">
+                      <p className="text-sm text-gray-600">
+                        Didn't receive the code?
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleResendOTP}
+                        disabled={isSendingOTP}
+                        className="text-sm text-orange-600 hover:text-orange-700 font-semibold transition-colors disabled:text-gray-400"
+                      >
+                        {isSendingOTP ? "Sending..." : "Resend OTP"}
+                      </button>
+                    </div>
+
+                    {/* Back Button */}
+                    <button
+                      type="button"
+                      onClick={handleBackToSignup}
+                      className="w-full mt-2 border-2 border-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-lg hover:border-orange-200 hover:bg-orange-50/30 transition-all duration-200"
+                    >
+                      Back to Sign Up
+                    </button>
+                  </div>
+                  )}
                 </TabsContent>
               </Tabs>
             ) : (

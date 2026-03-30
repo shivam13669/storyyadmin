@@ -185,4 +185,34 @@ export class IDatabase {
   async mobileNumberExists(mobileNumber) {
     throw new Error('Method not implemented');
   }
+
+  // ============ OTP Verifications Operations ============
+  /**
+   * Store OTP for email
+   * @param {string} email - Email address
+   * @param {string} otp - OTP code
+   * @param {string} expiresAt - Expiration timestamp
+   * @returns {Promise<Object>} Stored OTP data
+   */
+  async storeOTP(email, otp, expiresAt) {
+    throw new Error('Method not implemented');
+  }
+
+  /**
+   * Get OTP for email
+   * @param {string} email - Email address
+   * @returns {Promise<Object|null>} OTP data or null
+   */
+  async getOTP(email) {
+    throw new Error('Method not implemented');
+  }
+
+  /**
+   * Delete OTP for email
+   * @param {string} email - Email address
+   * @returns {Promise<boolean>} Success
+   */
+  async deleteOTP(email) {
+    throw new Error('Method not implemented');
+  }
 }
