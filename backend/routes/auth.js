@@ -1,5 +1,8 @@
 import express from 'express';
 import { UserRepository } from '../repositories/UserRepository.js';
+import { sendOTPEmail } from '../services/emailService.js';
+import { generateOTP, getOTPExpirationTime, verifyOTP } from '../utils/otpUtils.js';
+import { getDB } from '../db/index.js';
 
 const router = express.Router();
 
@@ -279,6 +282,96 @@ router.post('/change-password', async (req, res) => {
       return res.status(400).json({ error: error.message });
     }
 
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/auth/send-otp
+ * Send OTP to email (for signup verification or password reset)
+ */
+router.post('/send-otp', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Validate input
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    const emailLower = email.toLowerCase();
+    console.log(`📧 Sending OTP to: ${emailLower}`);
+
+    // Generate OTP
+    const otp = generateOTP();
+    const expiresAt = getOTPExpirationTime();
+
+    // Store OTP in database
+    const db = getDB();
+    await db.storeOTP(emailLower, otp, expiresAt);
+
+    // Send OTP via email
+    await sendOTPEmail(emailLower, otp);
+
+    res.json({
+      message: 'OTP sent successfully',
+      email: emailLower,
+      expiresIn: '5 minutes'
+    });
+  } catch (error) {
+    console.error('Send OTP error:', error);
+
+    if (error.message.includes('Failed to send OTP email')) {
+      return res.status(500).json({ error: 'Failed to send OTP. Please try again.' });
+    }
+
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/auth/verify-otp
+ * Verify OTP code (for signup or password reset)
+ */
+router.post('/verify-otp', async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    // Validate input
+    if (!email || !otp) {
+      return res.status(400).json({ error: 'Email and OTP are required' });
+    }
+
+    const emailLower = email.toLowerCase();
+    console.log(`🔐 Verifying OTP for: ${emailLower}`);
+
+    // Get stored OTP from database
+    const db = getDB();
+    const storedOTPData = await db.getOTP(emailLower);
+
+    if (!storedOTPData) {
+      return res.status(400).json({ error: 'No OTP found for this email. Please request a new one.' });
+    }
+
+    // Verify OTP
+    const verificationResult = verifyOTP(otp, storedOTPData.otp, storedOTPData.expiresAt);
+
+    if (!verificationResult.success) {
+      return res.status(400).json({ error: verificationResult.message });
+    }
+
+    // Delete OTP after successful verification
+    await db.deleteOTP(emailLower);
+
+    console.log(`✅ OTP verified for: ${emailLower}`);
+
+    res.json({
+      message: 'OTP verified successfully',
+      email: emailLower,
+      verified: true
+    });
+  } catch (error) {
+    console.error('Verify OTP error:', error);
     res.status(500).json({ error: error.message });
   }
 });

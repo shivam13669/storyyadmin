@@ -166,11 +166,22 @@ export class PostgresDatabase extends IDatabase {
       )
     `);
 
+    await this._query(`
+      CREATE TABLE IF NOT EXISTS otp_verifications (
+        id SERIAL PRIMARY KEY,
+        email TEXT UNIQUE NOT NULL,
+        otp TEXT NOT NULL,
+        expires_at TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      )
+    `);
+
     await this._query(`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_users_mobile_number ON users(mobile_number)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_bookings_user_id ON bookings(user_id)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_testimonials_user_id ON testimonials(user_id)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_coupons_code ON coupons(code)`);
+    await this._query(`CREATE INDEX IF NOT EXISTS idx_otp_verifications_email ON otp_verifications(email)`);
   }
 
   async _initializeAdmin() {
@@ -591,6 +602,60 @@ export class PostgresDatabase extends IDatabase {
       return result.rows.length > 0;
     } catch (error) {
       throw new Error(`Failed to check mobile number: ${error.message}`);
+    }
+  }
+
+  // ============ OTP Verifications Operations ============
+
+  async storeOTP(email, otp, expiresAt) {
+    try {
+      const emailLower = email.toLowerCase();
+      // Delete existing OTP for this email if any
+      await this._query(`DELETE FROM otp_verifications WHERE email = $1`, [emailLower]);
+
+      // Insert new OTP
+      await this._query(
+        `INSERT INTO otp_verifications (email, otp, expires_at, created_at)
+         VALUES ($1, $2, $3, $4)`,
+        [emailLower, otp, expiresAt, new Date().toISOString()]
+      );
+
+      return { email: emailLower, otp, expiresAt };
+    } catch (error) {
+      throw new Error(`Failed to store OTP: ${error.message}`);
+    }
+  }
+
+  async getOTP(email) {
+    try {
+      const emailLower = email.toLowerCase();
+      const result = await this._query(
+        `SELECT email, otp, expires_at FROM otp_verifications WHERE email = $1`,
+        [emailLower]
+      );
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const row = result.rows[0];
+      return {
+        email: row.email,
+        otp: row.otp,
+        expiresAt: row.expires_at
+      };
+    } catch (error) {
+      throw new Error(`Failed to get OTP: ${error.message}`);
+    }
+  }
+
+  async deleteOTP(email) {
+    try {
+      const emailLower = email.toLowerCase();
+      await this._query(`DELETE FROM otp_verifications WHERE email = $1`, [emailLower]);
+      return true;
+    } catch (error) {
+      throw new Error(`Failed to delete OTP: ${error.message}`);
     }
   }
 
