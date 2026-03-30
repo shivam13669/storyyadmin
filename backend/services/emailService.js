@@ -106,7 +106,7 @@ export async function sendOTPEmail(email, otp) {
           </div>
           
           <div class="footer">
-            <p>© 2024 Stories by Foot. All rights reserved.</p>
+            <p>© 2026 Stories by Foot. All rights reserved.</p>
             <p>This is an automated email. Please do not reply to this message.</p>
           </div>
         </div>
