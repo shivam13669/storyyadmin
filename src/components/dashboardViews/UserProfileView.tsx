@@ -89,7 +89,7 @@ export function UserProfileView({ user, onUserUpdate, onChangePassword }: UserPr
       {/* Profile Info Card */}
       <Card className="border-0 shadow-md rounded-2xl">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle>Personal Information</CardTitle>
               <CardDescription>Your account details</CardDescription>
@@ -182,12 +182,12 @@ export function UserProfileView({ user, onUserUpdate, onChangePassword }: UserPr
 
             {/* Action Buttons */}
             {isEditing && (
-              <div className="flex gap-2 pt-4 border-t border-gray-200">
+              <div className="flex flex-col gap-2 pt-4 border-t border-gray-200 sm:flex-row">
                 <Button
                   variant="outline"
                   onClick={handleCancel}
                   disabled={loading}
-                  className="flex items-center gap-2"
+                  className="flex w-full items-center justify-center gap-2 sm:w-auto"
                 >
                   <X className="w-4 h-4" />
                   Cancel
@@ -195,7 +195,7 @@ export function UserProfileView({ user, onUserUpdate, onChangePassword }: UserPr
                 <Button
                   onClick={handleSaveChanges}
                   disabled={loading}
-                  className="flex items-center gap-2"
+                  className="flex w-full items-center justify-center gap-2 sm:w-auto"
                 >
                   {loading ? "Saving..." : "Save Changes"}
                 </Button>
