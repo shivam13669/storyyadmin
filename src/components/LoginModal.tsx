@@ -416,9 +416,9 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl bg-white border-0 p-0 overflow-hidden shadow-2xl max-h-[85vh] rounded-lg left-1/2 top-[4rem] translate-x-[-50%] translate-y-0" style={{width: '85vw', maxWidth: '1000px'}}>
+      <DialogContent className="!left-0 !top-auto !bottom-0 !w-full !max-w-none !translate-x-0 !translate-y-0 border-0 bg-white p-0 overflow-hidden shadow-2xl max-h-[90vh] rounded-t-[28px] rounded-b-none md:!left-1/2 md:!top-[4rem] md:!bottom-auto md:!w-[85vw] md:!max-w-[1000px] md:!translate-x-[-50%] md:!translate-y-0 md:max-h-[85vh] md:rounded-lg">
         <DialogTitle className="sr-only">Login or Sign Up</DialogTitle>
-        <div className="flex h-full min-h-[600px]">
+        <div className="flex h-full min-h-0 md:min-h-[600px]">
           {/* Left Side - Premium Hero Image */}
           <div className="hidden md:flex md:w-[55%] relative overflow-hidden">
             <img
@@ -456,7 +456,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
           </div>
 
           {/* Right Side - Premium Form */}
-          <div className="w-full md:w-[45%] flex flex-col bg-white overflow-y-auto">
+          <div className="w-full md:w-[45%] flex flex-col bg-white overflow-y-auto max-h-[90vh] md:max-h-none">
             {!showForgotPassword ? (
               <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'login' | 'signup')} className="w-full flex flex-col h-full">
                 {/* Premium Tab Headers */}
