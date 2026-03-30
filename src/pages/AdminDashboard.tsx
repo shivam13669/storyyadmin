@@ -248,7 +248,10 @@ const AdminDashboard = () => {
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveNav(item.id)}
+                onClick={() => {
+                  setActiveNav(item.id);
+                  setSidebarOpen(false);
+                }}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium text-sm ${
                   isActive
                     ? "bg-blue-600 text-white"
@@ -378,7 +381,10 @@ const AdminDashboard = () => {
                     <Card
                       key={index}
                       className="border-0 shadow-md hover:shadow-lg transition-shadow cursor-pointer rounded-2xl"
-                      onClick={() => setActiveNav(getNavigationSection(stat.label))}
+                      onClick={() => {
+                        setActiveNav(getNavigationSection(stat.label));
+                        setSidebarOpen(false);
+                      }}
                     >
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
@@ -430,7 +436,10 @@ const AdminDashboard = () => {
                       variant="link"
                       size="sm"
                       className="w-full mt-4 text-primary"
-                      onClick={() => setActiveNav("customers")}
+                      onClick={() => {
+                        setActiveNav("customers");
+                        setSidebarOpen(false);
+                      }}
                     >
                       View all customers →
                     </Button>
@@ -470,7 +479,10 @@ const AdminDashboard = () => {
                       variant="link"
                       size="sm"
                       className="w-full mt-4 text-primary"
-                      onClick={() => setActiveNav("bookings")}
+                      onClick={() => {
+                        setActiveNav("bookings");
+                        setSidebarOpen(false);
+                      }}
                     >
                       View all bookings →
                     </Button>
@@ -508,7 +520,10 @@ const AdminDashboard = () => {
                       variant="link"
                       size="sm"
                       className="w-full mt-4 text-primary"
-                      onClick={() => setActiveNav("reviews")}
+                      onClick={() => {
+                        setActiveNav("reviews");
+                        setSidebarOpen(false);
+                      }}
                     >
                       View all reviews →
                     </Button>
