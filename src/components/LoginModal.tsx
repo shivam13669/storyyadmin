@@ -181,7 +181,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Login failed';
       toast.error(errorMessage);
-      console.error('Login error:', error);
     } finally {
       setIsLoggingIn(false);
     }
@@ -231,7 +230,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to send OTP';
       toast.error(errorMessage);
-      console.error('Send OTP error:', error);
     } finally {
       setIsSigningUp(false);
       setIsSendingOTP(false);
@@ -287,7 +285,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'OTP verification failed';
       toast.error(errorMessage);
-      console.error('OTP verification error:', error);
     } finally {
       setIsVerifyingOTP(false);
     }
@@ -305,7 +302,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to resend OTP';
       toast.error(errorMessage);
-      console.error('Resend OTP error:', error);
     } finally {
       setIsSendingOTP(false);
     }
@@ -353,7 +349,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to reset password';
       toast.error(errorMessage);
-      console.error('Password reset error:', error);
     } finally {
       setIsResettingPassword(false);
     }
@@ -395,7 +390,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to send OTP';
       toast.error(errorMessage);
-      console.error('Send OTP error:', error);
     } finally {
       setIsSendingOTP(false);
     }
@@ -1183,7 +1177,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                           <label className="block text-sm font-semibold text-gray-900">
                             Confirm Password
                           </label>
-                          <div className="relative group">
+                          <div className="relative group" onMouseDown={() => setIsPasswordFieldFocused(false)}>
                             <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                             <Input
                               type={showConfirmResetPassword ? "text" : "password"}
@@ -1541,10 +1535,10 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             <label className="block text-sm font-semibold text-gray-900">
                               Confirm Password
                             </label>
-                            <div className="relative group">
-                              <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                              <Input
-                                type={showConfirmResetPassword ? "text" : "password"}
+                            <div className="relative group" onMouseDown={() => setIsPasswordFieldFocused(false)}>
+                            <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                            <Input
+                              type={showConfirmResetPassword ? "text" : "password"}
                                 placeholder="••••••••"
                                 value={confirmResetPassword}
                                 onChange={(e) => setConfirmResetPassword(e.target.value)}

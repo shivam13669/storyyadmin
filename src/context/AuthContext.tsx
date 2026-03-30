@@ -90,7 +90,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       return { success: true };
     } catch (error: any) {
-      console.error('Login error:', error);
       return { success: false, message: error.message || 'An error occurred during login' };
     }
   };
