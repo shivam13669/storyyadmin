@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, CheckCircle, User, Phone, Search, ChevronDown, X, Loader } from "lucide-react";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { toast } from "sonner";
-import { signup, sendOTP, verifyOTP } from "@/lib/api";
+import { signup, sendOTP, verifyOTP, resetPasswordWithEmail } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import {
   Dialog,
@@ -137,6 +137,12 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   const [isSendingOTP, setIsSendingOTP] = useState(false);
   const [otpEmail, setOtpEmail] = useState("");
   const [signupFormData, setSignupFormData] = useState<any>(null);
+  const [resetPassword, setResetPassword] = useState("");
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [confirmResetPassword, setConfirmResetPassword] = useState("");
+  const [showConfirmResetPassword, setShowConfirmResetPassword] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [isPasswordResetOTPVerified, setIsPasswordResetOTPVerified] = useState(false);
 
   const filteredCountries = COUNTRIES.filter(country =>
     country.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
@@ -249,21 +255,12 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
 
       // Check if this is password reset or signup
       if (signupFormData?.isPasswordReset) {
-        // For password reset: show password reset form
-        // For now, just show success and return to login
-        toast.success("Email verified! Please reset your password.");
-
-        // Reset forgot password form
-        setForgotPasswordEmail("");
-        setForgotPasswordEmailError("");
-        setShowForgotPassword(false);
-        setShowOTPVerification(false);
-        setOtpCode("");
-        setOtpEmail("");
-        setSignupFormData(null);
-
-        // Switch back to login tab
-        setActiveTab('login');
+        // For password reset: don't proceed yet, user needs to enter new password
+        // The form will show password fields now
+        // We just verified the OTP, so we continue to the next step
+        toast.success("Email verified! Now set your new password.");
+        setIsPasswordResetOTPVerified(true);
+        // Keep the OTP verification screen visible and show password fields
       } else if (signupFormData) {
         // For signup: create the account with the stored form data
         const result = await signup(signupFormData);
@@ -301,7 +298,8 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
 
     setIsSendingOTP(true);
     try {
-      await sendOTP(otpEmail);
+      const purpose = signupFormData?.isPasswordReset ? 'password-reset' : 'signup';
+      await sendOTP(otpEmail, purpose);
       toast.success("OTP resent to your email!");
       setOtpCode("");
     } catch (error) {
@@ -313,11 +311,62 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     }
   };
 
+  const handlePasswordResetSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!resetPassword || !confirmResetPassword) {
+      toast.error("Please enter both passwords");
+      return;
+    }
+
+    if (resetPassword !== confirmResetPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    const passwordValidation = validatePassword(resetPassword);
+    if (!passwordValidation.isValid) {
+      toast.error("Password does not meet requirements");
+      return;
+    }
+
+    setIsResettingPassword(true);
+    try {
+      // Reset password with email
+      await resetPasswordWithEmail(otpEmail, resetPassword);
+
+      toast.success("Password reset successfully! Please log in with your new password.");
+
+      // Reset all forms and close
+      setForgotPasswordEmail("");
+      setForgotPasswordEmailError("");
+      setShowForgotPassword(false);
+      setShowOTPVerification(false);
+      setOtpCode("");
+      setOtpEmail("");
+      setSignupFormData(null);
+      setResetPassword("");
+      setConfirmResetPassword("");
+
+      // Switch back to login tab
+      setActiveTab('login');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to reset password';
+      toast.error(errorMessage);
+      console.error('Password reset error:', error);
+    } finally {
+      setIsResettingPassword(false);
+    }
+  };
+
   const handleBackToSignup = () => {
     setShowOTPVerification(false);
     setOtpCode("");
     setOtpEmail("");
     setSignupFormData(null);
+    setIsPasswordResetOTPVerified(false);
+    setResetPassword("");
+    setConfirmResetPassword("");
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
@@ -329,17 +378,20 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
 
     setIsSendingOTP(true);
     try {
-      // Send OTP for password reset
-      await sendOTP(forgotPasswordEmail);
+      // Send OTP for password reset with purpose flag
+      await sendOTP(forgotPasswordEmail, 'password-reset');
 
       toast.success("OTP sent to your email!");
 
       // Show OTP verification screen for password reset
       setOtpEmail(forgotPasswordEmail);
-      // We'll need to track that this is for password reset, not signup
+      // Track that this is for password reset, not signup
       setSignupFormData({ isPasswordReset: true });
       setShowOTPVerification(true);
       setOtpCode("");
+      // Reset password fields
+      setResetPassword("");
+      setConfirmResetPassword("");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to send OTP';
       toast.error(errorMessage);
@@ -359,6 +411,13 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     setShowForgotPassword(false);
     setForgotPasswordEmail("");
     setForgotPasswordEmailError("");
+    setShowOTPVerification(false);
+    setOtpCode("");
+    setOtpEmail("");
+    setSignupFormData(null);
+    setIsPasswordResetOTPVerified(false);
+    setResetPassword("");
+    setConfirmResetPassword("");
   };
 
   return (
@@ -999,70 +1058,213 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                       </div>
                     </div>
 
-                    <form onSubmit={handleOTPVerification} className="space-y-4 flex-1">
-                      {/* OTP Input */}
-                      <div className="space-y-2">
-                        <label className="block text-sm font-semibold text-gray-900">
-                          Enter OTP Code
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="000000"
-                          value={otpCode}
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, '').slice(0, 6);
-                            setOtpCode(value);
-                          }}
-                          maxLength={6}
-                          className="w-full text-center text-2xl font-bold tracking-widest px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 bg-gray-50/50 transition-all"
-                          required
-                        />
-                        <p className="text-xs text-gray-600 text-center">The OTP expires in 5 minutes</p>
-                      </div>
+                    {!isPasswordResetOTPVerified ? (
+                      // OTP Verification Form
+                      <form onSubmit={handleOTPVerification} className="space-y-4 flex-1">
+                        {/* OTP Input */}
+                        <div className="space-y-2">
+                          <label className="block text-sm font-semibold text-gray-900">
+                            Enter OTP Code
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="000000"
+                            value={otpCode}
+                            onChange={(e) => {
+                              const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+                              setOtpCode(value);
+                            }}
+                            maxLength={6}
+                            className="w-full text-center text-2xl font-bold tracking-widest px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 bg-gray-50/50 transition-all"
+                            required
+                          />
+                          <p className="text-xs text-gray-600 text-center">The OTP expires in 5 minutes</p>
+                        </div>
 
-                      {/* Verify Button */}
-                      <button
-                        type="submit"
-                        disabled={isVerifyingOTP || otpCode.length !== 6}
-                        className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl"
-                      >
-                        {isVerifyingOTP ? (
-                          <>
-                            <Loader className="h-5 w-5 animate-spin" />
-                            Verifying...
-                          </>
-                        ) : (
-                          <>
-                            Verify OTP
-                            <ArrowRight className="h-5 w-5" />
-                          </>
-                        )}
-                      </button>
-                    </form>
+                        {/* Verify Button */}
+                        <button
+                          type="submit"
+                          disabled={isVerifyingOTP || otpCode.length !== 6}
+                          className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl"
+                        >
+                          {isVerifyingOTP ? (
+                            <>
+                              <Loader className="h-5 w-5 animate-spin" />
+                              Verifying...
+                            </>
+                          ) : (
+                            <>
+                              Verify OTP
+                              <ArrowRight className="h-5 w-5" />
+                            </>
+                          )}
+                        </button>
+                      </form>
+                    ) : (
+                      // Password Reset Form (shown after OTP verification)
+                      <form onSubmit={handlePasswordResetSubmit} className="space-y-4 flex-1">
+                        <div>
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">Set New Password</h3>
+                          <p className="text-sm text-gray-600">Create a strong password to secure your account</p>
+                        </div>
 
-                    {/* Resend OTP */}
-                    <div className="text-center space-y-3 pt-4 border-t border-gray-200">
-                      <p className="text-sm text-gray-600">
-                        Didn't receive the code?
-                      </p>
-                      <button
-                        type="button"
-                        onClick={handleResendOTP}
-                        disabled={isSendingOTP}
-                        className="text-sm text-orange-600 hover:text-orange-700 font-semibold transition-colors disabled:text-gray-400"
-                      >
-                        {isSendingOTP ? "Sending..." : "Resend OTP"}
-                      </button>
-                    </div>
+                        {/* New Password Field */}
+                        <div className="space-y-2">
+                          <label className="block text-sm font-semibold text-gray-900">
+                            New Password
+                          </label>
+                          <div className="relative group">
+                            <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                            <Input
+                              type={showResetPassword ? "text" : "password"}
+                              placeholder="••••••••"
+                              value={resetPassword}
+                              onChange={(e) => setResetPassword(e.target.value)}
+                              onFocus={() => setIsPasswordFieldFocused(true)}
+                              onBlur={() => setIsPasswordFieldFocused(false)}
+                              className="w-full pl-11 pr-12 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 bg-gray-50/50 transition-all"
+                              required
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowResetPassword(!showResetPassword)}
+                              className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                              {showResetPassword ? (
+                                <EyeOff className="h-5 w-5" />
+                              ) : (
+                                <Eye className="h-5 w-5" />
+                              )}
+                            </button>
+                          </div>
 
-                    {/* Back Button */}
-                    <button
-                      type="button"
-                      onClick={handleBackToSignup}
-                      className="w-full mt-2 border-2 border-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-lg hover:border-orange-200 hover:bg-orange-50/30 transition-all duration-200"
-                    >
-                      Back to Sign Up
-                    </button>
+                          {/* Password Requirements */}
+                          {resetPassword && isPasswordFieldFocused && (
+                            <div className="mt-3 p-3 bg-gray-50 rounded-lg space-y-2">
+                              <p className="text-xs font-semibold text-gray-900">Password Requirements:</p>
+                              <div className="space-y-1.5 text-xs">
+                                <div className={`flex items-center gap-2 ${validatePassword(resetPassword).requirements.length ? 'text-green-600' : 'text-gray-600'}`}>
+                                  <div className={`w-4 h-4 rounded-full flex items-center justify-center ${validatePassword(resetPassword).requirements.length ? 'bg-green-100' : 'bg-gray-200'}`}>
+                                    {validatePassword(resetPassword).requirements.length && <span className="text-green-600 font-bold">✓</span>}
+                                  </div>
+                                  <span>At least 6 characters</span>
+                                </div>
+                                <div className={`flex items-center gap-2 ${validatePassword(resetPassword).requirements.uppercase ? 'text-green-600' : 'text-gray-600'}`}>
+                                  <div className={`w-4 h-4 rounded-full flex items-center justify-center ${validatePassword(resetPassword).requirements.uppercase ? 'bg-green-100' : 'bg-gray-200'}`}>
+                                    {validatePassword(resetPassword).requirements.uppercase && <span className="text-green-600 font-bold">✓</span>}
+                                  </div>
+                                  <span>At least 1 uppercase letter (A-Z)</span>
+                                </div>
+                                <div className={`flex items-center gap-2 ${validatePassword(resetPassword).requirements.lowercase ? 'text-green-600' : 'text-gray-600'}`}>
+                                  <div className={`w-4 h-4 rounded-full flex items-center justify-center ${validatePassword(resetPassword).requirements.lowercase ? 'bg-green-100' : 'bg-gray-200'}`}>
+                                    {validatePassword(resetPassword).requirements.lowercase && <span className="text-green-600 font-bold">✓</span>}
+                                  </div>
+                                  <span>At least 1 lowercase letter (a-z)</span>
+                                </div>
+                                <div className={`flex items-center gap-2 ${validatePassword(resetPassword).requirements.number ? 'text-green-600' : 'text-gray-600'}`}>
+                                  <div className={`w-4 h-4 rounded-full flex items-center justify-center ${validatePassword(resetPassword).requirements.number ? 'bg-green-100' : 'bg-gray-200'}`}>
+                                    {validatePassword(resetPassword).requirements.number && <span className="text-green-600 font-bold">✓</span>}
+                                  </div>
+                                  <span>At least 1 number (0-9)</span>
+                                </div>
+                                <div className={`flex items-center gap-2 ${validatePassword(resetPassword).requirements.special ? 'text-green-600' : 'text-gray-600'}`}>
+                                  <div className={`w-4 h-4 rounded-full flex items-center justify-center ${validatePassword(resetPassword).requirements.special ? 'bg-green-100' : 'bg-gray-200'}`}>
+                                    {validatePassword(resetPassword).requirements.special && <span className="text-green-600 font-bold">✓</span>}
+                                  </div>
+                                  <span>At least 1 special character (!@#$%^&*)</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Confirm Password Field */}
+                        <div className="space-y-2">
+                          <label className="block text-sm font-semibold text-gray-900">
+                            Confirm Password
+                          </label>
+                          <div className="relative group">
+                            <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                            <Input
+                              type={showConfirmResetPassword ? "text" : "password"}
+                              placeholder="••••••••"
+                              value={confirmResetPassword}
+                              onChange={(e) => setConfirmResetPassword(e.target.value)}
+                              className={`w-full pl-11 pr-12 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 bg-gray-50/50 transition-all ${
+                                confirmResetPassword && resetPassword !== confirmResetPassword ? 'border-red-400 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                              }`}
+                              required
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowConfirmResetPassword(!showConfirmResetPassword)}
+                              className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                              {showConfirmResetPassword ? (
+                                <EyeOff className="h-5 w-5" />
+                              ) : (
+                                <Eye className="h-5 w-5" />
+                              )}
+                            </button>
+                          </div>
+                          {confirmResetPassword && resetPassword !== confirmResetPassword && (
+                            <p className="text-xs text-red-500 font-medium">Passwords do not match</p>
+                          )}
+                          {confirmResetPassword && resetPassword === confirmResetPassword && (
+                            <p className="text-xs text-green-600 font-medium flex items-center gap-1">
+                              <span>✓</span> Passwords match
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Submit Button */}
+                        <button
+                          type="submit"
+                          disabled={isResettingPassword || !resetPassword || !confirmResetPassword || resetPassword !== confirmResetPassword || !validatePassword(resetPassword).isValid}
+                          className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl"
+                        >
+                          {isResettingPassword ? (
+                            <>
+                              <Loader className="h-5 w-5 animate-spin" />
+                              Resetting...
+                            </>
+                          ) : (
+                            <>
+                              Submit
+                              <ArrowRight className="h-5 w-5" />
+                            </>
+                          )}
+                        </button>
+                      </form>
+                    )}
+
+                    {!isPasswordResetOTPVerified && (
+                      <>
+                        {/* Resend OTP */}
+                        <div className="text-center space-y-3 pt-4 border-t border-gray-200">
+                          <p className="text-sm text-gray-600">
+                            Didn't receive the code?
+                          </p>
+                          <button
+                            type="button"
+                            onClick={handleResendOTP}
+                            disabled={isSendingOTP}
+                            className="text-sm text-orange-600 hover:text-orange-700 font-semibold transition-colors disabled:text-gray-400"
+                          >
+                            {isSendingOTP ? "Sending..." : "Resend OTP"}
+                          </button>
+                        </div>
+
+                        {/* Back Button */}
+                        <button
+                          type="button"
+                          onClick={handleBackToSignup}
+                          className="w-full mt-2 border-2 border-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-lg hover:border-orange-200 hover:bg-orange-50/30 transition-all duration-200"
+                        >
+                          Back to Sign Up
+                        </button>
+                      </>
+                    )}
                   </div>
                   )}
                 </TabsContent>

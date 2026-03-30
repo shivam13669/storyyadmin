@@ -123,14 +123,14 @@ export async function login(data: LoginData): Promise<{ user: AuthUser; message:
   }
 }
 
-export async function sendOTP(email: string): Promise<{ message: string; email: string; expiresIn: string }> {
+export async function sendOTP(email: string, purpose: string = 'signup'): Promise<{ message: string; email: string; expiresIn: string }> {
   try {
     const response = await fetch(`${API_URL}/auth/send-otp`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, purpose }),
     });
 
     let result;
@@ -420,6 +420,39 @@ export async function resetUserPassword(userId: number, password: string): Promi
       throw error;
     }
     throw new Error('Failed to reset password');
+  }
+}
+
+export async function resetPasswordWithEmail(email: string, newPassword: string): Promise<{ message: string }> {
+  try {
+    const response = await fetch(`${API_URL}/auth/reset-password-with-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, newPassword }),
+    });
+
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      if (!response.ok) {
+        throw new Error(`Failed to reset password with status ${response.status}`);
+      }
+      throw new Error('Invalid response from server');
+    }
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Failed to reset password');
+    }
+
+    return result;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Failed to reset password: Unknown error');
   }
 }
 

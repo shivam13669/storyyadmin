@@ -289,10 +289,11 @@ router.post('/change-password', async (req, res) => {
 /**
  * POST /api/auth/send-otp
  * Send OTP to email (for signup verification or password reset)
+ * Body: { email, purpose: 'signup' | 'password-reset' }
  */
 router.post('/send-otp', async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, purpose = 'signup' } = req.body;
 
     // Validate input
     if (!email) {
@@ -300,7 +301,15 @@ router.post('/send-otp', async (req, res) => {
     }
 
     const emailLower = email.toLowerCase();
-    console.log(`📧 Sending OTP to: ${emailLower}`);
+    console.log(`📧 Sending OTP to: ${emailLower} for purpose: ${purpose}`);
+
+    // If this is for password reset, verify email exists
+    if (purpose === 'password-reset') {
+      const user = await UserRepository.getByEmail(emailLower);
+      if (!user) {
+        return res.status(404).json({ error: 'This email doesn\'t associated to any account' });
+      }
+    }
 
     // Generate OTP
     const otp = generateOTP();
@@ -372,6 +381,49 @@ router.post('/verify-otp', async (req, res) => {
     });
   } catch (error) {
     console.error('Verify OTP error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/auth/reset-password-with-email
+ * Reset password by email (after OTP verification for forgot password flow)
+ */
+router.post('/reset-password-with-email', async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+      return res.status(400).json({ error: 'Email and new password are required' });
+    }
+
+    const emailLower = email.toLowerCase();
+
+    // Get user by email
+    const user = await UserRepository.getByEmail(emailLower);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Reset password
+    await UserRepository.resetPassword(user.id, newPassword);
+
+    console.log(`✅ Password reset for: ${emailLower}`);
+
+    res.json({
+      message: 'Password reset successfully'
+    });
+  } catch (error) {
+    console.error('Reset password error:', error);
+
+    if (error.message.includes('not found')) {
+      return res.status(404).json({ error: error.message });
+    }
+
+    if (error.message.includes('must be at least')) {
+      return res.status(400).json({ error: error.message });
+    }
+
     res.status(500).json({ error: error.message });
   }
 });
