@@ -131,7 +131,10 @@ const Dashboard = () => {
     if (newPassword !== confirmPassword) {
       throw new Error("Passwords do not match");
     }
-    await changeUserPassword(oldPassword, newPassword);
+    if (!user?.id) {
+      throw new Error("User not authenticated");
+    }
+    await changeUserPassword(user.id, oldPassword, newPassword);
   };
 
   // Close user menu when clicking outside

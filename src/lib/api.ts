@@ -457,6 +457,7 @@ export async function resetPasswordWithEmail(email: string, newPassword: string)
 }
 
 export async function changeUserPassword(
+  userId: number,
   oldPassword: string,
   newPassword: string
 ): Promise<void> {
@@ -465,6 +466,7 @@ export async function changeUserPassword(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'userId': userId.toString(),
       },
       body: JSON.stringify({ oldPassword, newPassword }),
     });
