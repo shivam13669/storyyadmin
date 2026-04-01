@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
 
 interface ChangePasswordModalProps {
   isOpen: boolean;
@@ -43,6 +43,9 @@ export function ChangePasswordModal({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [isNewPasswordFocused, setIsNewPasswordFocused] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const passwordValidation = validatePassword(newPassword);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -123,28 +126,56 @@ export function ChangePasswordModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="oldPassword">Old Password</Label>
-            <Input
-              id="oldPassword"
-              type="password"
-              placeholder="Enter your current password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              disabled={loading}
-            />
+            <div className="relative">
+              <Input
+                id="oldPassword"
+                type={showOldPassword ? "text" : "password"}
+                placeholder="Enter your current password"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                disabled={loading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowOldPassword(!showOldPassword)}
+                className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
+                disabled={loading}
+              >
+                {showOldPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="newPassword">New Password</Label>
-            <Input
-              id="newPassword"
-              type="password"
-              placeholder="Enter new password (minimum 6 characters)"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              onFocus={() => setIsNewPasswordFocused(true)}
-              onBlur={() => setIsNewPasswordFocused(false)}
-              disabled={loading}
-            />
+            <div className="relative">
+              <Input
+                id="newPassword"
+                type={showNewPassword ? "text" : "password"}
+                placeholder="Enter new password (minimum 6 characters)"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                onFocus={() => setIsNewPasswordFocused(true)}
+                onBlur={() => setIsNewPasswordFocused(false)}
+                disabled={loading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
+                disabled={loading}
+              >
+                {showNewPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
             {newPassword && isNewPasswordFocused && (
               <div className="mt-3 p-3 bg-gray-50 rounded-lg space-y-2">
                 <p className="text-xs font-semibold text-gray-900">Password Requirements:</p>
@@ -186,14 +217,28 @@ export function ChangePasswordModal({
 
           <div className="space-y-2" onMouseDown={() => setIsNewPasswordFocused(false)}>
             <Label htmlFor="confirmPassword">Confirm New Password</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              placeholder="Confirm new password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              disabled={loading}
-            />
+            <div className="relative">
+              <Input
+                id="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm new password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                disabled={loading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
+                disabled={loading}
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           <div className="flex gap-2 justify-end pt-4">

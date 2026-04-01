@@ -42,6 +42,8 @@ import { AdminTestimonialForm } from "@/components/AdminTestimonialForm";
 import { AdminReportsView } from "@/components/dashboardViews/AdminReportsView";
 import { CustomerManagementView } from "@/components/dashboardViews/CustomerManagementView";
 import { UserManagementSystemView } from "@/components/dashboardViews/UserManagementSystemView";
+import { ChangePasswordModal } from "@/components/ChangePasswordModal";
+import { changeUserPassword } from "@/lib/api";
 
 const AdminDashboard = () => {
   const { user, isAuthenticated, isAdmin, logout, isLoading: authLoading } = useAuth();
@@ -56,6 +58,7 @@ const AdminDashboard = () => {
   const [customerTab, setCustomerTab] = useState("customer");
   const [adminTab, setAdminTab] = useState("management");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Redirect if not admin
@@ -103,6 +106,20 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     logout();
     navigate("/");
+  };
+
+  const handleChangePassword = async (
+    oldPassword: string,
+    newPassword: string,
+    confirmPassword: string
+  ) => {
+    if (newPassword !== confirmPassword) {
+      throw new Error("Passwords do not match");
+    }
+    if (!user?.id) {
+      throw new Error("User not authenticated");
+    }
+    await changeUserPassword(user.id, oldPassword, newPassword);
   };
 
   // Close user menu when clicking outside
@@ -784,17 +801,59 @@ const AdminDashboard = () => {
           ) : activeNav === "coupons" ? (
             <AdminCouponsView />
           ) : activeNav === "settings" ? (
-            <Card className="border-0 shadow-md rounded-2xl">
-              <CardHeader>
-                <CardTitle>Settings</CardTitle>
-                <CardDescription>System settings and configuration</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8 text-gray-600">
-                  <p>Settings coming soon...</p>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="space-y-6">
+              {/* Header */}
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Settings</h3>
+                <p className="text-sm text-gray-600 mt-1">Manage your admin account settings</p>
+              </div>
+
+              {/* Account Information Card */}
+              <Card className="border-0 shadow-md rounded-2xl">
+                <CardHeader>
+                  <CardTitle>Account Information</CardTitle>
+                  <CardDescription>Your admin account details</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div>
+                      <p className="text-sm text-gray-600 font-medium mb-2">Full Name</p>
+                      <p className="text-lg font-semibold text-gray-900">{user?.fullName || "—"}</p>
+                    </div>
+                    <div className="border-t pt-6">
+                      <p className="text-sm text-gray-600 font-medium mb-2">Email Address</p>
+                      <p className="text-lg font-semibold text-gray-900">{user?.email || "—"}</p>
+                    </div>
+                    <div className="border-t pt-6">
+                      <p className="text-sm text-gray-600 font-medium mb-2">Phone Number</p>
+                      <p className="text-lg font-semibold text-gray-900">
+                        +{user?.countryCode || ""} {user?.mobileNumber || "—"}
+                      </p>
+                    </div>
+                    <div className="border-t pt-6">
+                      <p className="text-sm text-gray-600 font-medium mb-2">Member Since</p>
+                      <p className="text-lg font-semibold text-gray-900">
+                        {user?.signupDate && !isNaN(new Date(user.signupDate).getTime())
+                          ? format(new Date(user.signupDate), "MMMM dd, yyyy")
+                          : "—"}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Account Security Card */}
+              <Card className="border-0 shadow-md rounded-2xl">
+                <CardHeader>
+                  <CardTitle>Account Security</CardTitle>
+                  <CardDescription>Manage your password and security settings</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-700 mb-4">Your account security is important to us. You can change your password at any time.</p>
+                  <Button onClick={() => setIsPasswordModalOpen(true)} className="w-full">Change Password</Button>
+                </CardContent>
+              </Card>
+            </div>
           ) : null
           }
         </div>
@@ -807,6 +866,13 @@ const AdminDashboard = () => {
           onClick={() => setSidebarOpen(false)}
         />
       )}
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        onSubmit={handleChangePassword}
+      />
     </div>
   );
 };
