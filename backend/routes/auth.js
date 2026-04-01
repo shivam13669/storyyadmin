@@ -257,7 +257,7 @@ router.post('/users/:id/reset-password', async (req, res) => {
  */
 router.post('/change-password', async (req, res) => {
   try {
-    const { userId } = req.headers;
+    const userId = req.headers.userid;
     const { oldPassword, newPassword } = req.body;
 
     if (!userId) {

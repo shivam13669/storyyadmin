@@ -20,7 +20,7 @@ const PORT = parseInt(process.env.PORT || (process.env.NODE_ENV === 'production'
 app.use(cors({
   origin: '*', // Allow all origins (you can restrict this later)
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'userId'],
   credentials: false
 }));
 app.use(express.json());
