@@ -18,6 +18,19 @@ interface ChangePasswordModalProps {
   onSubmit: (oldPassword: string, newPassword: string, confirmPassword: string) => Promise<void>;
 }
 
+const validatePassword = (password: string) => {
+  const requirements = {
+    length: password.length >= 6,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number: /[0-9]/.test(password),
+    special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
+  };
+
+  const isValid = Object.values(requirements).every(req => req);
+  return { isValid, requirements };
+};
+
 export function ChangePasswordModal({
   isOpen,
   onClose,
@@ -29,6 +42,8 @@ export function ChangePasswordModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [isNewPasswordFocused, setIsNewPasswordFocused] = useState(false);
+  const passwordValidation = validatePassword(newPassword);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,8 +61,8 @@ export function ChangePasswordModal({
       return;
     }
 
-    if (newPassword.length < 6) {
-      setError("New password must be at least 6 characters");
+    if (!passwordValidation.isValid) {
+      setError("Password does not meet requirements");
       return;
     }
 
@@ -126,8 +141,47 @@ export function ChangePasswordModal({
               placeholder="Enter new password (minimum 6 characters)"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+              onFocus={() => setIsNewPasswordFocused(true)}
+              onBlur={() => setIsNewPasswordFocused(false)}
               disabled={loading}
             />
+            {newPassword && isNewPasswordFocused && (
+              <div className="mt-3 p-3 bg-gray-50 rounded-lg space-y-2">
+                <p className="text-xs font-semibold text-gray-900">Password Requirements:</p>
+                <div className="space-y-1.5 text-xs">
+                  <div className={`flex items-center gap-2 ${passwordValidation.requirements.length ? 'text-green-600' : 'text-gray-600'}`}>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${passwordValidation.requirements.length ? 'bg-green-100' : 'bg-gray-200'}`}>
+                      {passwordValidation.requirements.length && <span className="text-green-600 font-bold">✓</span>}
+                    </div>
+                    <span>At least 6 characters</span>
+                  </div>
+                  <div className={`flex items-center gap-2 ${passwordValidation.requirements.uppercase ? 'text-green-600' : 'text-gray-600'}`}>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${passwordValidation.requirements.uppercase ? 'bg-green-100' : 'bg-gray-200'}`}>
+                      {passwordValidation.requirements.uppercase && <span className="text-green-600 font-bold">✓</span>}
+                    </div>
+                    <span>At least 1 uppercase letter (A-Z)</span>
+                  </div>
+                  <div className={`flex items-center gap-2 ${passwordValidation.requirements.lowercase ? 'text-green-600' : 'text-gray-600'}`}>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${passwordValidation.requirements.lowercase ? 'bg-green-100' : 'bg-gray-200'}`}>
+                      {passwordValidation.requirements.lowercase && <span className="text-green-600 font-bold">✓</span>}
+                    </div>
+                    <span>At least 1 lowercase letter (a-z)</span>
+                  </div>
+                  <div className={`flex items-center gap-2 ${passwordValidation.requirements.number ? 'text-green-600' : 'text-gray-600'}`}>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${passwordValidation.requirements.number ? 'bg-green-100' : 'bg-gray-200'}`}>
+                      {passwordValidation.requirements.number && <span className="text-green-600 font-bold">✓</span>}
+                    </div>
+                    <span>At least 1 number (0-9)</span>
+                  </div>
+                  <div className={`flex items-center gap-2 ${passwordValidation.requirements.special ? 'text-green-600' : 'text-gray-600'}`}>
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${passwordValidation.requirements.special ? 'bg-green-100' : 'bg-gray-200'}`}>
+                      {passwordValidation.requirements.special && <span className="text-green-600 font-bold">✓</span>}
+                    </div>
+                    <span>At least 1 special character (!@#$%^&*)</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">
