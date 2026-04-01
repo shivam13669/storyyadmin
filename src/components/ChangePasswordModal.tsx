@@ -137,6 +137,7 @@ export function ChangePasswordModal({
               />
               <button
                 type="button"
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => setShowOldPassword(!showOldPassword)}
                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={loading}
@@ -165,6 +166,7 @@ export function ChangePasswordModal({
               />
               <button
                 type="button"
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => setShowNewPassword(!showNewPassword)}
                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={loading}
@@ -215,7 +217,10 @@ export function ChangePasswordModal({
             )}
           </div>
 
-          <div className="space-y-2" onMouseDown={() => setIsNewPasswordFocused(false)}>
+          <div className="space-y-2" onMouseDown={(e) => {
+            if (e.target.closest('button')) return;
+            setIsNewPasswordFocused(false);
+          }}>
             <Label htmlFor="confirmPassword">Confirm New Password</Label>
             <div className="relative">
               <Input
@@ -228,6 +233,7 @@ export function ChangePasswordModal({
               />
               <button
                 type="button"
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={loading}
