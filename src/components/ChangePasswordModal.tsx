@@ -168,6 +168,7 @@ export function ChangePasswordModal({
               />
               <button
                 type="button"
+                tabIndex={-1}
                 onMouseDown={(e) => {
                   e.preventDefault();
                   togglePasswordVisibility(setShowOldPassword, showOldPassword, oldPasswordInputRef);
@@ -200,6 +201,7 @@ export function ChangePasswordModal({
               />
               <button
                 type="button"
+                tabIndex={-1}
                 onMouseDown={(e) => {
                   e.preventDefault();
                   togglePasswordVisibility(setShowNewPassword, showNewPassword, newPasswordInputRef);
@@ -270,6 +272,7 @@ export function ChangePasswordModal({
               />
               <button
                 type="button"
+                tabIndex={-1}
                 onMouseDown={(e) => {
                   e.preventDefault();
                   togglePasswordVisibility(setShowConfirmPassword, showConfirmPassword, confirmPasswordInputRef);

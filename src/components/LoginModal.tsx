@@ -578,6 +578,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                           />
                           <button
                             type="button"
+                            tabIndex={-1}
                             onMouseDown={(e) => {
                               e.preventDefault();
                               togglePasswordVisibility(setShowPassword, showPassword, passwordInputRef);
@@ -882,6 +883,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                           />
                           <button
                             type="button"
+                            tabIndex={-1}
                             onMouseDown={(e) => {
                               e.preventDefault();
                               togglePasswordVisibility(setShowSignupPassword, showSignupPassword, signupPasswordInputRef);
@@ -959,6 +961,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                           />
                           <button
                             type="button"
+                            tabIndex={-1}
                             onMouseDown={(e) => {
                               e.preventDefault();
                               togglePasswordVisibility(setShowConfirmPassword, showConfirmPassword, confirmPasswordInputRef);
@@ -1251,6 +1254,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             />
                             <button
                               type="button"
+                              tabIndex={-1}
                               onMouseDown={(e) => {
                                 e.preventDefault();
                                 togglePasswordVisibility(setShowConfirmResetPassword, showConfirmResetPassword, confirmResetPasswordInputRef);
@@ -1543,6 +1547,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                               />
                               <button
                                 type="button"
+                                tabIndex={-1}
                                 onMouseDown={(e) => {
                                   e.preventDefault();
                                   togglePasswordVisibility(setShowResetPassword, showResetPassword, resetPasswordInputRef);
