@@ -123,6 +123,40 @@ router.get('/user/:id', async (req, res) => {
 });
 
 /**
+ * PATCH /api/auth/user/:id
+ * Update user profile (fullName, etc)
+ */
+router.patch('/user/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fullName } = req.body;
+
+    // Validate input
+    if (!fullName) {
+      return res.status(400).json({ error: 'Full name is required' });
+    }
+
+    // Update user
+    const user = await UserRepository.update(parseInt(id), { fullName });
+
+    console.log(`✅ User updated: ${user.email}`);
+
+    res.json({
+      message: 'User profile updated successfully',
+      user
+    });
+  } catch (error) {
+    console.error('Update user error:', error);
+
+    if (error.message.includes('not found')) {
+      return res.status(404).json({ error: error.message });
+    }
+
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
  * GET /api/auth/users
  * Get all users (admin endpoint)
  */

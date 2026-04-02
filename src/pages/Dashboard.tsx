@@ -27,7 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { UserProfileView } from "@/components/dashboardViews/UserProfileView";
 import { ChangePasswordModal } from "@/components/ChangePasswordModal";
-import { changeUserPassword, getBookingsByUser, getTestimonialsByUser, Booking, Testimonial } from "@/lib/api";
+import { changeUserPassword, getBookingsByUser, getTestimonialsByUser, updateUser, Booking, Testimonial } from "@/lib/api";
 
 // Country code to phone code mapping
 const countryCodeToPhoneCode: { [key: string]: string } = {
@@ -50,7 +50,7 @@ const countryCodeToPhoneCode: { [key: string]: string } = {
 };
 
 const Dashboard = () => {
-  const { user, isAuthenticated, isAdmin, logout, isLoading: authLoading } = useAuth();
+  const { user, isAuthenticated, isAdmin, logout, isLoading: authLoading, refreshUser } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -704,13 +704,46 @@ const Dashboard = () => {
                           />
                           <Button
                             size="sm"
-                            onClick={() => {
-                              setIsEditingName(false);
-                              // Here you would normally call an API to update the name
-                              toast({
-                                title: "Success",
-                                description: "Name will update after you logout and login again"
-                              });
+                            onClick={async () => {
+                              // Validate name is not empty
+                              if (!editedName.trim()) {
+                                toast({
+                                  title: "Error",
+                                  description: "Name cannot be empty",
+                                  variant: "destructive"
+                                });
+                                return;
+                              }
+
+                              // Check if name actually changed
+                              if (editedName.trim() === user?.fullName) {
+                                setIsEditingName(false);
+                                return;
+                              }
+
+                              try {
+                                // Call API to update user
+                                if (user?.id) {
+                                  await updateUser(user.id, { fullName: editedName.trim() });
+
+                                  // Refresh user data in auth context
+                                  await refreshUser();
+
+                                  toast({
+                                    title: "Success",
+                                    description: "Name updated successfully"
+                                  });
+
+                                  setIsEditingName(false);
+                                }
+                              } catch (error) {
+                                const errorMessage = error instanceof Error ? error.message : 'Failed to update name';
+                                toast({
+                                  title: "Error",
+                                  description: errorMessage,
+                                  variant: "destructive"
+                                });
+                              }
                             }}
                           >
                             Save
