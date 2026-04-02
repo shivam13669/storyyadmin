@@ -255,14 +255,10 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
         countryCode: selectedCountry.code,
       };
 
-      // First, verify email is not already registered by attempting signup
-      // If email already exists, this will throw an error immediately
-      await signup(signupFormDataToUse);
-
-      // Store form data for later use
+      // Store form data for OTP verification flow
       setSignupFormData(signupFormDataToUse);
 
-      // Send OTP to email
+      // Send OTP to email (don't create user yet)
       setOtpEmail(signupEmail);
       await sendOTP(signupEmail);
 
@@ -272,7 +268,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
       setShowOTPVerification(true);
       setOtpCode("");
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to create account';
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send OTP';
       toast.error(errorMessage);
     } finally {
       setIsSigningUp(false);
@@ -304,8 +300,8 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
         setIsPasswordResetOTPVerified(true);
         // Keep the OTP verification screen visible and show password fields
       } else if (signupFormData) {
-        // For signup: account was already created during handleSignup
-        // We just needed to verify the email via OTP
+        // For signup: create user account after OTP is verified
+        await signup(signupFormData);
         toast.success("Account created successfully! Please log in now.");
 
         // Reset form
