@@ -159,7 +159,8 @@ async function fetchExchangeRates(baseCurrency: string, signal?: AbortSignal): P
 }
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  const [currency, setCurrencyState] = useState<string>("");
+  // Default to INR (India) as initial currency while region detection is in progress
+  const [currency, setCurrencyState] = useState<string>("INR");
   const [detectedRegion, setDetectedRegion] = useState<string>("");
   const [isRegionLoaded, setIsRegionLoaded] = useState(false);
 
