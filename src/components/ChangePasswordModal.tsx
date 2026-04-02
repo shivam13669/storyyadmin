@@ -164,6 +164,15 @@ export function ChangePasswordModal({
                 placeholder="Enter your current password"
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Tab' && !e.shiftKey) {
+                    e.preventDefault();
+                    const eyeButton = oldPasswordInputRef.current?.parentElement?.querySelector('button');
+                    if (eyeButton && eyeButton instanceof HTMLButtonElement) {
+                      eyeButton.focus();
+                    }
+                  }
+                }}
                 disabled={loading}
               />
               <button
@@ -171,6 +180,13 @@ export function ChangePasswordModal({
                 onMouseDown={(e) => {
                   e.preventDefault();
                   togglePasswordVisibility(setShowOldPassword, showOldPassword, oldPasswordInputRef);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Tab' && !e.shiftKey) {
+                    e.preventDefault();
+                    newPasswordInputRef.current?.focus();
+                    newPasswordInputRef.current?.select();
+                  }
                 }}
                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={loading}
@@ -196,6 +212,15 @@ export function ChangePasswordModal({
                 onChange={(e) => setNewPassword(e.target.value)}
                 onFocus={() => setIsNewPasswordFocused(true)}
                 onBlur={() => setIsNewPasswordFocused(false)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Tab' && !e.shiftKey) {
+                    e.preventDefault();
+                    const eyeButton = newPasswordInputRef.current?.parentElement?.querySelector('button');
+                    if (eyeButton && eyeButton instanceof HTMLButtonElement) {
+                      eyeButton.focus();
+                    }
+                  }
+                }}
                 disabled={loading}
               />
               <button
@@ -203,6 +228,13 @@ export function ChangePasswordModal({
                 onMouseDown={(e) => {
                   e.preventDefault();
                   togglePasswordVisibility(setShowNewPassword, showNewPassword, newPasswordInputRef);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Tab' && !e.shiftKey) {
+                    e.preventDefault();
+                    confirmPasswordInputRef.current?.focus();
+                    confirmPasswordInputRef.current?.select();
+                  }
                 }}
                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={loading}
@@ -266,6 +298,15 @@ export function ChangePasswordModal({
                 placeholder="Confirm new password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Tab' && !e.shiftKey) {
+                    e.preventDefault();
+                    const eyeButton = confirmPasswordInputRef.current?.parentElement?.querySelector('button');
+                    if (eyeButton && eyeButton instanceof HTMLButtonElement) {
+                      eyeButton.focus();
+                    }
+                  }
+                }}
                 disabled={loading}
               />
               <button
@@ -273,6 +314,15 @@ export function ChangePasswordModal({
                 onMouseDown={(e) => {
                   e.preventDefault();
                   togglePasswordVisibility(setShowConfirmPassword, showConfirmPassword, confirmPasswordInputRef);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Tab' && !e.shiftKey) {
+                    const cancelButton = e.currentTarget.parentElement?.parentElement?.querySelector('.flex.gap-2.justify-end')?.querySelector('button');
+                    if (cancelButton instanceof HTMLButtonElement) {
+                      e.preventDefault();
+                      cancelButton.focus();
+                    }
+                  }
                 }}
                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={loading}
