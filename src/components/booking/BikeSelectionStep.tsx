@@ -8,6 +8,7 @@ interface BikeSelectionStepProps {
   formData: BookingFormData;
   travelPackage: DestinationPackage;
   basePrice: number;
+  priceMultiplier?: number;
   onFormDataChange: (data: Partial<BookingFormData>) => void;
 }
 
@@ -15,10 +16,12 @@ const BikeSelectionStep = ({
   formData,
   travelPackage,
   basePrice,
+  priceMultiplier = 1,
   onFormDataChange,
 }: BikeSelectionStepProps) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const { formatPrice } = useCurrency();
+  const applyPriceMultiplier = (amount: number) => amount * priceMultiplier;
   // Default to solo when no co-travelers, otherwise use formData preference
   const defaultSeating = formData.guests.length === 0 ? "solo" : (formData.seatingPreference || "solo");
   const [seatingPreference, setSeatingPreference] = useState<"solo" | "dual-sharing" | "seat-in-backup">(
@@ -49,22 +52,23 @@ const BikeSelectionStep = ({
   // Filter out backup vehicle from regular bikes, get it separately
   const regularBikes = travelPackage.bikes?.filter(bike => !bike.isBackupVehicle) || [];
   const backupVehicle = travelPackage.bikes?.find(bike => bike.isBackupVehicle);
+  const displayBasePrice = applyPriceMultiplier(basePrice);
 
   const getBikePrice = (bike: any) => {
     // For backup vehicle, use seating prices
     if (bike.isBackupVehicle && bike.seatingPrices && seatingPreference in bike.seatingPrices) {
-      return bike.seatingPrices[seatingPreference];
+      return applyPriceMultiplier(bike.seatingPrices[seatingPreference]);
     }
     // For regular bikes, use seating prices for solo/dual-sharing only, not seat-in-backup
     if (!bike.isBackupVehicle && bike.seatingPrices && seatingPreference !== "seat-in-backup" && seatingPreference in bike.seatingPrices) {
-      return bike.seatingPrices[seatingPreference];
+      return applyPriceMultiplier(bike.seatingPrices[seatingPreference]);
     }
     // For regular bikes with seat-in-backup selected, show their solo price
     if (!bike.isBackupVehicle && seatingPreference === "seat-in-backup" && bike.seatingPrices && "solo" in bike.seatingPrices) {
-      return bike.seatingPrices["solo"];
+      return applyPriceMultiplier(bike.seatingPrices["solo"]);
     }
     // Otherwise use the traditional multiplier method
-    return Math.round(basePrice * (bike.priceMultiplier || 1.0));
+    return Math.round(applyPriceMultiplier(basePrice * (bike.priceMultiplier || 1.0)));
   };
 
   const handleBikeSelect = (bikeId: string) => {
@@ -175,7 +179,7 @@ const BikeSelectionStep = ({
                       </p>
                       <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-bold text-gray-900">
-                          {formatPrice(basePrice)}
+                          {formatPrice(displayBasePrice)}
                         </span>
                         <span className="text-sm font-semibold text-green-600">
                           ✓ EARLY BIRD OFFER!
@@ -200,7 +204,7 @@ const BikeSelectionStep = ({
               {/* Provided Bikes */}
               {regularBikes.map((bike) => {
                 const bikePrice = getBikePrice(bike);
-                const priceDifference = bikePrice - basePrice;
+                const priceDifference = bikePrice - displayBasePrice;
                 const isSelected = formData.selectedBikeId === bike.id;
 
                 return (

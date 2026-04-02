@@ -19,6 +19,7 @@ interface ConfirmationStepProps {
   couponCode: string;
   couponError: string;
   discountAmount: number;
+  priceMultiplier?: number;
   onApplyCoupon: () => void | Promise<void>;
   onRemoveCoupon: () => void;
   onCouponCodeChange: (code: string) => void;
@@ -36,6 +37,7 @@ const ConfirmationStep = ({
   couponCode,
   couponError,
   discountAmount,
+  priceMultiplier = 1,
   onApplyCoupon,
   onRemoveCoupon,
   onCouponCodeChange,
@@ -43,6 +45,7 @@ const ConfirmationStep = ({
 }: ConfirmationStepProps) => {
   const { formatPrice } = useCurrency();
   const packageBasePrice = parsePrice(travelPackage.price) || 0;
+  const adjustedPackageBasePrice = packageBasePrice * priceMultiplier;
   const formatSignedPrice = (amount: number, sign: "+" | "-" = "+") => `${sign}${formatPrice(amount)}`;
   const travelDateObj = new Date(formData.travelDate);
   const formattedDate = travelDateObj.toLocaleDateString("en-IN", {
@@ -247,7 +250,7 @@ const ConfirmationStep = ({
               <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                 <span className="text-gray-700">Base Price (per person)</span>
                 <span className="font-semibold text-gray-900">
-                  {formatPrice(packageBasePrice)}
+                  {formatPrice(adjustedPackageBasePrice)}
                 </span>
               </div>
 
@@ -257,7 +260,7 @@ const ConfirmationStep = ({
                 </span>
                 <span className="font-semibold text-gray-900">
                   {formData.guests.length > 0
-                    ? formatSignedPrice(packageBasePrice * formData.guests.length)
+                    ? formatSignedPrice(adjustedPackageBasePrice * formData.guests.length)
                     : formatPrice(0)}
                 </span>
               </div>
@@ -269,7 +272,7 @@ const ConfirmationStep = ({
                   </span>
                   <span className="font-semibold text-gray-900">
                     {formatSignedPrice(
-                      packageBasePrice * (selectedBike.priceMultiplier - 1) * (1 + formData.guests.length)
+                      adjustedPackageBasePrice * (selectedBike.priceMultiplier - 1) * (1 + formData.guests.length)
                     )}
                   </span>
                 </div>

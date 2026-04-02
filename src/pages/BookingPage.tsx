@@ -145,6 +145,7 @@ const BookingPage = () => {
   const basePrice = parsePrice(travelPackage.price) || 0;
   const selectedBike = travelPackage.bikes?.find(b => b.id === formData.selectedBikeId);
   const isTransHimalayan = travelPackage.slug === "trans-himalayan-ride";
+  const bookingPriceMultiplier = destination.slug === "ladakh" ? 1.1 : 1;
 
   // Determine bike price based on seating preference for trans-himalayan or backup vehicles, or use multiplier for others
   let bikePrice = basePrice;
@@ -158,6 +159,8 @@ const BookingPage = () => {
     }
     // If neither seatingPrices nor priceMultiplier exist, keep basePrice
   }
+
+  bikePrice *= bookingPriceMultiplier;
 
   const totalTravelers = 1 + formData.guests.length; // Primary traveler + co-travelers
   const baseTotal = Math.round(bikePrice * totalTravelers);
@@ -403,6 +406,7 @@ const BookingPage = () => {
                 formData={formData}
                 travelPackage={travelPackage}
                 basePrice={basePrice}
+                priceMultiplier={bookingPriceMultiplier}
                 onFormDataChange={handleFormDataChange}
               />
             )}
@@ -414,6 +418,7 @@ const BookingPage = () => {
                 destination={destination}
                 selectedBike={selectedBike}
                 finalPrice={finalPrice}
+                priceMultiplier={bookingPriceMultiplier}
                 baseTotal={baseTotal}
                 appliedCoupon={appliedCoupon}
                 couponCode={couponCode}
