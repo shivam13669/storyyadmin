@@ -144,47 +144,16 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [isPasswordResetOTPVerified, setIsPasswordResetOTPVerified] = useState(false);
 
-  // Refs for password inputs to preserve cursor position
-  const passwordInputRef = useRef<HTMLInputElement>(null);
-  const signupPasswordInputRef = useRef<HTMLInputElement>(null);
-  const confirmPasswordInputRef = useRef<HTMLInputElement>(null);
-  const resetPasswordInputRef = useRef<HTMLInputElement>(null);
-  const confirmResetPasswordInputRef = useRef<HTMLInputElement>(null);
-
-  // Helper function to toggle password visibility while preserving cursor position
-  const togglePasswordVisibility = (
-    setter: (value: boolean) => void,
-    currentValue: boolean,
-    inputRef: React.RefObject<HTMLInputElement>
-  ) => {
-    if (inputRef.current) {
-      const cursorPosition = inputRef.current.selectionStart || 0;
-      setter(!currentValue);
-      // Restore cursor position after state update
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
-          inputRef.current.focus();
-        }
-      }, 0);
-    } else {
-      setter(!currentValue);
-    }
-  };
-
   const filteredCountries = COUNTRIES.filter(country =>
     country.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
     country.dial.includes(countrySearch) ||
     country.code.toLowerCase().includes(countrySearch.toLowerCase())
   );
 
-  // Reset to login tab and clear all view states when modal opens
+  // Reset to login tab when modal opens
   useEffect(() => {
     if (isOpen) {
       setActiveTab('login');
-      setShowForgotPassword(false);
-      setShowOTPVerification(false);
-      setIsPasswordResetOTPVerified(false);
     }
   }, [isOpen]);
 
@@ -568,7 +537,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                         <div className="relative group">
                           <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                           <Input
-                            ref={passwordInputRef}
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••••"
                             value={password}
@@ -578,10 +546,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                           />
                           <button
                             type="button"
-                            onMouseDown={(e) => {
-                              e.preventDefault();
-                              togglePasswordVisibility(setShowPassword, showPassword, passwordInputRef);
-                            }}
+                            onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                           >
                             {showPassword ? (
@@ -870,7 +835,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                         <div className="relative group">
                           <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                           <Input
-                            ref={signupPasswordInputRef}
                             type={showSignupPassword ? "text" : "password"}
                             placeholder="••••••••"
                             value={signupPassword}
@@ -882,10 +846,8 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                           />
                           <button
                             type="button"
-                            onMouseDown={(e) => {
-                              e.preventDefault();
-                              togglePasswordVisibility(setShowSignupPassword, showSignupPassword, signupPasswordInputRef);
-                            }}
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => setShowSignupPassword(!showSignupPassword)}
                             className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                           >
                             {showSignupPassword ? (
@@ -947,7 +909,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                         }}>
                           <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                           <Input
-                            ref={confirmPasswordInputRef}
                             type={showConfirmPassword ? "text" : "password"}
                             placeholder="••••••••"
                             value={confirmPassword}
@@ -959,10 +920,8 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                           />
                           <button
                             type="button"
-                            onMouseDown={(e) => {
-                              e.preventDefault();
-                              togglePasswordVisibility(setShowConfirmPassword, showConfirmPassword, confirmPasswordInputRef);
-                            }}
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                           >
                             {showConfirmPassword ? (
@@ -1239,7 +1198,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                           <div className="relative group" onMouseDown={() => setIsPasswordFieldFocused(false)}>
                             <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                             <Input
-                              ref={confirmResetPasswordInputRef}
                               type={showConfirmResetPassword ? "text" : "password"}
                               placeholder="••••••••"
                               value={confirmResetPassword}
@@ -1251,10 +1209,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             />
                             <button
                               type="button"
-                              onMouseDown={(e) => {
-                                e.preventDefault();
-                                togglePasswordVisibility(setShowConfirmResetPassword, showConfirmResetPassword, confirmResetPasswordInputRef);
-                              }}
+                              onClick={() => setShowConfirmResetPassword(!showConfirmResetPassword)}
                               className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                             >
                               {showConfirmResetPassword ? (
@@ -1531,7 +1486,6 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             <div className="relative group">
                               <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                               <Input
-                                ref={resetPasswordInputRef}
                                 type={showResetPassword ? "text" : "password"}
                                 placeholder="••••••••"
                                 value={resetPassword}
@@ -1543,10 +1497,8 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                               />
                               <button
                                 type="button"
-                                onMouseDown={(e) => {
-                                  e.preventDefault();
-                                  togglePasswordVisibility(setShowResetPassword, showResetPassword, resetPasswordInputRef);
-                                }}
+                                onMouseDown={(e) => e.preventDefault()}
+                                onClick={() => setShowResetPassword(!showResetPassword)}
                                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                               >
                                 {showResetPassword ? (

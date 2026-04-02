@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,33 +46,6 @@ export function ChangePasswordModal({
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  // Refs for password inputs to preserve cursor position
-  const oldPasswordInputRef = useRef<HTMLInputElement>(null);
-  const newPasswordInputRef = useRef<HTMLInputElement>(null);
-  const confirmPasswordInputRef = useRef<HTMLInputElement>(null);
-
-  // Helper function to toggle password visibility while preserving cursor position
-  const togglePasswordVisibility = (
-    setter: (value: boolean) => void,
-    currentValue: boolean,
-    inputRef: React.RefObject<HTMLInputElement>
-  ) => {
-    if (inputRef.current) {
-      const cursorPosition = inputRef.current.selectionStart || 0;
-      setter(!currentValue);
-      // Restore cursor position after state update
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
-          inputRef.current.focus();
-        }
-      }, 0);
-    } else {
-      setter(!currentValue);
-    }
-  };
-
   const passwordValidation = validatePassword(newPassword);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -151,14 +124,10 @@ export function ChangePasswordModal({
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2" onMouseDown={(e) => {
-            if (e.target.closest('button')) return;
-            setIsNewPasswordFocused(false);
-          }}>
+          <div className="space-y-2">
             <Label htmlFor="oldPassword">Old Password</Label>
             <div className="relative">
               <Input
-                ref={oldPasswordInputRef}
                 id="oldPassword"
                 type={showOldPassword ? "text" : "password"}
                 placeholder="Enter your current password"
@@ -168,10 +137,8 @@ export function ChangePasswordModal({
               />
               <button
                 type="button"
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  togglePasswordVisibility(setShowOldPassword, showOldPassword, oldPasswordInputRef);
-                }}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => setShowOldPassword(!showOldPassword)}
                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={loading}
               >
@@ -188,7 +155,6 @@ export function ChangePasswordModal({
             <Label htmlFor="newPassword">New Password</Label>
             <div className="relative">
               <Input
-                ref={newPasswordInputRef}
                 id="newPassword"
                 type={showNewPassword ? "text" : "password"}
                 placeholder="Enter new password (minimum 6 characters)"
@@ -200,10 +166,8 @@ export function ChangePasswordModal({
               />
               <button
                 type="button"
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  togglePasswordVisibility(setShowNewPassword, showNewPassword, newPasswordInputRef);
-                }}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => setShowNewPassword(!showNewPassword)}
                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={loading}
               >
@@ -260,7 +224,6 @@ export function ChangePasswordModal({
             <Label htmlFor="confirmPassword">Confirm New Password</Label>
             <div className="relative">
               <Input
-                ref={confirmPasswordInputRef}
                 id="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm new password"
@@ -270,10 +233,8 @@ export function ChangePasswordModal({
               />
               <button
                 type="button"
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  togglePasswordVisibility(setShowConfirmPassword, showConfirmPassword, confirmPasswordInputRef);
-                }}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                 disabled={loading}
               >
