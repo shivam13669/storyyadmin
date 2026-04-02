@@ -1,7 +1,7 @@
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { BookingFormData } from "@/pages/BookingPage";
 import { DestinationPackage } from "@/data/destinations";
-import { parsePrice } from "@/context/CurrencyContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { useState, useRef, useEffect } from "react";
 
 interface BikeSelectionStepProps {
@@ -18,6 +18,7 @@ const BikeSelectionStep = ({
   onFormDataChange,
 }: BikeSelectionStepProps) => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  const { formatPrice } = useCurrency();
   // Default to solo when no co-travelers, otherwise use formData preference
   const defaultSeating = formData.guests.length === 0 ? "solo" : (formData.seatingPreference || "solo");
   const [seatingPreference, setSeatingPreference] = useState<"solo" | "dual-sharing" | "seat-in-backup">(
@@ -174,7 +175,7 @@ const BikeSelectionStep = ({
                       </p>
                       <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-bold text-gray-900">
-                          ₹{basePrice.toLocaleString("en-IN")}
+                          {formatPrice(basePrice)}
                         </span>
                         <span className="text-sm font-semibold text-green-600">
                           ✓ EARLY BIRD OFFER!
@@ -261,7 +262,7 @@ const BikeSelectionStep = ({
                         </p>
                         <div className="flex items-baseline gap-2">
                           <span className="text-2xl font-bold text-gray-900">
-                            ₹{bikePrice.toLocaleString("en-IN")}
+                            {formatPrice(bikePrice)}
                           </span>
                           {priceDifference !== 0 && (
                             <span
@@ -336,7 +337,7 @@ const BikeSelectionStep = ({
                       </p>
                       <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-bold text-gray-900">
-                          ₹{getBikePrice(backupVehicle).toLocaleString("en-IN")}
+                          {formatPrice(getBikePrice(backupVehicle))}
                         </span>
                       </div>
                     </div>
