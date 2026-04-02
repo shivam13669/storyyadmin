@@ -902,7 +902,10 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                         <label className="block text-sm font-semibold text-gray-900">
                           Confirm Password
                         </label>
-                        <div className="relative group" onMouseDown={() => setIsPasswordFieldFocused(false)}>
+                        <div className="relative group" onMouseDown={(e) => {
+                          if (e.target.closest('button')) return;
+                          setIsPasswordFieldFocused(false);
+                        }}>
                           <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                           <Input
                             type={showConfirmPassword ? "text" : "password"}
@@ -916,6 +919,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                           />
                           <button
                             type="button"
+                            onMouseDown={(e) => e.preventDefault()}
                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                           >
