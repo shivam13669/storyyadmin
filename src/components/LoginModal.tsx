@@ -150,10 +150,13 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     country.code.toLowerCase().includes(countrySearch.toLowerCase())
   );
 
-  // Reset to login tab when modal opens
+  // Reset to login tab and clear all view states when modal opens
   useEffect(() => {
     if (isOpen) {
       setActiveTab('login');
+      setShowForgotPassword(false);
+      setShowOTPVerification(false);
+      setIsPasswordResetOTPVerified(false);
     }
   }, [isOpen]);
 
