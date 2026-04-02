@@ -61,7 +61,6 @@ const Dashboard = () => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
-  const [isSavingName, setIsSavingName] = useState(false);
   const [editedName, setEditedName] = useState(user?.fullName || "");
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -702,11 +701,9 @@ const Dashboard = () => {
                             onChange={(e) => setEditedName(e.target.value)}
                             placeholder="Enter your full name"
                             className="flex-1"
-                            disabled={isSavingName}
                           />
                           <Button
                             size="sm"
-                            disabled={isSavingName}
                             onClick={async () => {
                               // Validate name is not empty
                               if (!editedName.trim()) {
@@ -724,20 +721,20 @@ const Dashboard = () => {
                                 return;
                               }
 
-                              setIsSavingName(true);
                               try {
                                 // Call API to update user
                                 if (user?.id) {
                                   await updateUser(user.id, { fullName: editedName.trim() });
 
-                                  // Close immediately, then refresh in the background
-                                  setIsEditingName(false);
+                                  // Refresh user data in auth context
+                                  await refreshUser();
+
                                   toast({
                                     title: "Success",
                                     description: "Name updated successfully"
                                   });
 
-                                  void refreshUser();
+                                  setIsEditingName(false);
                                 }
                               } catch (error) {
                                 const errorMessage = error instanceof Error ? error.message : 'Failed to update name';
@@ -746,17 +743,14 @@ const Dashboard = () => {
                                   description: errorMessage,
                                   variant: "destructive"
                                 });
-                              } finally {
-                                setIsSavingName(false);
                               }
                             }}
                           >
-                            {isSavingName ? "Saving..." : "Save"}
+                            Save
                           </Button>
                           <Button
                             variant="outline"
                             size="sm"
-                            disabled={isSavingName}
                             onClick={() => {
                               setIsEditingName(false);
                               setEditedName(user?.fullName || "");
