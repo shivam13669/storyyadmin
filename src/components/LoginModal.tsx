@@ -573,6 +573,15 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Tab' && !e.shiftKey) {
+                                e.preventDefault();
+                                const eyeButton = passwordInputRef.current?.parentElement?.querySelector('button');
+                                if (eyeButton && eyeButton instanceof HTMLButtonElement) {
+                                  eyeButton.focus();
+                                }
+                              }
+                            }}
                             className="w-full pl-11 pr-12 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 bg-gray-50/50 transition-all"
                             required
                           />
@@ -581,6 +590,16 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             onMouseDown={(e) => {
                               e.preventDefault();
                               togglePasswordVisibility(setShowPassword, showPassword, passwordInputRef);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Tab' && !e.shiftKey) {
+                                const rememberLabel = e.currentTarget.parentElement?.parentElement?.querySelector('.flex.justify-between');
+                                if (rememberLabel instanceof HTMLElement) {
+                                  e.preventDefault();
+                                  const firstInput = rememberLabel.querySelector('input');
+                                  if (firstInput) firstInput.focus();
+                                }
+                              }
                             }}
                             className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                           >
@@ -877,6 +896,15 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             onChange={(e) => setSignupPassword(e.target.value)}
                             onFocus={() => setIsPasswordFieldFocused(true)}
                             onBlur={() => setIsPasswordFieldFocused(false)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Tab' && !e.shiftKey) {
+                                e.preventDefault();
+                                const eyeButton = signupPasswordInputRef.current?.parentElement?.querySelector('button');
+                                if (eyeButton && eyeButton instanceof HTMLButtonElement) {
+                                  eyeButton.focus();
+                                }
+                              }
+                            }}
                             className="w-full pl-11 pr-12 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 bg-gray-50/50 transition-all"
                             required
                           />
@@ -885,6 +913,13 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             onMouseDown={(e) => {
                               e.preventDefault();
                               togglePasswordVisibility(setShowSignupPassword, showSignupPassword, signupPasswordInputRef);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Tab' && !e.shiftKey) {
+                                e.preventDefault();
+                                confirmPasswordInputRef.current?.focus();
+                                confirmPasswordInputRef.current?.select();
+                              }
                             }}
                             className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                           >
@@ -952,6 +987,15 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             placeholder="••••••••"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Tab' && !e.shiftKey) {
+                                e.preventDefault();
+                                const eyeButton = confirmPasswordInputRef.current?.parentElement?.querySelector('button');
+                                if (eyeButton && eyeButton instanceof HTMLButtonElement) {
+                                  eyeButton.focus();
+                                }
+                              }
+                            }}
                             className={`w-full pl-11 pr-12 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 bg-gray-50/50 transition-all ${
                               confirmPassword && !passwordsMatch ? 'border-red-400 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
                             }`}
@@ -962,6 +1006,15 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             onMouseDown={(e) => {
                               e.preventDefault();
                               togglePasswordVisibility(setShowConfirmPassword, showConfirmPassword, confirmPasswordInputRef);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Tab' && !e.shiftKey) {
+                                const termsCheckbox = e.currentTarget.parentElement?.parentElement?.querySelector('label input[type="checkbox"]');
+                                if (termsCheckbox instanceof HTMLInputElement) {
+                                  e.preventDefault();
+                                  termsCheckbox.focus();
+                                }
+                              }
                             }}
                             className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                           >
@@ -1538,6 +1591,15 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                                 onChange={(e) => setResetPassword(e.target.value)}
                                 onFocus={() => setIsPasswordFieldFocused(true)}
                                 onBlur={() => setIsPasswordFieldFocused(false)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Tab' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    const eyeButton = resetPasswordInputRef.current?.parentElement?.querySelector('button');
+                                    if (eyeButton && eyeButton instanceof HTMLButtonElement) {
+                                      eyeButton.focus();
+                                    }
+                                  }
+                                }}
                                 className="w-full pl-11 pr-12 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 bg-gray-50/50 transition-all"
                                 required
                               />
@@ -1546,6 +1608,13 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                                 onMouseDown={(e) => {
                                   e.preventDefault();
                                   togglePasswordVisibility(setShowResetPassword, showResetPassword, resetPasswordInputRef);
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Tab' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    confirmResetPasswordInputRef.current?.focus();
+                                    confirmResetPasswordInputRef.current?.select();
+                                  }
                                 }}
                                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                               >
@@ -1608,10 +1677,20 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                             }}>
                             <Lock className="absolute left-3.5 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                             <Input
+                              ref={confirmResetPasswordInputRef}
                               type={showConfirmResetPassword ? "text" : "password"}
                                 placeholder="••••••••"
                                 value={confirmResetPassword}
                                 onChange={(e) => setConfirmResetPassword(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Tab' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    const eyeButton = confirmResetPasswordInputRef.current?.parentElement?.querySelector('button');
+                                    if (eyeButton && eyeButton instanceof HTMLButtonElement) {
+                                      eyeButton.focus();
+                                    }
+                                  }
+                                }}
                                 className={`w-full pl-11 pr-12 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 bg-gray-50/50 transition-all ${
                                   confirmResetPassword && resetPassword !== confirmResetPassword ? 'border-red-400 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
                                 }`}
@@ -1621,6 +1700,15 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                                 type="button"
                                 onMouseDown={(e) => e.preventDefault()}
                                 onClick={() => setShowConfirmResetPassword(!showConfirmResetPassword)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Tab' && !e.shiftKey) {
+                                    const submitButton = e.currentTarget.parentElement?.parentElement?.querySelector('button[type="submit"]');
+                                    if (submitButton instanceof HTMLButtonElement) {
+                                      e.preventDefault();
+                                      submitButton.focus();
+                                    }
+                                  }
+                                }}
                                 className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                               >
                                 {showConfirmResetPassword ? (
