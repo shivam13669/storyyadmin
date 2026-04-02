@@ -2,7 +2,6 @@ import { CheckCircle2 } from "lucide-react";
 import { BookingFormData, GuestData } from "@/pages/BookingPage";
 import { DestinationPackage, BikeOption, Destination } from "@/data/destinations";
 import { Coupon } from "@/utils/couponUtils";
-import { parsePrice, useCurrency } from "@/context/CurrencyContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -41,9 +40,6 @@ const ConfirmationStep = ({
   onCouponCodeChange,
   couponValidating = false,
 }: ConfirmationStepProps) => {
-  const { formatPrice } = useCurrency();
-  const packageBasePrice = parsePrice(travelPackage.price) || 0;
-  const formatSignedPrice = (amount: number, sign: "+" | "-" = "+") => `${sign}${formatPrice(amount)}`;
   const travelDateObj = new Date(formData.travelDate);
   const formattedDate = travelDateObj.toLocaleDateString("en-IN", {
     day: "numeric",
@@ -198,7 +194,7 @@ const ConfirmationStep = ({
                     <p className="text-sm font-semibold text-green-900">Coupon Applied</p>
                     <p className="text-lg font-bold text-green-700 mt-1">{appliedCoupon.code}</p>
                     <p className="text-sm text-green-600 mt-1">
-                      Discount: {formatPrice(discountAmount)}
+                      Discount: ₹{discountAmount.toLocaleString("en-IN")}
                     </p>
                   </div>
                   <Button
@@ -247,7 +243,7 @@ const ConfirmationStep = ({
               <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                 <span className="text-gray-700">Base Price (per person)</span>
                 <span className="font-semibold text-gray-900">
-                  {formatPrice(packageBasePrice)}
+                  ₹{Math.round(parseInt(travelPackage.price.replace(/\D/g, ""))).toLocaleString("en-IN")}
                 </span>
               </div>
 
@@ -256,9 +252,9 @@ const ConfirmationStep = ({
                   Co-Travelers ({formData.guests.length} {formData.guests.length === 1 ? 'person' : 'people'})
                 </span>
                 <span className="font-semibold text-gray-900">
-                  {formData.guests.length > 0
-                    ? formatSignedPrice(packageBasePrice * formData.guests.length)
-                    : formatPrice(0)}
+                  {formData.guests.length > 0 ? `+₹${Math.round(
+                    parseInt(travelPackage.price.replace(/\D/g, "")) * formData.guests.length
+                  ).toLocaleString("en-IN")}` : '₹0'}
                 </span>
               </div>
 
@@ -268,9 +264,10 @@ const ConfirmationStep = ({
                     {selectedBike.name} Upgrade ({Math.round((selectedBike.priceMultiplier - 1) * 100)}%)
                   </span>
                   <span className="font-semibold text-gray-900">
-                    {formatSignedPrice(
-                      packageBasePrice * (selectedBike.priceMultiplier - 1) * (1 + formData.guests.length)
-                    )}
+                    +₹{Math.round(
+                      parseInt(travelPackage.price.replace(/\D/g, "")) *
+                        (selectedBike.priceMultiplier - 1) * (1 + formData.guests.length)
+                    ).toLocaleString("en-IN")}
                   </span>
                 </div>
               )}
@@ -281,7 +278,7 @@ const ConfirmationStep = ({
                     Discount ({appliedCoupon.code})
                   </span>
                   <span className="font-semibold text-green-600">
-                    {formatSignedPrice(discountAmount, "-")}
+                    -₹{discountAmount.toLocaleString("en-IN")}
                   </span>
                 </div>
               )}
@@ -289,7 +286,7 @@ const ConfirmationStep = ({
               <div className="flex justify-between items-center pt-3">
                 <span className="text-lg font-bold text-gray-900">Total Price</span>
                 <span className={`text-3xl font-bold ${appliedCoupon ? "text-green-600" : "text-blue-600"}`}>
-                  {formatPrice(finalPrice)}
+                  ₹{finalPrice.toLocaleString("en-IN")}
                 </span>
               </div>
             </div>

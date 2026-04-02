@@ -13,7 +13,7 @@ import {
   DestinationPackage,
   Destination
 } from "@/data/destinations";
-import { parsePrice, useCurrency } from "@/context/CurrencyContext";
+import { parsePrice } from "@/context/CurrencyContext";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { validateCouponFromAPI, calculateDiscount, Coupon, incrementCouponUsageFromAPI } from "@/utils/couponUtils";
@@ -54,9 +54,6 @@ type BookingStep = 1 | 2 | 3 | 4;
 const BookingPage = () => {
   const { packageSlug } = useParams<{ packageSlug: string }>();
   const [validationError, setValidationError] = useState<string>("");
-  const { formatPrice } = useCurrency();
-
-  const formatSignedPrice = (amount: number, sign: "+" | "-" = "+") => `${sign}${formatPrice(amount)}`;
 
   // Initialize EmailJS
   useEffect(() => {
@@ -290,15 +287,15 @@ const BookingPage = () => {
         coTravelerName: coTravelersList || 'No co-travelers',
         coTravelerAadhaar: coTravelersList || 'No co-travelers',
         coTravelerCount: formData.guests.length,
-        basePrice: formatPrice(basePrice),
+        basePrice: `₹${Math.round(basePrice).toLocaleString("en-IN")}`,
         coTravelerPrice: formData.guests.length > 0
-          ? formatSignedPrice(basePrice * formData.guests.length)
-          : formatPrice(0),
-        pricePerTraveler: formatPrice(bikePrice),
-        travelersPrice: `${formatPrice(bikePrice)} × ${totalTravelers}`,
+          ? `+₹${Math.round(basePrice * formData.guests.length).toLocaleString("en-IN")}`
+          : '₹0',
+        pricePerTraveler: `₹${Math.round(bikePrice).toLocaleString("en-IN")}`,
+        travelersPrice: `₹${Math.round(bikePrice).toLocaleString("en-IN")} × ${totalTravelers}`,
         couponCode: appliedCoupon ? appliedCoupon.code : 'None',
-        couponDiscount: appliedCoupon ? formatSignedPrice(discountAmount, "-") : formatPrice(0),
-        totalPrice: formatPrice(finalPrice),
+        couponDiscount: appliedCoupon ? `₹${discountAmount.toLocaleString("en-IN")}` : '₹0',
+        totalPrice: `₹${finalPrice.toLocaleString("en-IN")}`,
       };
 
       // Increment coupon usage if applied
@@ -559,7 +556,7 @@ const BookingPage = () => {
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-gray-700">Price per Traveler</span>
                       <span className="font-semibold text-gray-900">
-                        {formatPrice(bikePrice)}
+                        ₹{Math.round(bikePrice).toLocaleString("en-IN")}
                       </span>
                     </div>
 
@@ -575,7 +572,7 @@ const BookingPage = () => {
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-gray-700">Travelers</span>
                       <span className="font-semibold text-gray-900">
-                        {formatPrice(bikePrice)} × {totalTravelers}
+                        ₹{Math.round(bikePrice).toLocaleString("en-IN")} × {totalTravelers}
                       </span>
                     </div>
                   </div>
@@ -587,7 +584,7 @@ const BookingPage = () => {
                   <div>
                     <p className="text-xs text-gray-600 font-bold uppercase tracking-widest mb-2">Total Amount</p>
                     <p className="text-4xl font-bold text-gray-900">
-                      {formatPrice(finalPrice)}
+                      ₹{finalPrice.toLocaleString("en-IN")}
                     </p>
                   </div>
 
