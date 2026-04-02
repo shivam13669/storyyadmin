@@ -4,25 +4,25 @@ const Team = () => {
       name: "Diana Robinson",
       position: "Founder, Owner",
       phone: "+1 323-913-4688",
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/user-1-118x118_bzbvvi.jpg"
+      image: "/images/user-1-118x118.jpg"
     },
     {
       name: "Peter McMillan",
       position: "Travel Agent",
       phone: "+1 323-913-4688",
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/user-2-118x118_mfsavv.jpg"
+      image: "/images/user-2-118x118.jpg"
     },
     {
       name: "Jill Peterson",
       position: "Tour Consultant",
       phone: "+1 323-913-4688",
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/user-3-118x118_bkc8h2.jpg"
+      image: "/images/user-3-118x118.jpg"
     },
     {
       name: "James Smith",
       position: "PR Manager",
       phone: "+1 323-913-4688",
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/user-4-118x118_p2xdqm.jpg"
+      image: "/images/user-4-118x118.jpg"
     }
   ];
 

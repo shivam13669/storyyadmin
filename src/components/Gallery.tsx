@@ -11,32 +11,32 @@ const Gallery = () => {
 
   const galleryImages = [
     {
-      thumb: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-1-270x195_xlkcmo.jpg",
-      full: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-1-1200x800-original_oxv2qa.jpg"
+      thumb: "/images/gallery-image-1-270x195.jpg",
+      full: "/images/gallery-image-1-270x195.jpg"
     },
     {
-      thumb: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-2-270x195_hvtwam.jpg",
-      full: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-2-1200x800-original_vv0ksy.jpg"
+      thumb: "/images/gallery-image-2-270x195.jpg",
+      full: "/images/gallery-image-2-270x195.jpg"
     },
     {
-      thumb: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-3-270x195_d5nxq1.jpg",
-      full: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-3-1200x800-original_ydyzfr.jpg"
+      thumb: "/images/gallery-image-3-270x195.jpg",
+      full: "/images/gallery-image-3-270x195.jpg"
     },
     {
-      thumb: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-4-270x195_wyj6gv.jpg",
-      full: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-4-1200x800-original_zpx7fs.jpg"
+      thumb: "/images/gallery-image-4-270x195.jpg",
+      full: "/images/gallery-image-4-270x195.jpg"
     },
     {
-      thumb: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-5-270x195_u4xnbq.jpg",
-      full: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-5-1200x800-original_kx2y9r.jpg"
+      thumb: "/images/gallery-image-5-270x195.jpg",
+      full: "/images/gallery-image-5-270x195.jpg"
     },
     {
-      thumb: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-6-270x195_wza1xj.jpg",
-      full: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-6-1200x800-original_vhvcbk.jpg"
+      thumb: "/images/gallery-image-6-270x195.jpg",
+      full: "/images/gallery-image-6-270x195.jpg"
     },
     {
-      thumb: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-7-270x195_fxgvkk.jpg",
-      full: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/gallery-image-7-1200x800-original_xlnjws.jpg"
+      thumb: "/images/gallery-image-7-270x195.jpg",
+      full: "/images/gallery-image-7-270x195.jpg"
     }
   ];
 

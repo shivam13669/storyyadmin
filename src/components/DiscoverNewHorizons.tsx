@@ -29,7 +29,7 @@ const DiscoverNewHorizons = () => {
           {/* Left: Image */}
           <div className="flex justify-center animate-fade-in">
             <img
-              src="https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/index-3-556x382_z5nxzq.jpg"
+              src="/images/index-3-556x382.jpg"
               alt="Discover New Horizons"
               className="rounded-lg shadow-lg max-w-md w-full"
             />

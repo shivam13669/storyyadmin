@@ -7,19 +7,19 @@ import "swiper/css/pagination";
 const HeroSlider = () => {
   const slides = [
     {
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/slider-4-slide-1-1920x678_bxgbv6.jpg",
+      image: "/images/slider-4-slide-1-1920x678.jpg",
       subtitle: "Enjoy the Best Destinations with Our Travel Agency",
       title: "Explore The World",
       cta: "Get in touch"
     },
     {
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/slider-4-slide-2-1920x678_q1y7rm.jpg",
+      image: "/images/slider-4-slide-2-1920x678.jpg",
       subtitle: "A team of professional Travel Experts",
       title: "Trust Our Experience",
       cta: "Get in touch"
     },
     {
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/slider-4-slide-3-1920x678_zzvs0g.jpg",
+      image: "/images/slider-4-slide-3-1920x678.jpg",
       subtitle: "Build your Next Holiday Trip with Us",
       title: "Create Your Tour",
       cta: "Get in touch"

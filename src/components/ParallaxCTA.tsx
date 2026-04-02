@@ -5,7 +5,7 @@ const ParallaxCTA = () => {
     <section
       className="relative py-20 bg-cover bg-center bg-fixed text-white text-center"
       style={{
-        backgroundImage: "url('https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/parallax-1-1920x850_b5wbvb.jpg')",
+        backgroundImage: "url('/images/parallax-1-1920x850.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "50% 50%",
         minHeight: "400px",

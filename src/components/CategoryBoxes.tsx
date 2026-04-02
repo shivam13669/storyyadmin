@@ -2,15 +2,15 @@ const CategoryBoxes = () => {
   const categories = [
     {
       title: "Balloon Flights",
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/cta-1-368x420_c3v2vt.jpg"
+      image: "/images/cta-1-368x420.jpg"
     },
     {
       title: "Mountain Holiday",
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/cta-2-368x420_kfvzha.jpg"
+      image: "/images/cta-2-368x420.jpg"
     },
     {
       title: "Beach Holidays",
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/cta-3-368x420_ozovwb.jpg"
+      image: "/images/cta-3-368x420.jpg"
     }
   ];
 

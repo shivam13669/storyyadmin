@@ -4,7 +4,7 @@ const HotTours = () => {
   const tours = [
     {
       title: "Benidorm, Spain",
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/product-big-1-600x366_xb1oj5.jpg",
+      image: "/images/product-big-1-600x366.jpg",
       rating: 4.5,
       reviews: 4,
       description: "Benidorm is a buzzing resort with a big reputation for beach holidays. Situated in sunny Costa Blanca, the town is one of the original Spanish beach resorts...",
@@ -12,7 +12,7 @@ const HotTours = () => {
     },
     {
       title: "Mauritius Island, Africa",
-      image: "https://res.cloudinary.com/dqz8fkrx0/image/upload/v1640082281/cliffhanger/product-big-2-600x366_ttlvvi.jpg",
+      image: "/images/product-big-2-600x366.jpg",
       rating: 4.5,
       reviews: 5,
       description: "The beautiful and inviting island nation of Mauritius is an ideal 'flop and drop' at the conclusion of your safari. Indulge in the delightful scents of the fragrant...",
