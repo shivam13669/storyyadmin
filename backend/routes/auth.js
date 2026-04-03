@@ -327,7 +327,7 @@ router.post('/change-password', async (req, res) => {
  */
 router.post('/send-otp', async (req, res) => {
   try {
-    const { email, purpose = 'signup' } = req.body;
+    const { email, purpose = 'signup', mobileNumber, countryCode } = req.body;
 
     // Validate input
     if (!email) {
@@ -336,6 +336,21 @@ router.post('/send-otp', async (req, res) => {
 
     const emailLower = email.toLowerCase();
     console.log(`📧 Sending OTP to: ${emailLower} for purpose: ${purpose}`);
+
+    // If this is for signup, make sure the email/mobile aren't already registered
+    if (purpose === 'signup') {
+      if (!mobileNumber || !countryCode) {
+        return res.status(400).json({ error: 'Mobile number and country code are required' });
+      }
+
+      if (await getDB().emailExists(emailLower)) {
+        return res.status(409).json({ error: 'Email already registered' });
+      }
+
+      if (await getDB().mobileNumberExists(mobileNumber)) {
+        return res.status(409).json({ error: 'Mobile number already registered' });
+      }
+    }
 
     // If this is for password reset, verify email exists
     if (purpose === 'password-reset') {
