@@ -321,6 +321,54 @@ router.post('/change-password', async (req, res) => {
 });
 
 /**
+ * POST /api/auth/check-duplicate
+ * Check if email or mobile number already exists
+ * Body: { email, mobileNumber }
+ */
+router.post('/check-duplicate', async (req, res) => {
+  try {
+    const { email, mobileNumber } = req.body;
+
+    // Validate input
+    if (!email && !mobileNumber) {
+      return res.status(400).json({ error: 'Email or mobile number is required' });
+    }
+
+    const db = getDB();
+    const errors = [];
+
+    // Check if email exists
+    if (email) {
+      const emailLower = email.toLowerCase();
+      const emailExists = await db.emailExists(emailLower);
+      if (emailExists) {
+        errors.push('Email already registered');
+      }
+    }
+
+    // Check if mobile exists
+    if (mobileNumber) {
+      const mobileExists = await db.mobileNumberExists(mobileNumber);
+      if (mobileExists) {
+        errors.push('Mobile number already registered');
+      }
+    }
+
+    if (errors.length > 0) {
+      return res.status(409).json({ errors });
+    }
+
+    res.json({
+      message: 'Email and mobile number are available',
+      available: true
+    });
+  } catch (error) {
+    console.error('Check duplicate error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
  * POST /api/auth/send-otp
  * Send OTP to email (for signup verification or password reset)
  * Body: { email, purpose: 'signup' | 'password-reset' }
