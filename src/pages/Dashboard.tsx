@@ -116,6 +116,18 @@ const validateInternationalMobile = (mobile: string, countryCode: string): boole
   }
 };
 
+// Check if phone number is valid (not corrupted/placeholder data from Google SSO)
+const isValidPhoneNumber = (phone?: string): boolean => {
+  if (!phone) return false;
+  // Check for corrupted data patterns (GOOGLE_, base64-like strings, etc.)
+  if (phone.includes('GOOGLE_') || phone.includes('_') || /^[+\d]{1,3}[A-Za-z_]/.test(phone)) {
+    return false;
+  }
+  // Must have at least some actual digits
+  const digits = phone.replace(/\D/g, '');
+  return digits.length >= 8;
+};
+
 const Dashboard = () => {
   const { user, isAuthenticated, isAdmin, logout, refreshUser, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -918,7 +930,7 @@ const Dashboard = () => {
                     <div className="border-t pt-6">
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-sm text-gray-600 font-medium">Phone Number</p>
-                        {!isEditingPhone && !user?.mobileNumber && (
+                        {!isEditingPhone && !isValidPhoneNumber(user?.mobileNumber) && (
                           <Button
                             variant="outline"
                             size="sm"
@@ -1055,12 +1067,12 @@ const Dashboard = () => {
                       ) : (
                         <>
                           <p className="text-lg font-semibold text-gray-900">
-                            {user?.countryCode && user?.mobileNumber
+                            {isValidPhoneNumber(user?.mobileNumber)
                               ? `+${countryCodeToPhoneCode[user.countryCode] || user.countryCode}${user.mobileNumber}`
                               : "—"}
                           </p>
                           <p className="text-xs text-gray-500 mt-2">
-                            {user?.mobileNumber ? "Cannot be changed after signup" : "Add your phone number to complete your profile"}
+                            {isValidPhoneNumber(user?.mobileNumber) ? "Cannot be changed after signup" : "Add your phone number to complete your profile"}
                           </p>
                         </>
                       )}
