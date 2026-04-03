@@ -21,10 +21,9 @@ interface UserProfileViewProps {
   user: User;
   onUserUpdate?: (updatedUser: User) => void;
   onChangePassword?: () => void;
-  onAddPhone?: () => void;
 }
 
-export function UserProfileView({ user, onUserUpdate, onChangePassword, onAddPhone }: UserProfileViewProps) {
+export function UserProfileView({ user, onUserUpdate, onChangePassword }: UserProfileViewProps) {
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -165,26 +164,12 @@ export function UserProfileView({ user, onUserUpdate, onChangePassword, onAddPho
               <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
                 Phone Number
               </Label>
-              {user.countryCode && user.mobileNumber ? (
-                <>
-                  <p className="mt-2 text-lg font-semibold text-gray-900">
-                    +{user.countryCode} {user.mobileNumber}
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    Phone number cannot be changed after signup
-                  </p>
-                </>
-              ) : (
-                <div className="mt-2 space-y-2">
-                  <p className="text-gray-600">No phone number added yet</p>
-                  <Button
-                    onClick={onAddPhone}
-                    className="w-full bg-orange-500 hover:bg-orange-600"
-                  >
-                    Add Phone Number
-                  </Button>
-                </div>
-              )}
+              <p className="mt-2 text-lg font-semibold text-gray-900">
+                +{user.countryCode} {user.mobileNumber}
+              </p>
+              <p className="mt-1 text-xs text-gray-500">
+                Phone number cannot be changed after signup
+              </p>
             </div>
 
             {/* Member Since */}
