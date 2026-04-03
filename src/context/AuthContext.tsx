@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { login as apiLogin, getUser } from '@/lib/api';
+import { login as apiLogin, getUser, googleLogin as apiGoogleLogin } from '@/lib/api';
 
 export interface AuthUser {
   id: number;
@@ -16,6 +16,7 @@ interface AuthContextType {
   user: AuthUser | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  googleLogin: (credential: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
@@ -94,6 +95,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const googleLogin = async (credential: string): Promise<{ success: boolean; message?: string }> => {
+    try {
+      const { user: apiUser } = await apiGoogleLogin(credential);
+
+      const authUser: AuthUser = {
+        id: apiUser.id,
+        fullName: apiUser.fullName,
+        email: apiUser.email,
+        countryCode: apiUser.countryCode,
+        mobileNumber: apiUser.mobileNumber,
+        signupDate: apiUser.signupDate,
+        role: apiUser.role,
+        testimonialAllowed: apiUser.testimonialAllowed,
+      };
+
+      setUser(authUser);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(authUser));
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, message: error.message || 'An error occurred during Google login' };
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem(STORAGE_KEY);
@@ -129,6 +154,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     isLoading,
     login,
+    googleLogin,
     logout,
     isAuthenticated: !!user,
     isAdmin: user?.role === 'admin',

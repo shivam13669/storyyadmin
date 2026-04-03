@@ -462,4 +462,63 @@ router.post('/reset-password-with-email', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/auth/google
+ * Handle Google OAuth login/signup
+ */
+router.post('/google', async (req, res) => {
+  try {
+    const { credential } = req.body;
+
+    if (!credential) {
+      return res.status(400).json({ error: 'Google credential required' });
+    }
+
+    // Decode the JWT token from Google
+    // The credential is a JWT token from Google
+    const parts = credential.split('.');
+    if (parts.length !== 3) {
+      return res.status(400).json({ error: 'Invalid Google credential' });
+    }
+
+    // Decode the payload (parts[1])
+    let googleData;
+    try {
+      const decoded = Buffer.from(parts[1], 'base64').toString('utf-8');
+      googleData = JSON.parse(decoded);
+    } catch (e) {
+      return res.status(400).json({ error: 'Failed to decode Google credential' });
+    }
+
+    console.log(`🔍 Google login attempt for email: ${googleData.email}`);
+
+    // Use UserRepository to find or create user
+    const user = await UserRepository.googleLogin(googleData);
+
+    console.log(`✅ Google login successful for: ${googleData.email}`);
+
+    res.json({
+      message: 'Google login successful',
+      user: {
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        mobileNumber: user.mobileNumber,
+        countryCode: user.countryCode,
+        testimonialAllowed: user.testimonialAllowed === 1,
+        signupDate: user.signupDate
+      }
+    });
+  } catch (error) {
+    console.error('Google login error:', error);
+
+    if (error.message.includes('suspended')) {
+      return res.status(403).json({ error: error.message });
+    }
+
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;

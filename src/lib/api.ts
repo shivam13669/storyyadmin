@@ -123,6 +123,42 @@ export async function login(data: LoginData): Promise<{ user: AuthUser; message:
   }
 }
 
+export async function googleLogin(credential: string): Promise<{ user: AuthUser; message: string }> {
+  try {
+    const response = await fetch(`${API_URL}/auth/google`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ credential }),
+    });
+
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      if (!response.ok) {
+        throw new Error(`Google login failed with status ${response.status}`);
+      }
+      throw new Error('Invalid response from server');
+    }
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Google login failed');
+    }
+
+    return result;
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes('Failed to fetch')) {
+        throw new Error(`Cannot connect to API at ${API_URL}. Make sure the backend server is running.`);
+      }
+      throw error;
+    }
+    throw new Error('Google login failed: Unknown error');
+  }
+}
+
 export async function sendOTP(email: string, purpose: string = 'signup'): Promise<{ message: string; email: string; expiresIn: string }> {
   try {
     const response = await fetch(`${API_URL}/auth/send-otp`, {

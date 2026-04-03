@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import DestinationsPage from "./pages/Destinations";
@@ -29,8 +30,9 @@ const queryClient = new QueryClient();
 import { CurrencyProvider } from "@/context/CurrencyContext";
 
 const App = () => (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
         <CurrencyProvider>
           <TooltipProvider>
             <Toaster />
@@ -62,8 +64,9 @@ const App = () => (
             </BrowserRouter>
           </TooltipProvider>
         </CurrencyProvider>
-      </QueryClientProvider>
-    </AuthProvider>
+        </QueryClientProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
 );
 
 export default App;

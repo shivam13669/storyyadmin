@@ -235,6 +235,50 @@ export class UserRepository {
   }
 
   /**
+   * Find or create user via Google OAuth
+   */
+  static async googleLogin(googleData) {
+    const db = getDB();
+    const email = googleData.email.toLowerCase();
+
+    // Check if user exists by email
+    let user = await db.getUserByEmail(email);
+
+    if (user) {
+      // User exists, just verify they're not suspended
+      if (user.isSuspended) {
+        throw new Error('Your account has been suspended');
+      }
+      return this._formatUserResponse(user);
+    }
+
+    // Create new user from Google data
+    // Generate a random password since Google users don't have one
+    const randomPassword = await this.hashPassword(Math.random().toString(36).slice(-12));
+
+    // For Google users without phone number, generate a unique placeholder
+    // using email hash to avoid UNIQUE constraint violations in PostgreSQL
+    let mobileNumber = googleData.phone_number;
+    if (!mobileNumber) {
+      // Generate a unique placeholder: "GOOGLE_" + first 20 chars of base64 encoded email
+      mobileNumber = 'GOOGLE_' + Buffer.from(email).toString('base64').substring(0, 20);
+    }
+
+    const newUser = await db.createUser({
+      fullName: googleData.name || 'Google User',
+      email: email,
+      password: randomPassword,
+      mobileNumber: mobileNumber,
+      countryCode: googleData.locale ? googleData.locale.substring(3) : 'US',
+      role: 'user',
+      testimonialAllowed: 0,
+      isSuspended: 0
+    });
+
+    return this._formatUserResponse(newUser);
+  }
+
+  /**
    * Format user response (remove password and convert boolean fields)
    */
   static _formatUserResponse(user) {
