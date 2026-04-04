@@ -31,6 +31,7 @@ import { UserProfileView } from "@/components/dashboardViews/UserProfileView";
 import { ChangePasswordModal } from "@/components/ChangePasswordModal";
 import { changeUserPassword, getBookingsByUser, getTestimonialsByUser, updateUser, Booking, Testimonial } from "@/lib/api";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import statesAndDistricts from "@/data/states-and-districts.json";
 
 // Country code to phone code mapping
 const countryCodeToPhoneCode: { [key: string]: string } = {
@@ -103,6 +104,12 @@ const Dashboard = () => {
   const [phoneCountrySearch, setPhoneCountrySearch] = useState("");
   const [openPhoneCountryPopover, setOpenPhoneCountryPopover] = useState(false);
   const [selectedPhoneCountry, setSelectedPhoneCountry] = useState(COUNTRIES[0]);
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [stateSearch, setStateSearch] = useState("");
+  const [districtSearch, setDistrictSearch] = useState("");
+  const [openStatePopover, setOpenStatePopover] = useState(false);
+  const [openDistrictPopover, setOpenDistrictPopover] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Redirect if not authenticated or if admin (admin should go to admin dashboard)
@@ -925,19 +932,131 @@ const Dashboard = () => {
                       </div>
                     </div>
 
-                    {/* City of Residence and State */}
+                    {/* State and District */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">City of Residence</label>
-                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                          <option value="">Select City</option>
-                        </select>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">State</label>
+                        <Popover open={openStatePopover} onOpenChange={(open) => {
+                          setOpenStatePopover(open);
+                          if (!open) setStateSearch("");
+                        }}>
+                          <PopoverTrigger asChild>
+                            <button
+                              type="button"
+                              className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+                            >
+                              {selectedState || "Select State"}
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-96 p-0" align="start">
+                            <div className="flex flex-col">
+                              <div className="sticky top-0 z-10 p-3 border-b border-gray-200 bg-white">
+                                <div className="relative">
+                                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                  <input
+                                    type="text"
+                                    placeholder="Search..."
+                                    value={stateSearch}
+                                    onChange={(e) => setStateSearch(e.target.value)}
+                                    className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
+                                    autoFocus
+                                  />
+                                </div>
+                              </div>
+                              <div className="max-h-64 overflow-y-auto">
+                                {statesAndDistricts.states
+                                  .filter((s) => s.state.toLowerCase().includes(stateSearch.toLowerCase()))
+                                  .length > 0 ? (
+                                  statesAndDistricts.states
+                                    .filter((s) => s.state.toLowerCase().includes(stateSearch.toLowerCase()))
+                                    .map((state) => (
+                                      <button
+                                        key={state.state}
+                                        type="button"
+                                        onClick={() => {
+                                          setSelectedState(state.state);
+                                          setSelectedDistrict("");
+                                          setOpenStatePopover(false);
+                                          setStateSearch("");
+                                        }}
+                                        className={`w-full text-left px-3 py-2.5 text-sm hover:bg-blue-50 transition-colors ${
+                                          selectedState === state.state ? "bg-blue-100 font-semibold text-gray-900" : "text-gray-700"
+                                        }`}
+                                      >
+                                        {state.state}
+                                      </button>
+                                    ))
+                                ) : (
+                                  <div className="px-3 py-8 text-sm text-gray-500 text-center">No states found</div>
+                                )}
+                              </div>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
                       </div>
                       <div>
-                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">State</label>
-                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                          <option value="">Select State</option>
-                        </select>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">District</label>
+                        <Popover open={openDistrictPopover} onOpenChange={(open) => {
+                          setOpenDistrictPopover(open);
+                          if (!open) setDistrictSearch("");
+                        }}>
+                          <PopoverTrigger asChild>
+                            <button
+                              type="button"
+                              disabled={!selectedState}
+                              className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed disabled:hover:bg-gray-100"
+                            >
+                              {selectedDistrict || "Select District"}
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-96 p-0" align="start">
+                            <div className="flex flex-col">
+                              <div className="sticky top-0 z-10 p-3 border-b border-gray-200 bg-white">
+                                <div className="relative">
+                                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                  <input
+                                    type="text"
+                                    placeholder="Search..."
+                                    value={districtSearch}
+                                    onChange={(e) => setDistrictSearch(e.target.value)}
+                                    className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
+                                    autoFocus
+                                  />
+                                </div>
+                              </div>
+                              <div className="max-h-64 overflow-y-auto">
+                                {selectedState && statesAndDistricts.states
+                                  .find((s) => s.state === selectedState)
+                                  ?.districts
+                                  .filter((d) => d.toLowerCase().includes(districtSearch.toLowerCase()))
+                                  .length! > 0 ? (
+                                  statesAndDistricts.states
+                                    .find((s) => s.state === selectedState)
+                                    ?.districts
+                                    .filter((d) => d.toLowerCase().includes(districtSearch.toLowerCase()))
+                                    .map((district) => (
+                                      <button
+                                        key={district}
+                                        type="button"
+                                        onClick={() => {
+                                          setSelectedDistrict(district);
+                                          setOpenDistrictPopover(false);
+                                          setDistrictSearch("");
+                                        }}
+                                        className={`w-full text-left px-3 py-2.5 text-sm hover:bg-blue-50 transition-colors ${
+                                          selectedDistrict === district ? "bg-blue-100 font-semibold text-gray-900" : "text-gray-700"
+                                        }`}
+                                      >
+                                        {district}
+                                      </button>
+                                    ))
+                                ) : (
+                                  <div className="px-3 py-8 text-sm text-gray-500 text-center">No districts found</div>
+                                )}
+                              </div>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
                       </div>
                     </div>
 
@@ -1000,7 +1119,7 @@ const Dashboard = () => {
                               <PopoverTrigger asChild>
                                 <button
                                   type="button"
-                                  className="px-3 py-2.5 border border-gray-200 rounded-lg bg-gray-50/50 hover:bg-gray-100 transition-all flex items-center gap-2 min-w-fit focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                                  className="h-10 px-3 py-2 border border-gray-200 rounded-lg bg-gray-50/50 hover:bg-gray-100 transition-all flex items-center gap-2 min-w-fit focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                                 >
                                   <span className="text-sm font-medium">{selectedPhoneCountry.dial}</span>
                                   <ChevronDown className="h-4 w-4 text-gray-400" />
