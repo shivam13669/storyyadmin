@@ -1623,7 +1623,9 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Account Security Card */}
+            </div>
+          ) : activeNav === "settings" ? (
+            <>
               <Card className="border-0 shadow-md rounded-2xl">
                 <CardHeader>
                   <CardTitle>Account Security</CardTitle>
@@ -1640,19 +1642,7 @@ const Dashboard = () => {
                 onClose={() => setIsPasswordModalOpen(false)}
                 onSubmit={handleChangePassword}
               />
-            </div>
-          ) : activeNav === "settings" ? (
-            <Card className="border-0 shadow-md rounded-2xl">
-              <CardHeader>
-                <CardTitle>Settings</CardTitle>
-                <CardDescription>Account settings and preferences</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8 text-gray-600">
-                  <p>Settings coming soon...</p>
-                </div>
-              </CardContent>
-            </Card>
+            </>
           ) : null
           }
         </div>
