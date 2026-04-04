@@ -943,9 +943,10 @@ const Dashboard = () => {
                           <PopoverTrigger asChild>
                             <button
                               type="button"
-                              className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+                              className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all flex items-center justify-between"
                             >
-                              {selectedState || "Select State"}
+                              <span>{selectedState || "Select State"}</span>
+                              <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0" />
                             </button>
                           </PopoverTrigger>
                           <PopoverContent className="w-96 p-0" align="start">
@@ -1009,9 +1010,10 @@ const Dashboard = () => {
                             <button
                               type="button"
                               disabled={!selectedState}
-                              className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed disabled:hover:bg-gray-100"
+                              className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed disabled:hover:bg-gray-100 flex items-center justify-between"
                             >
-                              {selectedDistrict || "Select District"}
+                              <span>{selectedDistrict || "Select District"}</span>
+                              <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0" />
                             </button>
                           </PopoverTrigger>
                           <PopoverContent className="w-96 p-0" align="start">
