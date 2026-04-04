@@ -1487,8 +1487,9 @@ const Dashboard = () => {
                     </div>
 
                     {/* Note */}
-                    <div className="text-xs text-orange-600 font-semibold">
-                      NOTE: For Indian customers, PAN No. will only be used for international bookings as per RBI Guidelines
+                    <div className="text-[13px] leading-5">
+                      <span className="font-semibold text-orange-600">NOTE:</span>{" "}
+                      <span className="text-slate-900">For Indian customers, PAN No. will only be used for international bookings as per RBI Guidelines</span>
                     </div>
 
                     {/* Document Rows */}
