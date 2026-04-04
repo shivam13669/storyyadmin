@@ -887,18 +887,17 @@ const Dashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Gender</label>
-                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                          <option value="">Select Gender</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                          <option value="other">Other</option>
-                        </select>
+                        <button className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all flex items-center justify-between">
+                          <span>Select Gender</span>
+                          <ChevronDown className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                        </button>
                       </div>
                       <div>
                         <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Date of Birth</label>
-                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                          <option value="">Select Date</option>
-                        </select>
+                        <button className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all flex items-center justify-between">
+                          <span>Select Date</span>
+                          <ChevronDown className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                        </button>
                       </div>
                     </div>
 
@@ -906,9 +905,10 @@ const Dashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Nationality</label>
-                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                          <option value="">Select Nationality</option>
-                        </select>
+                        <button className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all flex items-center justify-between">
+                          <span>Select Nationality</span>
+                          <ChevronDown className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                        </button>
                       </div>
                       <div></div>
                     </div>
@@ -917,18 +917,17 @@ const Dashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Marital Status</label>
-                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                          <option value="">Select Status</option>
-                          <option value="single">Single</option>
-                          <option value="married">Married</option>
-                          <option value="divorced">Divorced</option>
-                        </select>
+                        <button className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all flex items-center justify-between">
+                          <span>Select Status</span>
+                          <ChevronDown className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                        </button>
                       </div>
                       <div>
                         <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Anniversary</label>
-                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                          <option value="">Select Date</option>
-                        </select>
+                        <button className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all flex items-center justify-between">
+                          <span>Select Date</span>
+                          <ChevronDown className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                        </button>
                       </div>
                     </div>
 
@@ -1242,9 +1241,10 @@ const Dashboard = () => {
                       </div>
                       <div>
                         <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Expiry Date</label>
-                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                          <option value="">Select Date</option>
-                        </select>
+                        <button className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all flex items-center justify-between">
+                          <span>Select Date</span>
+                          <ChevronDown className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                        </button>
                       </div>
                     </div>
 
@@ -1252,9 +1252,10 @@ const Dashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Issuing Country</label>
-                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-                          <option value="">Select Country</option>
-                        </select>
+                        <button className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 text-left text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all flex items-center justify-between">
+                          <span>Select Country</span>
+                          <ChevronDown className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                        </button>
                       </div>
                       <div>
                         <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">PAN Card Number</label>
