@@ -10,6 +10,7 @@ export interface AuthUser {
   signupDate: string;
   role: 'user' | 'admin';
   testimonialAllowed: boolean;
+  phoneLastChangedAt?: string | null;
 }
 
 interface AuthContextType {
@@ -52,6 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 signupDate: dbUser.signupDate,
                 role: dbUser.role,
                 testimonialAllowed: dbUser.testimonialAllowed,
+                phoneLastChangedAt: dbUser.phoneLastChangedAt,
               });
             } else {
               // User deleted from DB, clear session
@@ -83,6 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signupDate: apiUser.signupDate,
         role: apiUser.role,
         testimonialAllowed: apiUser.testimonialAllowed,
+        phoneLastChangedAt: apiUser.phoneLastChangedAt,
       };
 
       setUser(authUser);
@@ -108,6 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signupDate: apiUser.signupDate,
         role: apiUser.role,
         testimonialAllowed: apiUser.testimonialAllowed,
+        phoneLastChangedAt: apiUser.phoneLastChangedAt,
       };
 
       setUser(authUser);
@@ -139,6 +143,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             signupDate: dbUser.signupDate,
             role: dbUser.role,
             testimonialAllowed: dbUser.testimonialAllowed,
+            phoneLastChangedAt: dbUser.phoneLastChangedAt,
           };
           setUser(updatedUser);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));

@@ -65,9 +65,16 @@ export class SQLiteDatabase extends IDatabase {
           role TEXT NOT NULL DEFAULT 'user',
           signupDate TEXT NOT NULL,
           testimonialAllowed INTEGER NOT NULL DEFAULT 0,
-          isSuspended INTEGER NOT NULL DEFAULT 0
+          isSuspended INTEGER NOT NULL DEFAULT 0,
+          phoneLastChangedAt TEXT
         )
       `);
+
+      const userColumns = this.db.exec(`PRAGMA table_info(users)`);
+      const hasPhoneLastChangedAt = userColumns.length > 0 && userColumns[0].values.some((column) => column[1] === 'phoneLastChangedAt');
+      if (!hasPhoneLastChangedAt) {
+        this.db.run(`ALTER TABLE users ADD COLUMN phoneLastChangedAt TEXT`);
+      }
 
       // Bookings table
       this.db.run(`
@@ -219,7 +226,7 @@ export class SQLiteDatabase extends IDatabase {
   async getUserById(id) {
     try {
       const result = this.db.exec(
-        `SELECT id, fullName, email, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate FROM users WHERE id = ?`,
+        `SELECT id, fullName, email, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate, phoneLastChangedAt FROM users WHERE id = ?`,
         [id]
       );
 
@@ -237,7 +244,7 @@ export class SQLiteDatabase extends IDatabase {
     try {
       const emailLower = email.toLowerCase();
       const result = this.db.exec(
-        `SELECT id, fullName, email, password, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate FROM users WHERE LOWER(email) = ?`,
+        `SELECT id, fullName, email, password, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate, phoneLastChangedAt FROM users WHERE LOWER(email) = ?`,
         [emailLower]
       );
 
@@ -266,7 +273,7 @@ export class SQLiteDatabase extends IDatabase {
   async getAllUsers() {
     try {
       const result = this.db.exec(
-        `SELECT id, fullName, email, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate FROM users ORDER BY id`
+        `SELECT id, fullName, email, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate, phoneLastChangedAt FROM users ORDER BY id`
       );
 
       if (!result || result.length === 0) {
@@ -332,7 +339,8 @@ export class SQLiteDatabase extends IDatabase {
       countryCode: row[5],
       testimonialAllowed: row[6] === 1,
       isSuspended: row[7] === 1,
-      signupDate: row[8]
+      signupDate: row[8],
+      phoneLastChangedAt: row[9] || null
     };
   }
 

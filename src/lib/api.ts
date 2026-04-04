@@ -47,6 +47,7 @@ export interface AuthUser {
   countryCode: string;
   testimonialAllowed: boolean;
   signupDate: string;
+  phoneLastChangedAt?: string | null;
 }
 
 export async function signup(data: SignupData): Promise<{ user: AuthUser; message: string }> {

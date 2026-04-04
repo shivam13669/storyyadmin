@@ -80,6 +80,9 @@ const formatDisplayPhoneNumber = (countryCode?: string, mobileNumber?: string) =
 const isGooglePlaceholderPhone = (mobileNumber?: string) =>
   !!mobileNumber && mobileNumber.startsWith('GOOGLE_');
 
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 const Dashboard = () => {
   const { user, isAuthenticated, isAdmin, logout, refreshUser, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -177,8 +180,13 @@ const Dashboard = () => {
 
   const openPhoneEditor = () => {
     const indiaCountry = COUNTRIES.find((country) => country.code === 'IN') || COUNTRIES[0];
-    setSelectedPhoneCountry(indiaCountry);
-    setPhoneNumber(isGooglePlaceholderPhone(user?.mobileNumber) ? "" : user?.mobileNumber || "");
+    const currentCountry = user?.countryCode
+      ? COUNTRIES.find((country) => country.code === user.countryCode) || indiaCountry
+      : indiaCountry;
+    const initialCountry = phoneIsMissing ? indiaCountry : currentCountry;
+
+    setSelectedPhoneCountry(initialCountry);
+    setPhoneNumber(phoneIsMissing ? "" : user?.mobileNumber || "");
     setPhoneCountrySearch("");
     setOpenPhoneCountryPopover(false);
     setIsPhoneEditing(true);
@@ -315,6 +323,13 @@ const Dashboard = () => {
 
   const phoneIsMissing = !user?.countryCode || !user?.mobileNumber || isGooglePlaceholderPhone(user.mobileNumber);
   const displayPhoneNumber = formatDisplayPhoneNumber(user?.countryCode, phoneIsMissing ? undefined : user?.mobileNumber);
+  const phoneChangeAvailableAt = user?.phoneLastChangedAt
+    ? new Date(user.phoneLastChangedAt).getTime() + THIRTY_DAYS_MS
+    : null;
+  const isPhoneChangeLocked = phoneChangeAvailableAt ? Date.now() < phoneChangeAvailableAt : false;
+  const phoneDaysRemaining = phoneChangeAvailableAt
+    ? Math.max(0, Math.ceil((phoneChangeAvailableAt - Date.now()) / DAY_MS))
+    : 0;
 
   // Don't render content until auth is verified
   // Show loading while auth is still loading, or if not authenticated, or if user is admin
@@ -683,7 +698,26 @@ const Dashboard = () => {
                           </Button>
                         </div>
                       ) : (
-                        <p className="text-lg font-semibold text-gray-900 mt-1">{displayPhoneNumber}</p>
+                        <div className="mt-1 space-y-2">
+                          <p className="text-lg font-semibold text-gray-900">{displayPhoneNumber}</p>
+                          {!isPhoneChangeLocked ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-fit"
+                              onClick={() => {
+                                setActiveNav("profile");
+                                openPhoneEditor();
+                              }}
+                            >
+                              Change Phone Number
+                            </Button>
+                          ) : (
+                            <p className="text-xs text-gray-500">
+                              Change available in {phoneDaysRemaining} day{phoneDaysRemaining === 1 ? "" : "s"}
+                            </p>
+                          )}
+                        </div>
                       )}
                     </div>
                     <div>
@@ -881,6 +915,17 @@ const Dashboard = () => {
                     <div className="border-t pt-6">
                       <div className="flex items-center justify-between gap-3 mb-2">
                         <p className="text-sm text-gray-600 font-medium">Phone Number</p>
+                        {!phoneIsMissing && !isPhoneEditing && !isPhoneChangeLocked && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={openPhoneEditor}
+                            className="flex items-center gap-2"
+                          >
+                            <Phone className="w-4 h-4" />
+                            Change Phone Number
+                          </Button>
+                        )}
                         {phoneIsMissing && !isPhoneEditing && (
                           <Button
                             variant="outline"
@@ -984,7 +1029,13 @@ const Dashboard = () => {
                       ) : (
                         <>
                           <p className="text-lg font-semibold text-gray-900">{displayPhoneNumber}</p>
-                          <p className="text-xs text-gray-500 mt-2">Cannot be changed after signup</p>
+                          {isPhoneChangeLocked ? (
+                            <p className="text-xs text-gray-500 mt-2">
+                              You can change your phone number again in {phoneDaysRemaining} day{phoneDaysRemaining === 1 ? "" : "s"}.
+                            </p>
+                          ) : (
+                            <p className="text-xs text-gray-500 mt-2">You can change your phone number anytime.</p>
+                          )}
                         </>
                       )}
                     </div>

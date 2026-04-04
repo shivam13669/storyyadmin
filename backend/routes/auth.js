@@ -5,6 +5,7 @@ import { generateOTP, getOTPExpirationTime, verifyOTP } from '../utils/otpUtils.
 import { getDB } from '../db/index.js';
 
 const router = express.Router();
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
 /**
  * POST /api/auth/signup
@@ -92,7 +93,8 @@ router.post('/login', async (req, res) => {
         mobileNumber: user.mobileNumber,
         countryCode: user.countryCode,
         testimonialAllowed: user.testimonialAllowed === 1,
-        signupDate: user.signupDate
+        signupDate: user.signupDate,
+        phoneLastChangedAt: user.phoneLastChangedAt || null
       }
     });
   } catch (error) {
@@ -147,16 +149,32 @@ router.patch('/user/:id', async (req, res) => {
       const currentUser = await UserRepository.getById(parseInt(id));
       const normalizedMobileNumber = mobileNumber.trim();
       const normalizedCountryCode = countryCode.trim().toUpperCase();
+      const isPhoneActuallyChanging =
+        currentUser.mobileNumber !== normalizedMobileNumber || currentUser.countryCode !== normalizedCountryCode;
 
-      if (
-        (currentUser.mobileNumber !== normalizedMobileNumber || currentUser.countryCode !== normalizedCountryCode) &&
-        await getDB().mobileNumberExists(normalizedMobileNumber)
-      ) {
-        return res.status(409).json({ error: 'Mobile number already registered' });
+      if (isPhoneActuallyChanging) {
+        if (currentUser.phoneLastChangedAt) {
+          const lastChangedAt = new Date(currentUser.phoneLastChangedAt).getTime();
+          if (Date.now() - lastChangedAt < THIRTY_DAYS_MS) {
+            const daysRemaining = Math.ceil((THIRTY_DAYS_MS - (Date.now() - lastChangedAt)) / (24 * 60 * 60 * 1000));
+            return res.status(403).json({
+              error: `Phone number can be changed again after ${daysRemaining} day${daysRemaining === 1 ? '' : 's'}`
+            });
+          }
+        }
+
+        if (await getDB().mobileNumberExists(normalizedMobileNumber) && currentUser.mobileNumber !== normalizedMobileNumber) {
+          return res.status(409).json({ error: 'Mobile number already registered' });
+        }
+
+        updates.mobileNumber = normalizedMobileNumber;
+        updates.countryCode = normalizedCountryCode;
+
+        const hadRealPhoneBefore = !!currentUser.mobileNumber && !currentUser.mobileNumber.startsWith('GOOGLE_');
+        if (hadRealPhoneBefore) {
+          updates.phoneLastChangedAt = new Date().toISOString();
+        }
       }
-
-      updates.mobileNumber = normalizedMobileNumber;
-      updates.countryCode = normalizedCountryCode;
     }
 
     if (Object.keys(updates).length === 0) {
@@ -548,7 +566,8 @@ router.post('/google', async (req, res) => {
         mobileNumber: user.mobileNumber,
         countryCode: user.countryCode,
         testimonialAllowed: user.testimonialAllowed === 1,
-        signupDate: user.signupDate
+        signupDate: user.signupDate,
+        phoneLastChangedAt: user.phoneLastChangedAt || null
       }
     });
   } catch (error) {

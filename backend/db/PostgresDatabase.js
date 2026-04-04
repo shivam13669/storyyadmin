@@ -74,6 +74,7 @@ export class PostgresDatabase extends IDatabase {
       testimonialAllowed: row.testimonial_allowed,
       isSuspended: row.is_suspended,
       signupDate: row.signup_date,
+      phoneLastChangedAt: row.phone_last_changed_at,
     };
   }
 
@@ -118,9 +119,12 @@ export class PostgresDatabase extends IDatabase {
         role TEXT NOT NULL DEFAULT 'user',
         signup_date TEXT NOT NULL,
         testimonial_allowed BOOLEAN NOT NULL DEFAULT FALSE,
-        is_suspended BOOLEAN NOT NULL DEFAULT FALSE
+        is_suspended BOOLEAN NOT NULL DEFAULT FALSE,
+        phone_last_changed_at TEXT
       )
     `);
+
+    await this._query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_last_changed_at TEXT`);
 
     await this._query(`
       CREATE TABLE IF NOT EXISTS bookings (
@@ -336,7 +340,7 @@ export class PostgresDatabase extends IDatabase {
   async getUserById(id) {
     try {
       const result = await this._query(
-        `SELECT id, full_name, email, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date FROM users WHERE id = $1`,
+        `SELECT id, full_name, email, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date, phone_last_changed_at FROM users WHERE id = $1`,
         [id]
       );
 
@@ -353,7 +357,7 @@ export class PostgresDatabase extends IDatabase {
   async getUserByEmail(email) {
     try {
       const result = await this._query(
-        `SELECT id, full_name, email, password, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date FROM users WHERE LOWER(email) = $1`,
+        `SELECT id, full_name, email, password, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date, phone_last_changed_at FROM users WHERE LOWER(email) = $1`,
         [email.toLowerCase()]
       );
 
@@ -373,7 +377,8 @@ export class PostgresDatabase extends IDatabase {
         testimonialAllowed: row.testimonial_allowed,
         isSuspended: row.is_suspended,
         signupDate: row.signup_date,
-      };
+      phoneLastChangedAt: row.phone_last_changed_at,
+    };
     } catch (error) {
       throw new Error(`Failed to get user by email: ${error.message}`);
     }
@@ -382,7 +387,7 @@ export class PostgresDatabase extends IDatabase {
   async getAllUsers() {
     try {
       const result = await this._query(
-        `SELECT id, full_name, email, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date FROM users ORDER BY id`
+        `SELECT id, full_name, email, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date, phone_last_changed_at FROM users ORDER BY id`
       );
 
       return result.rows.map((row) => this._mapUserRow(row));
