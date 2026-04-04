@@ -969,7 +969,7 @@ const Dashboard = () => {
                   <div className="space-y-6">
                     {/* Mobile Number */}
                     <div>
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2 mb-2">
                         <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Mobile Number</label>
                         {!phoneIsMissing && (
                           <span className="text-green-600 text-sm">✓</span>
@@ -1074,7 +1074,10 @@ const Dashboard = () => {
 
                     {/* Email Address */}
                     <div className="border-t pt-6">
-                      <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Email Address</label>
+                      <div className="flex items-center gap-2 mb-2">
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Email Address</label>
+                        <span className="text-green-600 text-sm">✓</span>
+                      </div>
                       <p className="text-lg font-semibold text-gray-900 mt-2">{user?.email || "—"}</p>
                       <p className="text-xs text-gray-500 mt-2">Cannot be changed after signup</p>
                     </div>
