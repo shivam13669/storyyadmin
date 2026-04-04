@@ -384,6 +384,7 @@ const Dashboard = () => {
       if (documents.length > 0) documentData.documents = documents;
 
       await updateUserDocuments(user.id, documentData);
+      await refreshUser();
       toast({ title: "Success", description: "Documents saved successfully" });
     } catch (error) {
       toast({

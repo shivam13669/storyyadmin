@@ -460,9 +460,15 @@ export class PostgresDatabase extends IDatabase {
 
       values.push(id);
 
-      await this._query(`UPDATE users SET ${fields.join(', ')} WHERE id = $${values.length}`, values);
+      const query = `UPDATE users SET ${fields.join(', ')} WHERE id = $${values.length}`;
+      console.log(`📝 Executing query:`, query);
+      console.log(`   Values:`, values);
+
+      await this._query(query, values);
+      console.log(`✅ User ${id} updated successfully`);
       return this.getUserById(id);
     } catch (error) {
+      console.error(`❌ Error updating user ${id}:`, error.message);
       throw new Error(`Failed to update user: ${error.message}`);
     }
   }

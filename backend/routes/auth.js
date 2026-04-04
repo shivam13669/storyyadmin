@@ -160,6 +160,12 @@ router.patch('/user/:id', async (req, res) => {
     } = req.body;
     const updates = {};
 
+    console.log(`🔄 Updating user ${id} with data:`, {
+      fullName, gender, dateOfBirth, nationality, maritalStatus,
+      anniversary, state, district, passportNumber, passportExpiryDate,
+      passportIssuingCountry, panCardNumber
+    });
+
     if (fullName !== undefined) {
       if (!fullName) {
         return res.status(400).json({ error: 'Full name is required' });
