@@ -801,150 +801,146 @@ const Dashboard = () => {
             </div>
           ) : activeNav === "profile" ? (
             <div className="space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900">My Profile</h3>
-                <p className="text-sm text-gray-600 mt-1">Manage your personal information and account settings</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900">My Profile</h3>
+                  <p className="text-sm text-gray-600 mt-1">Manage your personal information and account settings</p>
+                </div>
+                <Button className="bg-gray-700 hover:bg-gray-800 text-white">SAVE</Button>
               </div>
 
-              {/* Personal Information Card */}
+              {/* General Information Card */}
               <Card className="border-0 shadow-md rounded-2xl">
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle>Personal Information</CardTitle>
-                      <CardDescription>Your account details</CardDescription>
-                    </div>
-                    {!isEditingName && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setIsEditingName(true);
-                          setEditedName(user?.fullName || "");
-                        }}
-                        className="flex items-center gap-2"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                        Edit Name
-                      </Button>
-                    )}
-                  </div>
+                  <CardTitle>General Information</CardTitle>
+                  <CardDescription>Your account details</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
-                    {/* Full Name - Editable */}
+                    {/* First & Middle Name and Last Name */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">First & Middle Name</label>
+                        <Input
+                          type="text"
+                          value={editedName}
+                          onChange={(e) => setEditedName(e.target.value)}
+                          placeholder="Enter first & middle name"
+                          className="mt-2"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Last Name</label>
+                        <Input
+                          type="text"
+                          placeholder="Enter last name"
+                          className="mt-2"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Gender and Date of Birth */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Gender</label>
+                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                          <option value="">Select Gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="other">Other</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Date of Birth</label>
+                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                          <option value="">Select Date</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Nationality */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Nationality</label>
+                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                          <option value="">Select Nationality</option>
+                        </select>
+                      </div>
+                      <div></div>
+                    </div>
+
+                    {/* Marital Status and Anniversary */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Marital Status</label>
+                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                          <option value="">Select Status</option>
+                          <option value="single">Single</option>
+                          <option value="married">Married</option>
+                          <option value="divorced">Divorced</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Anniversary</label>
+                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                          <option value="">Select Date</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* City of Residence and State */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">City of Residence</label>
+                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                          <option value="">Select City</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">State</label>
+                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                          <option value="">Select State</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Note */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      <p className="text-xs text-blue-800">Required for GST purpose on your tax invoice</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Contact Details Card */}
+              <Card className="border-0 shadow-md rounded-2xl">
+                <CardHeader>
+                  <CardTitle>Contact Details</CardTitle>
+                  <CardDescription>Add contact information to receive booking details & other alerts</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    {/* Mobile Number */}
                     <div>
-                      <p className="text-sm text-gray-600 font-medium mb-2">Full Name</p>
-                      {isEditingName ? (
-                        <div className="flex gap-2">
-                          <Input
-                            type="text"
-                            value={editedName}
-                            onChange={(e) => setEditedName(e.target.value)}
-                            placeholder="Enter your full name"
-                            className="flex-1"
-                          />
-                          <Button
-                            size="sm"
-                            onClick={async () => {
-                              if (!editedName.trim()) {
-                                toast({
-                                  title: "Error",
-                                  description: "Name cannot be empty",
-                                  variant: "destructive"
-                                });
-                                return;
-                              }
-
-                              setIsSavingName(true);
-                              try {
-                                if (!user?.id) {
-                                  throw new Error("User not authenticated");
-                                }
-
-                                // Call API to update name
-                                await updateUser(user.id, { fullName: editedName });
-
-                                // Refresh user data in context
-                                await refreshUser();
-
-                                setIsEditingName(false);
-                                toast({
-                                  title: "Success",
-                                  description: "Your name has been updated successfully"
-                                });
-                              } catch (error) {
-                                toast({
-                                  title: "Error",
-                                  description: error instanceof Error ? error.message : "Failed to update name",
-                                  variant: "destructive"
-                                });
-                              } finally {
-                                setIsSavingName(false);
-                              }
-                            }}
-                            disabled={isSavingName}
-                          >
-                            {isSavingName ? "Saving..." : "Save"}
-                          </Button>
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Mobile Number</label>
+                        {!phoneIsMissing && (
+                          <span className="text-green-600 text-sm">✓</span>
+                        )}
+                      </div>
+                      {!isPhoneEditing ? (
+                        <div className="flex items-center justify-between">
+                          <p className="text-lg font-semibold text-gray-900">{displayPhoneNumber}</p>
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => {
-                              setIsEditingName(false);
-                              setEditedName(user?.fullName || "");
-                            }}
+                            onClick={openPhoneEditor}
+                            className="text-gray-600"
                           >
-                            Cancel
+                            Edit
                           </Button>
                         </div>
                       ) : (
-                        <p className="text-lg font-semibold text-gray-900">{user?.fullName || "—"}</p>
-                      )}
-                      <p className="text-xs text-gray-500 mt-2">First letter of your name will update your avatar after logout/login</p>
-                    </div>
-
-                    {/* Email */}
-                    <div className="border-t pt-6">
-                      <p className="text-sm text-gray-600 font-medium mb-2">Email Address</p>
-                      <p className="text-lg font-semibold text-gray-900">{user?.email || "—"}</p>
-                      <p className="text-xs text-gray-500 mt-2">Cannot be changed after signup</p>
-                    </div>
-
-                    {/* Phone */}
-                    <div className="border-t pt-6">
-                      <div className="flex items-center justify-between gap-3 mb-2">
-                        <p className="text-sm text-gray-600 font-medium">Phone Number</p>
-                        {!phoneIsMissing && !isPhoneEditing && !isPhoneChangeLocked && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={openPhoneEditor}
-                            className="flex items-center gap-2"
-                          >
-                            <Phone className="w-4 h-4" />
-                            Change Phone Number
-                          </Button>
-                        )}
-                        {phoneIsMissing && !isPhoneEditing && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={openPhoneEditor}
-                            className="flex items-center gap-2"
-                          >
-                            <Phone className="w-4 h-4" />
-                            Add Phone Number
-                          </Button>
-                        )}
-                      </div>
-
-                      {phoneIsMissing && !isPhoneEditing ? (
-                        <>
-                          <p className="text-lg font-semibold text-gray-900">Phone not added</p>
-                          <p className="text-xs text-gray-500 mt-2">Add your phone number to complete your profile</p>
-                        </>
-                      ) : isPhoneEditing ? (
                         <div className="space-y-4">
                           <div className="flex flex-col gap-3 sm:flex-row">
                             <Popover
@@ -1019,36 +1015,72 @@ const Dashboard = () => {
 
                           <div className="flex flex-col gap-2 sm:flex-row">
                             <Button onClick={handleSavePhone} disabled={isSavingPhone} className="w-full sm:w-auto">
-                              {isSavingPhone ? "Saving..." : "Save Phone Number"}
+                              {isSavingPhone ? "Saving..." : "Save"}
                             </Button>
                             <Button variant="outline" onClick={closePhoneEditor} disabled={isSavingPhone} className="w-full sm:w-auto">
                               Cancel
                             </Button>
                           </div>
                         </div>
-                      ) : (
-                        <>
-                          <p className="text-lg font-semibold text-gray-900">{displayPhoneNumber}</p>
-                          {isPhoneChangeLocked ? (
-                            <p className="text-xs text-gray-500 mt-2">
-                              You can change your phone number again in {phoneDaysRemaining} day{phoneDaysRemaining === 1 ? "" : "s"}.
-                            </p>
-                          ) : (
-                            <p className="text-xs text-gray-500 mt-2">You can change your phone number anytime.</p>
-                          )}
-                        </>
                       )}
                     </div>
 
-                    {/* Member Since */}
+                    {/* Add Email ID */}
                     <div className="border-t pt-6">
-                      <p className="text-sm text-gray-600 font-medium mb-2">Member Since</p>
-                      <p className="text-lg font-semibold text-gray-900">
-                        {user?.signupDate && !isNaN(new Date(user.signupDate).getTime())
-                          ? format(new Date(user.signupDate), "MMMM dd, yyyy")
-                          : "—"}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-2">Account creation date</p>
+                      <Button variant="link" className="text-blue-600 p-0">
+                        + ADD EMAIL ID
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Documents Details Card */}
+              <Card className="border-0 shadow-md rounded-2xl">
+                <CardHeader>
+                  <CardTitle>Documents Details</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    {/* Passport No. and Expiry Date */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Passport No.</label>
+                        <Input
+                          type="text"
+                          placeholder="Enter passport number"
+                          className="mt-2"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Expiry Date</label>
+                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                          <option value="">Select Date</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Issuing Country and PAN Card Number */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Issuing Country</label>
+                        <select className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                          <option value="">Select Country</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">PAN Card Number</label>
+                        <Input
+                          type="text"
+                          placeholder="Enter PAN card number"
+                          className="mt-2"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Note */}
+                    <div className="text-xs text-orange-600 font-semibold">
+                      NOTE: Your PAN No. will not be used for international bookings as per RBI Guidelines
                     </div>
                   </div>
                 </CardContent>
