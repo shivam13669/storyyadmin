@@ -69,6 +69,7 @@ export class SQLiteDatabase extends IDatabase {
           phoneLastChangedAt TEXT,
           gender TEXT,
           dateOfBirth TEXT,
+          age INTEGER,
           nationality TEXT,
           maritalStatus TEXT,
           anniversary TEXT,
@@ -86,14 +87,15 @@ export class SQLiteDatabase extends IDatabase {
       const columnNames = userColumns.length > 0 ? userColumns[0].values.map((column) => column[1]) : [];
 
       const requiredColumns = [
-        'phoneLastChangedAt', 'gender', 'dateOfBirth', 'nationality', 'maritalStatus',
+        'phoneLastChangedAt', 'gender', 'dateOfBirth', 'age', 'nationality', 'maritalStatus',
         'anniversary', 'state', 'district', 'passportNumber', 'passportExpiryDate',
         'passportIssuingCountry', 'panCardNumber', 'documents'
       ];
 
       for (const col of requiredColumns) {
         if (!columnNames.includes(col)) {
-          this.db.run(`ALTER TABLE users ADD COLUMN ${col} TEXT`);
+          const columnType = col === 'age' ? 'INTEGER' : 'TEXT';
+          this.db.run(`ALTER TABLE users ADD COLUMN ${col} ${columnType}`);
         }
       }
 
@@ -247,7 +249,7 @@ export class SQLiteDatabase extends IDatabase {
   async getUserById(id) {
     try {
       const result = this.db.exec(
-        `SELECT id, fullName, email, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate, phoneLastChangedAt, gender, dateOfBirth, nationality, maritalStatus, anniversary, state, district, passportNumber, passportExpiryDate, passportIssuingCountry, panCardNumber, documents FROM users WHERE id = ?`,
+        `SELECT id, fullName, email, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate, phoneLastChangedAt, gender, dateOfBirth, age, nationality, maritalStatus, anniversary, state, district, passportNumber, passportExpiryDate, passportIssuingCountry, panCardNumber, documents FROM users WHERE id = ?`,
         [id]
       );
 
@@ -265,7 +267,7 @@ export class SQLiteDatabase extends IDatabase {
     try {
       const emailLower = email.toLowerCase();
       const result = this.db.exec(
-        `SELECT id, fullName, email, password, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate, phoneLastChangedAt, gender, dateOfBirth, nationality, maritalStatus, anniversary, state, district, passportNumber, passportExpiryDate, passportIssuingCountry, panCardNumber, documents FROM users WHERE LOWER(email) = ?`,
+        `SELECT id, fullName, email, password, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate, phoneLastChangedAt, gender, dateOfBirth, age, nationality, maritalStatus, anniversary, state, district, passportNumber, passportExpiryDate, passportIssuingCountry, panCardNumber, documents FROM users WHERE LOWER(email) = ?`,
         [emailLower]
       );
 
@@ -307,7 +309,7 @@ export class SQLiteDatabase extends IDatabase {
   async getAllUsers() {
     try {
       const result = this.db.exec(
-        `SELECT id, fullName, email, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate, phoneLastChangedAt, gender, dateOfBirth, nationality, maritalStatus, anniversary, state, district, passportNumber, passportExpiryDate, passportIssuingCountry, panCardNumber, documents FROM users ORDER BY id`
+        `SELECT id, fullName, email, role, mobileNumber, countryCode, testimonialAllowed, isSuspended, signupDate, phoneLastChangedAt, gender, dateOfBirth, age, nationality, maritalStatus, anniversary, state, district, passportNumber, passportExpiryDate, passportIssuingCountry, panCardNumber, documents FROM users ORDER BY id`
       );
 
       if (!result || result.length === 0) {
@@ -377,16 +379,17 @@ export class SQLiteDatabase extends IDatabase {
       phoneLastChangedAt: row[9] || null,
       gender: row[10] || null,
       dateOfBirth: row[11] || null,
-      nationality: row[12] || null,
-      maritalStatus: row[13] || null,
-      anniversary: row[14] || null,
-      state: row[15] || null,
-      district: row[16] || null,
-      passportNumber: row[17] || null,
-      passportExpiryDate: row[18] || null,
-      passportIssuingCountry: row[19] || null,
-      panCardNumber: row[20] || null,
-      documents: row[21] || null
+      age: row[12] ?? null,
+      nationality: row[13] || null,
+      maritalStatus: row[14] || null,
+      anniversary: row[15] || null,
+      state: row[16] || null,
+      district: row[17] || null,
+      passportNumber: row[18] || null,
+      passportExpiryDate: row[19] || null,
+      passportIssuingCountry: row[20] || null,
+      panCardNumber: row[21] || null,
+      documents: row[22] || null
     };
   }
 

@@ -13,6 +13,7 @@ export interface AuthUser {
   phoneLastChangedAt?: string | null;
   gender?: string;
   dateOfBirth?: string;
+  age?: number | null;
   nationality?: string;
   maritalStatus?: string;
   anniversary?: string;
@@ -67,6 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 phoneLastChangedAt: dbUser.phoneLastChangedAt,
                 gender: (dbUser as any).gender,
                 dateOfBirth: (dbUser as any).dateOfBirth,
+                age: (dbUser as any).age,
                 nationality: (dbUser as any).nationality,
                 maritalStatus: (dbUser as any).maritalStatus,
                 anniversary: (dbUser as any).anniversary,
@@ -110,6 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         phoneLastChangedAt: apiUser.phoneLastChangedAt,
         gender: (apiUser as any).gender,
         dateOfBirth: (apiUser as any).dateOfBirth,
+        age: (apiUser as any).age,
         nationality: (apiUser as any).nationality,
         maritalStatus: (apiUser as any).maritalStatus,
         anniversary: (apiUser as any).anniversary,
@@ -147,6 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         phoneLastChangedAt: apiUser.phoneLastChangedAt,
         gender: (apiUser as any).gender,
         dateOfBirth: (apiUser as any).dateOfBirth,
+        age: (apiUser as any).age,
         nationality: (apiUser as any).nationality,
         maritalStatus: (apiUser as any).maritalStatus,
         anniversary: (apiUser as any).anniversary,
@@ -190,6 +194,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             phoneLastChangedAt: dbUser.phoneLastChangedAt,
             gender: (dbUser as any).gender,
             dateOfBirth: (dbUser as any).dateOfBirth,
+            age: (dbUser as any).age,
             nationality: (dbUser as any).nationality,
             maritalStatus: (dbUser as any).maritalStatus,
             anniversary: (dbUser as any).anniversary,

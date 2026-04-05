@@ -77,6 +77,7 @@ export class PostgresDatabase extends IDatabase {
       phoneLastChangedAt: row.phone_last_changed_at,
       gender: row.gender,
       dateOfBirth: row.date_of_birth,
+      age: row.age,
       nationality: row.nationality,
       maritalStatus: row.marital_status,
       anniversary: row.anniversary,
@@ -135,6 +136,7 @@ export class PostgresDatabase extends IDatabase {
         phone_last_changed_at TEXT,
         gender TEXT,
         date_of_birth TEXT,
+        age INTEGER,
         nationality TEXT,
         marital_status TEXT,
         anniversary TEXT,
@@ -151,6 +153,7 @@ export class PostgresDatabase extends IDatabase {
     await this._query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_last_changed_at TEXT`);
     await this._query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS gender TEXT`);
     await this._query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS date_of_birth TEXT`);
+    await this._query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS age INTEGER`);
     await this._query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS nationality TEXT`);
     await this._query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS marital_status TEXT`);
     await this._query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS anniversary TEXT`);
@@ -376,7 +379,7 @@ export class PostgresDatabase extends IDatabase {
   async getUserById(id) {
     try {
       const result = await this._query(
-        `SELECT id, full_name, email, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date, phone_last_changed_at, gender, date_of_birth, nationality, marital_status, anniversary, state, district, passport_number, passport_expiry_date, passport_issuing_country, pan_card_number, documents FROM users WHERE id = $1`,
+        `SELECT id, full_name, email, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date, phone_last_changed_at, gender, date_of_birth, age, nationality, marital_status, anniversary, state, district, passport_number, passport_expiry_date, passport_issuing_country, pan_card_number, documents FROM users WHERE id = $1`,
         [id]
       );
 
@@ -393,7 +396,7 @@ export class PostgresDatabase extends IDatabase {
   async getUserByEmail(email) {
     try {
       const result = await this._query(
-        `SELECT id, full_name, email, password, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date, phone_last_changed_at, gender, date_of_birth, nationality, marital_status, anniversary, state, district, passport_number, passport_expiry_date, passport_issuing_country, pan_card_number, documents FROM users WHERE LOWER(email) = $1`,
+        `SELECT id, full_name, email, password, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date, phone_last_changed_at, gender, date_of_birth, age, nationality, marital_status, anniversary, state, district, passport_number, passport_expiry_date, passport_issuing_country, pan_card_number, documents FROM users WHERE LOWER(email) = $1`,
         [email.toLowerCase()]
       );
 
@@ -415,8 +418,9 @@ export class PostgresDatabase extends IDatabase {
         signupDate: row.signup_date,
         phoneLastChangedAt: row.phone_last_changed_at,
         gender: row.gender,
-        dateOfBirth: row.date_of_birth,
-        nationality: row.nationality,
+      dateOfBirth: row.date_of_birth,
+      age: row.age,
+      nationality: row.nationality,
         maritalStatus: row.marital_status,
         anniversary: row.anniversary,
         state: row.state,
@@ -435,7 +439,7 @@ export class PostgresDatabase extends IDatabase {
   async getAllUsers() {
     try {
       const result = await this._query(
-        `SELECT id, full_name, email, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date, phone_last_changed_at, gender, date_of_birth, nationality, marital_status, anniversary, state, district, passport_number, passport_expiry_date, passport_issuing_country, pan_card_number, documents FROM users ORDER BY id`
+        `SELECT id, full_name, email, role, mobile_number, country_code, testimonial_allowed, is_suspended, signup_date, phone_last_changed_at, gender, date_of_birth, age, nationality, marital_status, anniversary, state, district, passport_number, passport_expiry_date, passport_issuing_country, pan_card_number, documents FROM users ORDER BY id`
       );
 
       return result.rows.map((row) => this._mapUserRow(row));

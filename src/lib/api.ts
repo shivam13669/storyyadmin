@@ -50,6 +50,7 @@ export interface AuthUser {
   phoneLastChangedAt?: string | null;
   gender?: string | null;
   dateOfBirth?: string | null;
+  age?: number | null;
   nationality?: string | null;
   maritalStatus?: string | null;
   anniversary?: string | null;
@@ -290,6 +291,7 @@ export async function updateUser(userId: number, data: {
   countryCode?: string;
   gender?: string;
   dateOfBirth?: string;
+  age?: number;
   nationality?: string;
   maritalStatus?: string;
   anniversary?: string;

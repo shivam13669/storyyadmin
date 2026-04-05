@@ -7,6 +7,27 @@ import { getDB } from '../db/index.js';
 const router = express.Router();
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
+function calculateAgeFromDateOfBirth(dateOfBirth) {
+  if (!dateOfBirth) return null;
+
+  const [yearStr, monthStr, dayStr] = dateOfBirth.split('-');
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+
+  if (!year || !month || !day) return null;
+
+  const today = new Date();
+  const birthdayThisYear = new Date(today.getFullYear(), month - 1, day);
+  let age = today.getFullYear() - year;
+
+  if (today < birthdayThisYear) {
+    age -= 1;
+  }
+
+  return age;
+}
+
 /**
  * POST /api/auth/signup
  * Register a new user
@@ -97,6 +118,7 @@ router.post('/login', async (req, res) => {
         phoneLastChangedAt: user.phoneLastChangedAt || null,
         gender: user.gender || null,
         dateOfBirth: user.dateOfBirth || null,
+        age: user.age ?? null,
         nationality: user.nationality || null,
         maritalStatus: user.maritalStatus || null,
         anniversary: user.anniversary || null,
@@ -212,7 +234,10 @@ router.patch('/user/:id', async (req, res) => {
 
     // Handle general information fields
     if (gender !== undefined) updates.gender = gender;
-    if (dateOfBirth !== undefined) updates.dateOfBirth = dateOfBirth;
+    if (dateOfBirth !== undefined) {
+      updates.dateOfBirth = dateOfBirth;
+      updates.age = calculateAgeFromDateOfBirth(dateOfBirth);
+    }
     if (nationality !== undefined) updates.nationality = nationality;
     if (maritalStatus !== undefined) updates.maritalStatus = maritalStatus;
     if (anniversary !== undefined) updates.anniversary = anniversary;
@@ -673,6 +698,7 @@ router.post('/google', async (req, res) => {
         phoneLastChangedAt: user.phoneLastChangedAt || null,
         gender: user.gender || null,
         dateOfBirth: user.dateOfBirth || null,
+        age: user.age ?? null,
         nationality: user.nationality || null,
         maritalStatus: user.maritalStatus || null,
         anniversary: user.anniversary || null,

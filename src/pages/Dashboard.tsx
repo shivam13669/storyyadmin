@@ -112,6 +112,20 @@ const formatDisplayPhoneNumber = (countryCode?: string, mobileNumber?: string) =
 const isGooglePlaceholderPhone = (mobileNumber?: string) =>
   !!mobileNumber && mobileNumber.startsWith('GOOGLE_');
 
+const calculateAgeFromDOB = (selectedDOB?: Date | null) => {
+  if (!selectedDOB) return null;
+
+  const today = new Date();
+  const birthdayThisYear = new Date(today.getFullYear(), selectedDOB.getMonth(), selectedDOB.getDate());
+  let age = today.getFullYear() - selectedDOB.getFullYear();
+
+  if (today < birthdayThisYear) {
+    age -= 1;
+  }
+
+  return age;
+};
+
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -1002,7 +1016,11 @@ const Dashboard = () => {
                       const updateData: any = { fullName: editedName };
 
                       if (selectedGender) updateData.gender = selectedGender;
-                      if (selectedDOB) updateData.dateOfBirth = format(selectedDOB, "yyyy-MM-dd");
+                      if (selectedDOB) {
+                        updateData.dateOfBirth = format(selectedDOB, "yyyy-MM-dd");
+                        const age = calculateAgeFromDOB(selectedDOB);
+                        if (age !== null) updateData.age = age;
+                      }
                       if (selectedNationality) updateData.nationality = selectedNationality;
                       if (selectedMaritalStatus) updateData.maritalStatus = selectedMaritalStatus;
                       if (selectedAnniversary) updateData.anniversary = format(selectedAnniversary, "yyyy-MM-dd");
@@ -1127,14 +1145,7 @@ const Dashboard = () => {
                       <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Age</label>
                       <div className="w-full mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all flex items-center justify-between">
                         <span className="text-gray-900">
-                          {selectedDOB
-                            ? new Date().getFullYear() - selectedDOB.getFullYear() - (
-                                new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) <
-                                new Date(new Date().getFullYear(), selectedDOB.getMonth(), selectedDOB.getDate())
-                                  ? 1
-                                  : 0
-                              )
-                            : "—"}
+                          {calculateAgeFromDOB(selectedDOB) ?? "—"}
                         </span>
                         <span className="text-xs text-gray-500">Auto-calculated</span>
                       </div>
