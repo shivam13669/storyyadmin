@@ -32,6 +32,7 @@ export class PostgresDatabase extends IDatabase {
     });
 
     await this._createTables();
+    await this._ensureUsersColumnOrder();
     await this._migrateFromSQLiteIfNeeded();
     await this._initializeAdmin();
 
@@ -225,6 +226,132 @@ export class PostgresDatabase extends IDatabase {
     await this._query(`CREATE INDEX IF NOT EXISTS idx_testimonials_user_id ON testimonials(user_id)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_coupons_code ON coupons(code)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_otp_verifications_email ON otp_verifications(email)`);
+  }
+
+  async _ensureUsersColumnOrder() {
+    const result = await this._query(`
+      SELECT column_name
+      FROM information_schema.columns
+      WHERE table_schema = 'public' AND table_name = 'users'
+      ORDER BY ordinal_position
+    `);
+
+    const currentOrder = result.rows.map((row) => row.column_name);
+    const desiredOrder = [
+      'id',
+      'full_name',
+      'email',
+      'password',
+      'mobile_number',
+      'country_code',
+      'role',
+      'signup_date',
+      'testimonial_allowed',
+      'is_suspended',
+      'phone_last_changed_at',
+      'gender',
+      'date_of_birth',
+      'age',
+      'nationality',
+      'marital_status',
+      'anniversary',
+      'state',
+      'district',
+      'passport_number',
+      'passport_expiry_date',
+      'passport_issuing_country',
+      'pan_card_number',
+      'documents'
+    ];
+
+    const needsRebuild =
+      currentOrder.length !== desiredOrder.length ||
+      currentOrder.some((column, index) => column !== desiredOrder[index]);
+
+    if (!needsRebuild) {
+      return;
+    }
+
+    console.log('🔧 Rebuilding users table to place age between date_of_birth and nationality');
+
+    await this._withClient(async (client) => {
+      await client.query('BEGIN');
+      try {
+        await client.query('ALTER TABLE users RENAME TO users_old');
+
+        await client.query(`
+          CREATE TABLE users (
+            id SERIAL PRIMARY KEY,
+            full_name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            mobile_number TEXT NOT NULL UNIQUE,
+            country_code TEXT NOT NULL,
+            role TEXT NOT NULL DEFAULT 'user',
+            signup_date TEXT NOT NULL,
+            testimonial_allowed BOOLEAN NOT NULL DEFAULT FALSE,
+            is_suspended BOOLEAN NOT NULL DEFAULT FALSE,
+            phone_last_changed_at TEXT,
+            gender TEXT,
+            date_of_birth TEXT,
+            age INTEGER,
+            nationality TEXT,
+            marital_status TEXT,
+            anniversary TEXT,
+            state TEXT,
+            district TEXT,
+            passport_number TEXT,
+            passport_expiry_date TEXT,
+            passport_issuing_country TEXT,
+            pan_card_number TEXT,
+            documents TEXT
+          )
+        `);
+
+        await client.query(`
+          INSERT INTO users (
+            id, full_name, email, password, mobile_number, country_code, role, signup_date,
+            testimonial_allowed, is_suspended, phone_last_changed_at, gender, date_of_birth,
+            age, nationality, marital_status, anniversary, state, district, passport_number,
+            passport_expiry_date, passport_issuing_country, pan_card_number, documents
+          )
+          SELECT
+            id, full_name, email, password, mobile_number, country_code, role, signup_date,
+            testimonial_allowed, is_suspended, phone_last_changed_at, gender, date_of_birth,
+            age, nationality, marital_status, anniversary, state, district, passport_number,
+            passport_expiry_date, passport_issuing_country, pan_card_number, documents
+          FROM users_old
+          ORDER BY id
+        `);
+
+        await client.query(`
+          SELECT setval(
+            pg_get_serial_sequence('users', 'id'),
+            COALESCE((SELECT MAX(id) FROM users), 1),
+            EXISTS (SELECT 1 FROM users)
+          )
+        `);
+
+        await client.query('DROP TABLE users_old CASCADE');
+
+        await client.query(`
+          ALTER TABLE bookings
+          ADD CONSTRAINT bookings_user_id_fkey
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        `);
+
+        await client.query(`
+          ALTER TABLE testimonials
+          ADD CONSTRAINT testimonials_user_id_fkey
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        `);
+
+        await client.query('COMMIT');
+      } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+      }
+    });
   }
 
   async _initializeAdmin() {
