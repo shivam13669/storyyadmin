@@ -60,6 +60,7 @@ export interface AuthUser {
   passportExpiryDate?: string | null;
   passportIssuingCountry?: string | null;
   panCardNumber?: string | null;
+  aadhaarCardNo?: string | null;
   documents?: string | null;
 }
 
@@ -338,6 +339,7 @@ export async function updateUserDocuments(userId: number, data: {
   passportExpiryDate?: string;
   passportIssuingCountry?: string;
   panCardNumber?: string;
+  aadhaarCardNo?: string;
   documents?: Array<{id: string; type: string; number: string}>;
 }): Promise<{ message: string }> {
   try {

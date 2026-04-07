@@ -128,6 +128,7 @@ router.post('/login', async (req, res) => {
         passportExpiryDate: user.passportExpiryDate || null,
         passportIssuingCountry: user.passportIssuingCountry || null,
         panCardNumber: user.panCardNumber || null,
+        aadhaarCardNo: user.aadhaarCardNo || null,
         documents: user.documents || null
       }
     });
@@ -179,14 +180,15 @@ router.patch('/user/:id', async (req, res) => {
       passportNumber,
       passportExpiryDate,
       passportIssuingCountry,
-      panCardNumber
+      panCardNumber,
+      aadhaarCardNo
     } = req.body;
     const updates = {};
 
     console.log(`🔄 Updating user ${id} with data:`, {
       fullName, gender, dateOfBirth, nationality, maritalStatus,
       anniversary, state, district, passportNumber, passportExpiryDate,
-      passportIssuingCountry, panCardNumber
+      passportIssuingCountry, panCardNumber, aadhaarCardNo
     });
 
     if (fullName !== undefined) {
@@ -249,6 +251,7 @@ router.patch('/user/:id', async (req, res) => {
     if (passportExpiryDate !== undefined) updates.passportExpiryDate = passportExpiryDate;
     if (passportIssuingCountry !== undefined) updates.passportIssuingCountry = passportIssuingCountry;
     if (panCardNumber !== undefined) updates.panCardNumber = panCardNumber;
+    if (aadhaarCardNo !== undefined) updates.aadhaarCardNo = aadhaarCardNo;
 
     // Handle documents array (convert to JSON string for storage)
     if (req.body.documents !== undefined) {
@@ -280,7 +283,7 @@ router.patch('/user/:id', async (req, res) => {
 
 /**
  * PATCH /api/auth/user/:id/documents
- * Update user document details (passport, PAN, and documents array)
+ * Update user document details (passport, PAN, aadhaar, and documents array)
  */
 router.patch('/user/:id/documents', async (req, res) => {
   try {
@@ -290,6 +293,7 @@ router.patch('/user/:id/documents', async (req, res) => {
       passportExpiryDate,
       passportIssuingCountry,
       panCardNumber,
+      aadhaarCardNo,
       documents
     } = req.body;
     const updates = {};
@@ -299,6 +303,7 @@ router.patch('/user/:id/documents', async (req, res) => {
     if (passportExpiryDate !== undefined) updates.passportExpiryDate = passportExpiryDate;
     if (passportIssuingCountry !== undefined) updates.passportIssuingCountry = passportIssuingCountry;
     if (panCardNumber !== undefined) updates.panCardNumber = panCardNumber;
+    if (aadhaarCardNo !== undefined) updates.aadhaarCardNo = aadhaarCardNo;
 
     // Handle documents array (convert to JSON string for storage)
     if (documents !== undefined) {
@@ -708,6 +713,7 @@ router.post('/google', async (req, res) => {
         passportExpiryDate: user.passportExpiryDate || null,
         passportIssuingCountry: user.passportIssuingCountry || null,
         panCardNumber: user.panCardNumber || null,
+        aadhaarCardNo: user.aadhaarCardNo || null,
         documents: user.documents || null
       }
     });

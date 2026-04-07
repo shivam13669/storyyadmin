@@ -23,6 +23,8 @@ export interface AuthUser {
   passportExpiryDate?: string;
   passportIssuingCountry?: string;
   panCardNumber?: string;
+  aadhaarCardNo?: string;
+  documents?: string | null;
 }
 
 interface AuthContextType {
@@ -78,6 +80,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 passportExpiryDate: (dbUser as any).passportExpiryDate,
                 passportIssuingCountry: (dbUser as any).passportIssuingCountry,
                 panCardNumber: (dbUser as any).panCardNumber,
+                aadhaarCardNo: (dbUser as any).aadhaarCardNo,
+                documents: (dbUser as any).documents,
               });
             } else {
               // User deleted from DB, clear session
@@ -122,6 +126,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         passportExpiryDate: (apiUser as any).passportExpiryDate,
         passportIssuingCountry: (apiUser as any).passportIssuingCountry,
         panCardNumber: (apiUser as any).panCardNumber,
+        aadhaarCardNo: (apiUser as any).aadhaarCardNo,
+        documents: (apiUser as any).documents,
       };
 
       setUser(authUser);
@@ -160,6 +166,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         passportExpiryDate: (apiUser as any).passportExpiryDate,
         passportIssuingCountry: (apiUser as any).passportIssuingCountry,
         panCardNumber: (apiUser as any).panCardNumber,
+        aadhaarCardNo: (apiUser as any).aadhaarCardNo,
+        documents: (apiUser as any).documents,
       };
 
       setUser(authUser);
@@ -204,6 +212,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             passportExpiryDate: (dbUser as any).passportExpiryDate,
             passportIssuingCountry: (dbUser as any).passportIssuingCountry,
             panCardNumber: (dbUser as any).panCardNumber,
+            aadhaarCardNo: (dbUser as any).aadhaarCardNo,
+            documents: (dbUser as any).documents,
           };
           setUser(updatedUser);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
