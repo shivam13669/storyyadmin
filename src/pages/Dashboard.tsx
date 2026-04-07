@@ -178,8 +178,9 @@ const Dashboard = () => {
   const [docTypeSearches, setDocTypeSearches] = useState<{[key: string]: string}>({});
   const [passportNumber, setPassportNumber] = useState("");
   const [panCardNumber, setPanCardNumber] = useState("");
+  const [aadhaarCardNumber, setAadhaarCardNumber] = useState("");
   const [isSavingDocuments, setIsSavingDocuments] = useState(false);
-  const documentTypes = ["Aadhaar", "Driving License", "Voter ID"];
+  const documentTypes = ["Driving License", "Voter ID"];
 
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -249,6 +250,9 @@ const Dashboard = () => {
       }
       if ((user as any).panCardNumber) {
         setPanCardNumber((user as any).panCardNumber);
+      }
+      if ((user as any).aadhaarCardNo) {
+        setAadhaarCardNumber((user as any).aadhaarCardNo);
       }
       if ((user as any).passportExpiryDate) {
         try {
@@ -408,6 +412,7 @@ const Dashboard = () => {
       if (selectedExpiryDate) documentData.passportExpiryDate = format(selectedExpiryDate, "yyyy-MM-dd");
       if (selectedCountry) documentData.passportIssuingCountry = selectedCountry;
       if (panCardNumber) documentData.panCardNumber = panCardNumber;
+      if (aadhaarCardNumber) documentData.aadhaarCardNo = aadhaarCardNumber;
       if (documents.length > 0) documentData.documents = documents;
 
       await updateUserDocuments(user.id, documentData);
@@ -1726,6 +1731,18 @@ const Dashboard = () => {
                           className="mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all h-auto"
                         />
                       </div>
+                    </div>
+
+                    {/* Aadhaar Card Number */}
+                    <div>
+                      <label className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Aadhaar Card No.</label>
+                      <Input
+                        type="text"
+                        placeholder="Enter Aadhaar card number"
+                        value={aadhaarCardNumber}
+                        onChange={(e) => setAadhaarCardNumber(e.target.value)}
+                        className="mt-2 px-3 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all h-auto"
+                      />
                     </div>
 
                     {/* Document Rows */}
