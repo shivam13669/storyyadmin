@@ -55,39 +55,72 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (savedUser) {
           try {
             const parsed = JSON.parse(savedUser);
-            // Verify user still exists in database
-            const { user: dbUser } = await getUser(parsed.id);
-            if (dbUser) {
+
+            try {
+              // Verify user still exists in database
+              const { user: dbUser } = await getUser(parsed.id);
+              if (dbUser) {
+                setUser({
+                  id: dbUser.id,
+                  fullName: dbUser.fullName,
+                  email: dbUser.email,
+                  countryCode: dbUser.countryCode,
+                  mobileNumber: dbUser.mobileNumber,
+                  signupDate: dbUser.signupDate,
+                  role: dbUser.role,
+                  testimonialAllowed: dbUser.testimonialAllowed,
+                  phoneLastChangedAt: dbUser.phoneLastChangedAt,
+                  gender: (dbUser as any).gender,
+                  dateOfBirth: (dbUser as any).dateOfBirth,
+                  age: (dbUser as any).age,
+                  nationality: (dbUser as any).nationality,
+                  maritalStatus: (dbUser as any).maritalStatus,
+                  anniversary: (dbUser as any).anniversary,
+                  state: (dbUser as any).state,
+                  district: (dbUser as any).district,
+                  passportNumber: (dbUser as any).passportNumber,
+                  passportExpiryDate: (dbUser as any).passportExpiryDate,
+                  passportIssuingCountry: (dbUser as any).passportIssuingCountry,
+                  panCardNumber: (dbUser as any).panCardNumber,
+                  aadhaarCardNo: (dbUser as any).aadhaarCardNo,
+                  documents: (dbUser as any).documents,
+                });
+              } else {
+                // User deleted from DB, clear session
+                localStorage.removeItem(STORAGE_KEY);
+              }
+            } catch (apiError: any) {
+              // API validation failed (network error, timeout, etc.)
+              // Don't clear localStorage - keep user logged in with cached data
+              console.warn('Failed to validate user with server, using cached session:', apiError.message);
               setUser({
-                id: dbUser.id,
-                fullName: dbUser.fullName,
-                email: dbUser.email,
-                countryCode: dbUser.countryCode,
-                mobileNumber: dbUser.mobileNumber,
-                signupDate: dbUser.signupDate,
-                role: dbUser.role,
-                testimonialAllowed: dbUser.testimonialAllowed,
-                phoneLastChangedAt: dbUser.phoneLastChangedAt,
-                gender: (dbUser as any).gender,
-                dateOfBirth: (dbUser as any).dateOfBirth,
-                age: (dbUser as any).age,
-                nationality: (dbUser as any).nationality,
-                maritalStatus: (dbUser as any).maritalStatus,
-                anniversary: (dbUser as any).anniversary,
-                state: (dbUser as any).state,
-                district: (dbUser as any).district,
-                passportNumber: (dbUser as any).passportNumber,
-                passportExpiryDate: (dbUser as any).passportExpiryDate,
-                passportIssuingCountry: (dbUser as any).passportIssuingCountry,
-                panCardNumber: (dbUser as any).panCardNumber,
-                aadhaarCardNo: (dbUser as any).aadhaarCardNo,
-                documents: (dbUser as any).documents,
+                id: parsed.id,
+                fullName: parsed.fullName,
+                email: parsed.email,
+                countryCode: parsed.countryCode,
+                mobileNumber: parsed.mobileNumber,
+                signupDate: parsed.signupDate,
+                role: parsed.role,
+                testimonialAllowed: parsed.testimonialAllowed,
+                phoneLastChangedAt: parsed.phoneLastChangedAt,
+                gender: parsed.gender,
+                dateOfBirth: parsed.dateOfBirth,
+                age: parsed.age,
+                nationality: parsed.nationality,
+                maritalStatus: parsed.maritalStatus,
+                anniversary: parsed.anniversary,
+                state: parsed.state,
+                district: parsed.district,
+                passportNumber: parsed.passportNumber,
+                passportExpiryDate: parsed.passportExpiryDate,
+                passportIssuingCountry: parsed.passportIssuingCountry,
+                panCardNumber: parsed.panCardNumber,
+                aadhaarCardNo: parsed.aadhaarCardNo,
+                documents: parsed.documents,
               });
-            } else {
-              // User deleted from DB, clear session
-              localStorage.removeItem(STORAGE_KEY);
             }
-          } catch (e) {
+          } catch (parseError) {
+            // Corrupted localStorage data, clear it
             localStorage.removeItem(STORAGE_KEY);
           }
         }
