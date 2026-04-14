@@ -585,13 +585,18 @@ router.post('/verify-otp', async (req, res) => {
     const storedOTPData = await db.getOTP(emailLower);
 
     if (!storedOTPData) {
-      return res.status(400).json({ error: 'No OTP found for this email. Please request a new one.' });
+      return res.status(400).json({ error: 'Please request a new OTP.' });
     }
 
     // Verify OTP
     const verificationResult = verifyOTP(otp, storedOTPData.otp, storedOTPData.expiresAt);
 
     if (!verificationResult.success) {
+      // If OTP expired, delete it from database
+      if (verificationResult.code === 'OTP_EXPIRED') {
+        await db.deleteOTP(emailLower);
+        console.log(`🗑️ Expired OTP deleted for: ${emailLower}`);
+      }
       return res.status(400).json({ error: verificationResult.message });
     }
 
