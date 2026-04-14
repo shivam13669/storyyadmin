@@ -737,6 +737,20 @@ export class SQLiteDatabase extends IDatabase {
     }
   }
 
+  async deleteExpiredOTPs() {
+    try {
+      const now = new Date().toISOString();
+      const stmt = this.db.prepare(`DELETE FROM otp_verifications WHERE expires_at < ?`);
+      stmt.run([now]);
+      this._save();
+      // Return the number of rows deleted
+      const result = this.db.exec(`SELECT changes() as count`);
+      return result[0]?.values[0]?.[0] || 0;
+    } catch (error) {
+      throw new Error(`Failed to delete expired OTPs: ${error.message}`);
+    }
+  }
+
   // ============ Coupons Operations ============
 
   async createCoupon(couponData) {
