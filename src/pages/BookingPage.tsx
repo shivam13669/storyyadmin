@@ -415,6 +415,7 @@ const BookingPage = () => {
                 selectedBike={selectedBike}
                 finalPrice={finalPrice}
                 baseTotal={baseTotal}
+                bikePrice={bikePrice}
                 appliedCoupon={appliedCoupon}
                 couponCode={couponCode}
                 couponError={couponError}
