@@ -108,7 +108,7 @@ export const destinations: Destination[] = [
         duration: "5 nights · 6 days",
         description:
           "Embark on a breathtaking 6-day journey through the majestic landscapes of Ladakh. Experience high-altitude adventure with the legendary Khardungla and Changla passes, serene Pangong Lake, mystical monasteries, and the enchanting Nubra Valley. This is not just about luxury or budget—it's about reconnecting with nature, embracing challenges, and finding joy in the unexpected.",
-        price: "₹18,149",
+        price: "₹18,333",
         oldPrice: "₹46,200",
         badge: "Save 8%",
         rating: 4.9,
@@ -1501,7 +1501,7 @@ export const destinations: Destination[] = [
         duration: "12 nights · 13 days",
         description:
           "This 13-day Himalayan Odyssey is the ultimate pilgrimage for every adventure seeker - a grand circuit spanning over 3000 kilometers from the plains of Chandigarh to the highest reaches of the trans-Himalayan desert. From the lush saffron valleys of Kashmir to the stark moonscapes of Ladakh, conquer legendary passes and experience Ladakh's most remote frontiers before descending through the Atal Tunnel engineering marvel.",
-        price: "₹30,799",
+        price: "₹30,999",
         oldPrice: "₹64,460",
         badge: "Group Special",
         rating: 4.9,
