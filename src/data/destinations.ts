@@ -340,9 +340,9 @@ export const destinations: Destination[] = [
             cc: "452cc",
             features: ["Maximum power", "Advanced suspension", "Best for experts", "Handles all terrains"],
             seatingPrices: {
-              solo: 28049,
-              "dual-sharing": 20349,
-              "seat-in-backup": 18149,
+              solo: 68474,
+              "dual-sharing": 49279,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -354,9 +354,9 @@ export const destinations: Destination[] = [
             cc: "411cc",
             features: ["Better ground clearance", "Improved suspension", "More powerful engine", "Ideal for rough terrain"],
             seatingPrices: {
-              solo: 23649,
-              "dual-sharing": 18699,
-              "seat-in-backup": 18149,
+              solo: 55109,
+              "dual-sharing": 42679,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -368,9 +368,9 @@ export const destinations: Destination[] = [
             cc: "350cc",
             features: ["Best for beginners", "Comfortable seating", "Excellent fuel efficiency", "Classic design"],
             seatingPrices: {
-              solo: 23649,
-              "dual-sharing": 18699,
-              "seat-in-backup": 18149,
+              solo: 53459,
+              "dual-sharing": 41689,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -382,9 +382,9 @@ export const destinations: Destination[] = [
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
             seatingPrices: {
-              solo: 18149,
-              "dual-sharing": 18149,
-              "seat-in-backup": 18149,
+              solo: 30799,
+              "dual-sharing": 30799,
+              "seat-in-backup": 30799,
             },
           },
         ],
@@ -671,9 +671,9 @@ export const destinations: Destination[] = [
             cc: "452cc",
             features: ["Maximum power", "Advanced suspension", "Best for experts", "Handles all terrains"],
             seatingPrices: {
-              solo: 35199,
-              "dual-sharing": 25849,
-              "seat-in-backup": 21999,
+              solo: 68474,
+              "dual-sharing": 49279,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -685,9 +685,9 @@ export const destinations: Destination[] = [
             cc: "411cc",
             features: ["Better ground clearance", "Improved suspension", "More powerful engine", "Ideal for rough terrain"],
             seatingPrices: {
-              solo: 29699,
-              "dual-sharing": 23099,
-              "seat-in-backup": 21999,
+              solo: 55109,
+              "dual-sharing": 42679,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -699,9 +699,9 @@ export const destinations: Destination[] = [
             cc: "350cc",
             features: ["Best for beginners", "Comfortable seating", "Excellent fuel efficiency", "Classic design"],
             seatingPrices: {
-              solo: 29699,
-              "dual-sharing": 23099,
-              "seat-in-backup": 21999,
+              solo: 53459,
+              "dual-sharing": 41689,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -713,9 +713,9 @@ export const destinations: Destination[] = [
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
             seatingPrices: {
-              solo: 21999,
-              "dual-sharing": 21999,
-              "seat-in-backup": 21999,
+              solo: 30799,
+              "dual-sharing": 30799,
+              "seat-in-backup": 30799,
             },
           },
         ],
@@ -1049,9 +1049,9 @@ export const destinations: Destination[] = [
             cc: "452cc",
             features: ["Maximum power", "Advanced suspension", "Best for experts", "Handles all terrains"],
             seatingPrices: {
-              solo: 43449,
-              "dual-sharing": 32119,
-              "seat-in-backup": 28599,
+              solo: 68474,
+              "dual-sharing": 49279,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -1063,9 +1063,9 @@ export const destinations: Destination[] = [
             cc: "411cc",
             features: ["Better ground clearance", "Improved suspension", "More powerful engine", "Ideal for rough terrain"],
             seatingPrices: {
-              solo: 36849,
-              "dual-sharing": 29149,
-              "seat-in-backup": 28599,
+              solo: 55109,
+              "dual-sharing": 42679,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -1077,9 +1077,9 @@ export const destinations: Destination[] = [
             cc: "350cc",
             features: ["Best for beginners", "Comfortable seating", "Excellent fuel efficiency", "Classic design"],
             seatingPrices: {
-              solo: 36849,
-              "dual-sharing": 29149,
-              "seat-in-backup": 28599,
+              solo: 53459,
+              "dual-sharing": 41689,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -1091,9 +1091,9 @@ export const destinations: Destination[] = [
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
             seatingPrices: {
-              solo: 28599,
-              "dual-sharing": 28599,
-              "seat-in-backup": 28599,
+              solo: 30799,
+              "dual-sharing": 30799,
+              "seat-in-backup": 30799,
             },
           },
         ],
@@ -1439,9 +1439,9 @@ export const destinations: Destination[] = [
             cc: "452cc",
             features: ["Maximum power", "Advanced suspension", "Best for experts", "Handles all terrains"],
             seatingPrices: {
-              solo: 39499,
-              "dual-sharing": 29199,
-              "seat-in-backup": 25999,
+              solo: 68474,
+              "dual-sharing": 49279,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -1453,9 +1453,9 @@ export const destinations: Destination[] = [
             cc: "411cc",
             features: ["Better ground clearance", "Improved suspension", "More powerful engine", "Ideal for rough terrain"],
             seatingPrices: {
-              solo: 33499,
-              "dual-sharing": 26499,
-              "seat-in-backup": 25999,
+              solo: 55109,
+              "dual-sharing": 42679,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -1467,9 +1467,9 @@ export const destinations: Destination[] = [
             cc: "350cc",
             features: ["Best for beginners", "Comfortable seating", "Excellent fuel efficiency", "Classic design"],
             seatingPrices: {
-              solo: 33499,
-              "dual-sharing": 26499,
-              "seat-in-backup": 25999,
+              solo: 53459,
+              "dual-sharing": 41689,
+              "seat-in-backup": 30799,
             },
           },
           {
@@ -1481,9 +1481,9 @@ export const destinations: Destination[] = [
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
             seatingPrices: {
-              solo: 25999,
-              "dual-sharing": 25999,
-              "seat-in-backup": 25999,
+              solo: 30799,
+              "dual-sharing": 30799,
+              "seat-in-backup": 30799,
             },
           },
         ],
