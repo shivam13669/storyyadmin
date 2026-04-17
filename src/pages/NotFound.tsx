@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import img404 from "@/assets/404.png";
 
@@ -97,9 +97,9 @@ const NotFound = () => {
 
           <div className="title">OPPS! PAGE NOT FOUND</div>
 
-          <a href="/" className="btn">
+          <Link to="/" className="btn">
             BACK TO HOME
-          </a>
+          </Link>
         </div>
       </div>
     </>
