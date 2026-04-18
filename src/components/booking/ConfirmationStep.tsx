@@ -15,7 +15,6 @@ interface ConfirmationStepProps {
   selectedBike: BikeOption | undefined;
   finalPrice: number;
   baseTotal: number;
-  bikePrice: number;
   appliedCoupon: Coupon | null;
   couponCode: string;
   couponError: string;
@@ -33,7 +32,6 @@ const ConfirmationStep = ({
   selectedBike,
   finalPrice,
   baseTotal,
-  bikePrice,
   appliedCoupon,
   couponCode,
   couponError,
@@ -44,6 +42,7 @@ const ConfirmationStep = ({
   couponValidating = false,
 }: ConfirmationStepProps) => {
   const { formatPrice } = useCurrency();
+  const packageBasePrice = parsePrice(travelPackage.price) || 0;
   const formatSignedPrice = (amount: number, sign: "+" | "-" = "+") => `${sign}${formatPrice(amount)}`;
   const travelDateObj = new Date(formData.travelDate);
   const formattedDate = travelDateObj.toLocaleDateString("en-IN", {
@@ -246,9 +245,9 @@ const ConfirmationStep = ({
 
             <div className="space-y-2">
               <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-                <span className="text-gray-700">Price per Person</span>
+                <span className="text-gray-700">Base Price (per person)</span>
                 <span className="font-semibold text-gray-900">
-                  {formatPrice(bikePrice)}
+                  {formatPrice(packageBasePrice)}
                 </span>
               </div>
 
@@ -258,10 +257,23 @@ const ConfirmationStep = ({
                 </span>
                 <span className="font-semibold text-gray-900">
                   {formData.guests.length > 0
-                    ? formatSignedPrice(bikePrice * formData.guests.length)
+                    ? formatSignedPrice(packageBasePrice * formData.guests.length)
                     : formatPrice(0)}
                 </span>
               </div>
+
+              {selectedBike && selectedBike.priceMultiplier !== 1.0 && (
+                <div className="flex justify-between items-center pb-3 border-b border-gray-200">
+                  <span className="text-gray-700">
+                    {selectedBike.name} Upgrade ({Math.round((selectedBike.priceMultiplier - 1) * 100)}%)
+                  </span>
+                  <span className="font-semibold text-gray-900">
+                    {formatSignedPrice(
+                      packageBasePrice * (selectedBike.priceMultiplier - 1) * (1 + formData.guests.length)
+                    )}
+                  </span>
+                </div>
+              )}
 
               {appliedCoupon && (
                 <div className="flex justify-between items-center pb-3 border-b border-gray-200">
