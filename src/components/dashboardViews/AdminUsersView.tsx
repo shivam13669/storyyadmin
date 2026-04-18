@@ -62,6 +62,11 @@ interface AdminUsersViewProps {
 
 export function AdminUsersView({ users, onDataChange }: AdminUsersViewProps) {
   const { toast } = useToast();
+
+  const isValidMobileNumber = (number: string) => {
+    // Check if mobileNumber exists and doesn't start with GOOGLE_
+    return number && !number.startsWith("GOOGLE_");
+  };
   const [loading, setLoading] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
   const [suspendConfirmId, setSuspendConfirmId] = useState<number | null>(null);
@@ -122,7 +127,7 @@ export function AdminUsersView({ users, onDataChange }: AdminUsersViewProps) {
     const exportData = users.map((user) => ({
       "Full Name": user.fullName,
       Email: user.email,
-      "Phone Number": `+${user.countryCode} ${user.mobileNumber}`,
+      "Phone Number": isValidMobileNumber(user.mobileNumber) ? `+${user.countryCode} ${user.mobileNumber}` : "",
       Role: user.role,
       Status: user.isSuspended ? "Suspended" : "Active",
       "Signup Date": format(new Date(user.signupDate), "MMM dd, yyyy"),
@@ -180,7 +185,7 @@ export function AdminUsersView({ users, onDataChange }: AdminUsersViewProps) {
                     </TableCell>
                     <TableCell className="text-gray-600">{user.email}</TableCell>
                     <TableCell className="text-gray-600">
-                      +{user.countryCode} {user.mobileNumber}
+                      {isValidMobileNumber(user.mobileNumber) ? `+${user.countryCode} ${user.mobileNumber}` : "—"}
                     </TableCell>
                     <TableCell>
                       <Badge

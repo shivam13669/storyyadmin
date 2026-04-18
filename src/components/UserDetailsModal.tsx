@@ -144,6 +144,11 @@ export function UserDetailsModal({
     return dialCodes[countryCode] || countryCode;
   };
 
+  const isValidMobileNumber = (number: string) => {
+    // Check if mobileNumber exists and doesn't start with GOOGLE_
+    return number && !number.startsWith("GOOGLE_");
+  };
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
@@ -181,7 +186,7 @@ export function UserDetailsModal({
                   <div className="p-2 bg-green-100 rounded-lg">
                     <Phone className="w-4 h-4 text-green-600" />
                   </div>
-                  <span className="font-medium">+{getCountryDialCode(user.countryCode)} {user.mobileNumber}</span>
+                  <span className="font-medium">{isValidMobileNumber(user.mobileNumber) ? `+${getCountryDialCode(user.countryCode)} ${user.mobileNumber}` : "—"}</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-700">
                   <div className="p-2 bg-purple-100 rounded-lg">

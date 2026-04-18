@@ -217,6 +217,11 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
     return countryCodeMap[code] || code;
   };
 
+  const isValidMobileNumber = (number: string) => {
+    // Check if mobileNumber exists and doesn't start with GOOGLE_
+    return number && !number.startsWith("GOOGLE_");
+  };
+
   const calculateAge = (dateOfBirth?: string) => {
     if (!dateOfBirth) return null;
     const today = new Date();
@@ -244,7 +249,7 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
         return [
           user.fullName,
           user.email,
-          `+${getNumericCountryCode(user.countryCode)} ${user.mobileNumber}`,
+          isValidMobileNumber(user.mobileNumber) ? `+${getNumericCountryCode(user.countryCode)} ${user.mobileNumber}` : "",
           user.role === "admin" ? "Admin" : "Customer",
           user.isSuspended ? "Suspended" : "Active",
           formattedDate,
@@ -389,7 +394,11 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
                           <div>
                             <p className="font-medium text-gray-900">{user.fullName}</p>
                             <p className="text-xs text-gray-600">{user.email}</p>
-                            <p className="text-xs text-gray-600">+{getNumericCountryCode(user.countryCode)} {user.mobileNumber}</p>
+                            {isValidMobileNumber(user.mobileNumber) ? (
+                              <p className="text-xs text-gray-600">+{getNumericCountryCode(user.countryCode)} {user.mobileNumber}</p>
+                            ) : (
+                              <p className="text-xs text-gray-400">—</p>
+                            )}
                           </div>
                         </div>
                       </td>
