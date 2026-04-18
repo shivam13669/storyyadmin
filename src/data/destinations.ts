@@ -1501,7 +1501,7 @@ export const destinations: Destination[] = [
         duration: "12 nights · 13 days",
         description:
           "This 13-day Himalayan Odyssey is the ultimate pilgrimage for every adventure seeker - a grand circuit spanning over 3000 kilometers from the plains of Chandigarh to the highest reaches of the trans-Himalayan desert. From the lush saffron valleys of Kashmir to the stark moonscapes of Ladakh, conquer legendary passes and experience Ladakh's most remote frontiers before descending through the Atal Tunnel engineering marvel.",
-        price: "₹30,799",
+        price: "₹25,499",
         oldPrice: "₹64,460",
         badge: "Group Special",
         rating: 4.9,
@@ -2001,7 +2001,7 @@ export const destinations: Destination[] = [
             seatingPrices: {
               solo: 68474,
               "dual-sharing": 49279,
-              "seat-in-backup": 30799,
+              "seat-in-backup": 25499,
             },
           },
           {
@@ -2015,7 +2015,7 @@ export const destinations: Destination[] = [
             seatingPrices: {
               solo: 55109,
               "dual-sharing": 42679,
-              "seat-in-backup": 30799,
+              "seat-in-backup": 25499,
             },
           },
           {
@@ -2029,7 +2029,7 @@ export const destinations: Destination[] = [
             seatingPrices: {
               solo: 53459,
               "dual-sharing": 41689,
-              "seat-in-backup": 30799,
+              "seat-in-backup": 25499,
             },
           },
           {
@@ -2040,9 +2040,9 @@ export const destinations: Destination[] = [
             isBackupVehicle: true,
             features: ["Comfortable seating", "Support vehicle", "Scenic viewing"],
             seatingPrices: {
-              solo: 30799,
-              "dual-sharing": 30799,
-              "seat-in-backup": 30799,
+              solo: 25499,
+              "dual-sharing": 25499,
+              "seat-in-backup": 25499,
             },
           },
         ],
