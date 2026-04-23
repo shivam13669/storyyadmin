@@ -13,7 +13,7 @@ const Footer = () => {
             {/* Brand */}
             <div className="min-w-0">
               <div className="flex items-center space-x-2 mb-6">
-                <img src="https://cdn.builder.io/api/v1/image/assets%2Fde743b16560c4ea5a4a46e65a2543876%2F4be0568d99d2469baa7ef6c274a8a1b2?format=webp&width=800" alt="StoriesByFoot logo" className="h-10 sm:h-12 w-auto" />
+                <img src="https://cdn.builder.io/api/v1/image/assets%2Fde743b16560c4ea5a4a46e65a2543876%2F4be0568d99d2469baa7ef6c274a8a1b2?format=webp&width=800" alt="Stories by Foot logo" className="h-10 sm:h-12 w-auto" />
                 <span className="text-xl sm:text-2xl font-bold text-white truncate">StoriesBy<span className="text-secondary">Foot</span></span>
               </div>
               <p className="text-white/80 mb-6 leading-relaxed">
@@ -132,7 +132,7 @@ const Footer = () => {
         <div className="border-t border-white/20 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-white/60 text-sm">
-              © 2026 StoriesByFoot. All rights reserved.
+              © 2026 Stories by Foot. All rights reserved.
             </div>
             <div className="flex space-x-6 text-sm">
               <Link to="/privacy-policy" className="text-white/60 hover:text-adventure-gold transition-colors">Privacy Policy</Link>
