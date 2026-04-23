@@ -27,7 +27,7 @@ const testimonials = [
     location: "New Delhi, India",
     trip: "Ladakh Himalayan Ride",
     quote:
-      "StoriesByFoot turned the intimidating Himalayas into a dream ride. Every halt had hot chai, every route had a backup plan, and they never stopped surprising us with hidden gems.",
+      "Stories by Foot turned the intimidating Himalayas into a dream ride. Every halt had hot chai, every route had a backup plan, and they never stopped surprising us with hidden gems.",
     image:
       "https://images.unsplash.com/photo-1557053910-d9eadeed1c58?auto=format&fit=crop&w=400&q=80",
     highlight: "Altitude 17,982 ft",
@@ -51,7 +51,7 @@ const testimonials = [
     location: "Mumbai, India",
     trip: "Spiti Valley Convoy",
     quote:
-      "I have done a dozen driving expeditions, but none matched the precision of StoriesByFoot. The lead marshals navigated blizzards like pros and kept morale sky high.",
+      "I have done a dozen driving expeditions, but none matched the precision of Stories by Foot. The lead marshals navigated blizzards like pros and kept morale sky high.",
     image:
       "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=400&q=80",
     highlight: "12 vehicles in convoy",
@@ -87,7 +87,7 @@ const testimonials = [
     location: "Delhi, India",
     trip: "Northeast Stories Trail",
     quote:
-      "As a travel writer, I've explored many regions, but the storytelling approach of StoriesByFoot was exceptional. They don't just guide you through destinations, they unveil the soul of each place through authentic local connections.",
+      "As a travel writer, I've explored many regions, but the storytelling approach of Stories by Foot was exceptional. They don't just guide you through destinations, they unveil the soul of each place through authentic local connections.",
     image:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80",
     highlight: "Culture-immersive journey",
@@ -254,7 +254,7 @@ const TestimonialsPage = () => {
                   Real voices from trails, passes, and river bends
                 </h1>
                 <p className="text-lg text-muted-foreground max-w-2xl">
-                  Hear from the explorers who trusted StoriesByFoot to plan their next adventure. Every itinerary is handcrafted, every safety net is tested, and every memory is unforgettable.
+                  Hear from the explorers who trusted Stories by Foot to plan their next adventure. Every itinerary is handcrafted, every safety net is tested, and every memory is unforgettable.
                 </p>
                 <div className="flex flex-wrap items-center gap-6">
                   <div>
@@ -277,7 +277,7 @@ const TestimonialsPage = () => {
                 <CardHeader className="space-y-2">
                   <CardTitle className="text-2xl font-semibold">Featured Story</CardTitle>
                   <p className="text-sm text-muted-foreground">
-                    “We were constantly chasing horizons, but StoriesByFoot always stayed one curve ahead with support and warmth.”
+                    “We were constantly chasing horizons, but Stories by Foot always stayed one curve ahead with support and warmth.”
                   </p>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-4">
@@ -296,7 +296,7 @@ const TestimonialsPage = () => {
                     <Badge variant="secondary">Offbeat homestays</Badge>
                   </div>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    “My crew captured rhinos at dawn while the StoriesByFoot team handled logistics, permits, and local storytellers. I never imagined adventure travel could feel this effortless.”
+                    “My crew captured rhinos at dawn while the Stories by Foot team handled logistics, permits, and local storytellers. I never imagined adventure travel could feel this effortless.”
                   </p>
                 </CardContent>
               </Card>
@@ -314,7 +314,7 @@ const TestimonialsPage = () => {
             </div>
             <div className="flex items-center gap-3">
               <Badge className="bg-primary/15 text-primary border border-primary/20 px-4 py-2 text-sm">
-                98% would recommend StoriesByFoot
+                98% would recommend Stories by Foot
               </Badge>
               {totalPages > 1 && (
                 <div className="flex items-center gap-1">
