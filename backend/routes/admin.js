@@ -127,28 +127,52 @@ router.delete('/otp/block/:email', isAdmin, async (req, res) => {
 router.post('/otp/reset-send-limit/:email/:purpose', isAdmin, async (req, res) => {
   try {
     const email = req.params.email.toLowerCase();
-    const purpose = req.params.purpose; // 'signup' or 'password-reset'
+    let purpose = req.params.purpose; // 'signup' or 'password-reset'
+
+    console.log(`🔧 Admin reset OTP limit for: ${email} (purpose: "${purpose}")`);
+
+    // Normalize purpose - handle 'password_reset' to 'password-reset'
+    if (purpose === 'password_reset') {
+      purpose = 'password-reset';
+    }
 
     if (!['signup', 'password-reset'].includes(purpose)) {
+      console.error(`❌ Invalid purpose received: "${purpose}"`);
       return res.status(400).json({ error: 'Invalid purpose. Must be "signup" or "password-reset".' });
     }
 
     const db = getDB();
-    
-    // Note: We're not deleting history, just informing the admin that they can request new OTP
-    // In a more advanced system, you might want to actually delete old records
-    // For now, we can just remove any active OTP and blocks
+
+    // Get current send history before clearing
+    const sendHistoryBefore = await db.getOTPSendHistory(email, purpose, 24);
+    console.log(`📊 Send history before clear: ${sendHistoryBefore.length} records for ${purpose}`);
+
+    // Clear OTP send history to reset the daily limit
+    console.log(`📝 Clearing OTP send history for ${email} (${purpose})...`);
+    await db.clearOTPSendHistory(email, purpose);
+
+    // Verify it was cleared
+    const sendHistoryAfter = await db.getOTPSendHistory(email, purpose, 24);
+    console.log(`✅ Send history after clear: ${sendHistoryAfter.length} records for ${purpose}`);
+
+    // Also remove any active OTP and blocks
+    console.log(`🗑️  Removing OTP and blocks...`);
     await db.deleteOTP(email);
     await db.removeOTPBlock(email);
 
+    console.log(`✅ OTP limit reset complete for ${email}`);
     res.json({
       message: `OTP send limit reset for ${purpose}`,
       email,
       purpose,
-      note: 'User can now request a new OTP'
+      note: 'User can now request a new OTP',
+      debug: {
+        recordsCleared: sendHistoryBefore.length,
+        recordsRemaining: sendHistoryAfter.length
+      }
     });
   } catch (error) {
-    console.error('Reset send limit error:', error);
+    console.error('❌ Reset send limit error:', error);
     res.status(500).json({ error: error.message });
   }
 });
