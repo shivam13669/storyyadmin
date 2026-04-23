@@ -47,7 +47,7 @@ const Blog = () => {
           <section className="section hero" aria-label="home">
             <div className="container">
               <h1 className="h1 hero-title">
-                <strong className="strong">Hey, we’re StoriesByFoot.</strong> See our stories and ideas.
+                <strong className="strong">Hey, we’re Stories by Foot.</strong> See our stories and ideas.
               </h1>
 
               <div className="wrapper">
