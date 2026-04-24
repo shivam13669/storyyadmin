@@ -168,9 +168,9 @@ SAS Nagar, Punjab - 140307, India</a></div>
                 <div className="mt-4">
                   <Link 
                     to="/contact"
-                    className="group relative z-0 inline-flex items-center justify-center overflow-hidden bg-[#01b3a7] text-white hover:text-[#ffffff] px-[36px] py-[16px] font-normal uppercase tracking-[0.05em] text-[14px] transition-colors duration-[400ms] ease-[cubic-bezier(0.2,1,0.3,1)] rounded-[4px] border border-transparent hover:border-[#01b3a7]"
+                    className="group relative z-0 inline-flex items-center justify-center overflow-hidden bg-[#01b3a7] text-white hover:text-[#ffffff] px-[36px] py-[16px] font-normal uppercase tracking-[0.05em] text-[14px] transition-colors [transition-duration:400ms] [transition-timing-function:cubic-bezier(0.2,1,0.3,1)] rounded-[4px] border border-transparent hover:border-[#01b3a7]"
                   >
-                    <span className="absolute inset-0 z-[-1] w-[101%] h-[101%] bg-white opacity-0 scale-x-[0.7] transition-all duration-[420ms] ease-[cubic-bezier(0.2,1,0.3,1)] group-hover:opacity-100 group-hover:scale-x-100 origin-center rounded-[4px]"></span>
+                    <span className="absolute inset-0 z-[-1] w-[101%] h-[101%] bg-white opacity-0 scale-x-[0.7] transition-all [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.2,1,0.3,1)] group-hover:opacity-100 group-hover:scale-x-100 origin-center rounded-[4px]"></span>
                     <span className="relative z-10 group-hover:text-[#01b3a7] transition-colors duration-200">Get in touch</span>
                   </Link>
                 </div>
