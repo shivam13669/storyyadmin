@@ -1,8 +1,8 @@
-# StoriesByFoot - Adventure Travel Booking Platform
+# Stories by Foot - Adventure Travel Booking Platform
 
 **Walk the Road. Live the Story.**
 
-StoriesByFoot is a modern, full-stack travel and adventure booking platform built with React, TypeScript, and Express. It enables users to browse adventure destinations, manage bookings, and connect with travel communities while providing administrators with comprehensive management tools.
+Stories by Foot is a modern, full-stack travel and adventure booking platform built with React, TypeScript, and Express. It enables users to browse adventure destinations, manage bookings, and connect with travel communities while providing administrators with comprehensive management tools.
 
 **Live Demo:** https://storiesbyfoot.vercel.app/
 
@@ -303,7 +303,7 @@ The Express server will serve the built frontend and API from a single port (def
 
 ### Architecture
 
-StoriesByFoot uses an abstraction layer that supports multiple databases:
+Stories by Foot uses an abstraction layer that supports multiple databases:
 
 **Development (Default)**
 - **SQLite:** File-based database stored locally
@@ -891,4 +891,4 @@ pnpm build
 
 **Last Updated:** April 2026
 
-**Maintained by:** StoriesByFoot Team
+**Maintained by:** Stories by Foot Team

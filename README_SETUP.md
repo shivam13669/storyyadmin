@@ -1,4 +1,4 @@
-# StoriesByFoot - Setup Guide
+# Stories by Foot - Setup Guide
 
 ## Database File Explanation
 

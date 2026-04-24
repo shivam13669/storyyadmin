@@ -1,4 +1,4 @@
-# StoriesByFoot - Travel Adventure Website
+# Stories by Foot - Travel Adventure Website
 
 ## Overview
 A travel adventure website built with React + TypeScript frontend and Node.js/Express backend. Features destination browsing, user authentication, admin dashboard, testimonials, and currency conversion.

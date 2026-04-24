@@ -1,4 +1,4 @@
-# StoriesByFoot - Complete Setup Guide
+# Stories by Foot - Complete Setup Guide
 
 ## Quick Start
 

@@ -111,7 +111,7 @@ const TestimonialsCarousel: React.FC = () => {
             Shared memories that stay
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Read reviews from explorers who experienced StoriesByFoot's best trips.
+            Read reviews from explorers who experienced Stories by Foot's best trips.
           </p>
         </div>
 

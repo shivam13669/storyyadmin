@@ -14,7 +14,7 @@ const Footer = () => {
             <div className="min-w-0">
               <div className="flex items-center space-x-2 mb-6">
                 <img src="https://cdn.builder.io/api/v1/image/assets%2Fde743b16560c4ea5a4a46e65a2543876%2F4be0568d99d2469baa7ef6c274a8a1b2?format=webp&width=800" alt="Stories by Foot logo" className="h-10 sm:h-12 w-auto" />
-                <span className="text-xl sm:text-2xl font-bold text-white truncate">StoriesBy<span className="text-secondary">Foot</span></span>
+                <span className="text-xl sm:text-2xl font-bold text-white truncate">Stories by <span className="text-secondary">Foot</span></span>
               </div>
               <p className="text-white/80 mb-6 leading-relaxed">
                 Your gateway to extraordinary adventures. We create unforgettable experiences that connect you with nature and push your boundaries.
