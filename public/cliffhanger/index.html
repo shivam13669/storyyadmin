@@ -12,7 +12,12 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
-    <style>.ie-panel{display: none;background: #212121;padding: 10px 0;box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);clear: both;text-align:center;position: relative;z-index: 1;} html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {display: block;}</style>
+    <style>
+      .ie-panel{display: none;background: #212121;padding: 10px 0;box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);clear: both;text-align:center;position: relative;z-index: 1;} html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {display: block;}
+      .owl-carousel .owl-stage-outer {
+        overflow: visible !important;
+      }
+    </style>
   </head>
   <body>
     <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
@@ -238,7 +243,7 @@
           </div>
           
           <div class="row justify-content-center">
-            <div class="col-12" style="max-width: 580px; margin: 0 auto; padding-top: 10px;">
+            <div class="col-12" style="max-width: 580px; margin: 0 auto;">
               <div class="owl-carousel" data-items="1" data-sm-items="1" data-md-items="1" data-lg-items="1" data-xl-items="1" data-margin="30" data-autoplay="true" data-loop="true" data-nav="false" data-dots="false" data-mouse-drag="true" data-autoplay-timeout="3000">
                 
                 <!-- Japan Card -->
