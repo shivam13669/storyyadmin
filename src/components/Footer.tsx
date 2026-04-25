@@ -218,7 +218,7 @@ const Footer = () => {
 
               {/* Policy Pages */}
               <div className="md:w-1/3 order-2 md:order-3 text-center md:text-right text-[14px] text-white/30 font-['Poppins',sans-serif] tracking-[0.025em]">
-                <div className="flex flex-col md:flex-row md:justify-end gap-4 md:gap-8">
+                <div className="flex flex-col md:flex-row md:justify-end gap-2 md:gap-4">
 
                   <Link
                     to="/terms-and-condition"
