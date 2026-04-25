@@ -150,11 +150,11 @@ SAS Nagar, Punjab - 140307, India</a></div>
                   </li>
                   <li className="flex items-center">
                     <span className="w-[6px] h-[6px] rounded-full bg-[#01b3a7] mr-3"></span>
-                    <a href="#" className="text-[14px] leading-[1.72] text-white/80 hover:text-[#01b3a7] transition-colors">Our Tours</a>
+                    <a href="/destinations" className="text-[14px] leading-[1.72] text-white/80 hover:text-[#01b3a7] transition-colors">Our Tours</a>
                   </li>
                   <li className="flex items-center">
                     <span className="w-[6px] h-[6px] rounded-full bg-[#01b3a7] mr-3"></span>
-                    <a href="#" className="text-[14px] leading-[1.72] text-white/80 hover:text-[#01b3a7] transition-colors">Our Team</a>
+                    <a href="/contact" className="text-[14px] leading-[1.72] text-white/80 hover:text-[#01b3a7] transition-colors">Our Team</a>
                   </li>
                   <li className="flex items-center">
                     <span className="w-[6px] h-[6px] rounded-full bg-[#01b3a7] mr-3"></span>
@@ -162,7 +162,7 @@ SAS Nagar, Punjab - 140307, India</a></div>
                   </li>
                   <li className="flex items-center">
                     <span className="w-[6px] h-[6px] rounded-full bg-[#01b3a7] mr-3"></span>
-                    <a href="#" className="text-[14px] leading-[1.72] text-white/80 hover:text-[#01b3a7] transition-colors">Blog</a>
+                    <a href="/blog" className="text-[14px] leading-[1.72] text-white/80 hover:text-[#01b3a7] transition-colors">Blog</a>
                   </li>
                 </ul>
                 <div className="mt-4">
