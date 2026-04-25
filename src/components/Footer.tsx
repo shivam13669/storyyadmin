@@ -221,7 +221,7 @@ const Footer = () => {
                 <div className="flex flex-col md:flex-row md:justify-end gap-2 md:gap-4">
 
                   <Link
-                    to="/terms-condition"
+                    to="/terms-and-condition"
                     className="hover:text-[#01b3a7] transition-colors"
                   >
                     Terms & Condition
