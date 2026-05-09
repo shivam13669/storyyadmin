@@ -418,7 +418,7 @@ export class PostgresDatabase extends IDatabase {
             passport_expiry_date, passport_issuing_country, pan_card_number, aadhaar_card_no, documents
           )
           SELECT
-            id, full_name, email, password, COALESCE(country_code, 'IN'), mobile_number, role, signup_date,
+            id, full_name, email, password, country_code, mobile_number, role, signup_date,
             testimonial_allowed, is_suspended, phone_last_changed_at, gender, date_of_birth,
             age, nationality, marital_status, anniversary, state, district, passport_number,
             passport_expiry_date, passport_issuing_country, pan_card_number, aadhaar_card_no, documents
