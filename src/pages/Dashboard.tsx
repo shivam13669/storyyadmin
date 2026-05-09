@@ -28,7 +28,6 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import NotFound from "@/pages/NotFound";
 import { format } from "date-fns";
 import { UserProfileView } from "@/components/dashboardViews/UserProfileView";
 import { ChangePasswordModal } from "@/components/ChangePasswordModal";
@@ -185,14 +184,15 @@ const Dashboard = () => {
 
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Check auth or show 404 if not authenticated
-  if (!authLoading && !isAuthenticated) {
-    return <NotFound />;
-  }
-
-  // Redirect admin users to admin dashboard
+  // Redirect if not authenticated or if admin (admin should go to admin dashboard)
   useEffect(() => {
+    // Wait for auth to load before checking
     if (authLoading) return;
+
+    if (!isAuthenticated) {
+      navigate("/");
+      return;
+    }
     if (isAdmin) {
       navigate("/admin/dashboard");
       return;

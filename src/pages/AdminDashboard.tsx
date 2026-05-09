@@ -31,7 +31,6 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import NotFound from "@/pages/NotFound";
 import { getAllUsers as getAllUsersFromAPI, getAllBookings, getAllTestimonials, Booking, Testimonial } from "@/lib/api";
 import type { User } from "@/lib/db";
 import { Coupon } from "@/utils/couponUtils";
@@ -66,14 +65,16 @@ const AdminDashboard = () => {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Check auth or show 404 if not authenticated
-  if (!authLoading && !isAuthenticated) {
-    return <NotFound />;
-  }
-
-  // Redirect non-admin users to user dashboard
+  // Redirect if not admin
   useEffect(() => {
+    // Wait for auth to load before checking
     if (authLoading) return;
+
+    if (!isAuthenticated) {
+      navigate("/");
+      return;
+    }
+
     if (!isAdmin) {
       navigate("/dashboard");
       return;
