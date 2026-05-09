@@ -285,6 +285,17 @@ export class PostgresDatabase extends IDatabase {
         console.warn(`⚠️ Failed to make mobile_number nullable: ${error.message}`);
       }
     }
+
+    try {
+      await this._query(`ALTER TABLE users ALTER COLUMN country_code DROP NOT NULL`);
+      console.log('✅ Made country_code nullable');
+    } catch (error) {
+      if (error.message.includes('does not exist') || error.message.includes('already')) {
+        console.log('ℹ️  country_code is already nullable');
+      } else {
+        console.warn(`⚠️ Failed to make country_code nullable: ${error.message}`);
+      }
+    }
   }
 
   async _cleanupGoogleJunkMobileNumbers() {
