@@ -38,6 +38,7 @@ export class PostgresDatabase extends IDatabase {
     });
 
     await this._createTables();
+    await this._makeMobileNumberNullable();
     await this._ensureUsersColumnOrder();
     await this._migrateFromSQLiteIfNeeded();
     await this._cleanupGoogleJunkMobileNumbers();
@@ -271,6 +272,19 @@ export class PostgresDatabase extends IDatabase {
     await this._query(`CREATE INDEX IF NOT EXISTS idx_otp_send_history_email_purpose ON otp_send_history(email, purpose)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_otp_attempts_email ON otp_attempts(email)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_otp_blocks_email ON otp_blocks(email)`);
+  }
+
+  async _makeMobileNumberNullable() {
+    try {
+      await this._query(`ALTER TABLE users ALTER COLUMN mobile_number DROP NOT NULL`);
+      console.log('✅ Made mobile_number nullable');
+    } catch (error) {
+      if (error.message.includes('does not exist') || error.message.includes('already')) {
+        console.log('ℹ️  mobile_number is already nullable');
+      } else {
+        console.warn(`⚠️ Failed to make mobile_number nullable: ${error.message}`);
+      }
+    }
   }
 
   async _cleanupGoogleJunkMobileNumbers() {
