@@ -469,9 +469,9 @@ export class PostgresDatabase extends IDatabase {
     const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
     await this._query(
-      `INSERT INTO users (full_name, email, password, mobile_number, country_code, role, signup_date, testimonial_allowed, is_suspended)
+      `INSERT INTO users (full_name, email, password, country_code, mobile_number, role, signup_date, testimonial_allowed, is_suspended)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      ['Nitin Mishra', adminEmail.toLowerCase(), hashedPassword, '0000000000', 'IN', 'admin', new Date().toISOString(), true, false]
+      ['Nitin Mishra', adminEmail.toLowerCase(), hashedPassword, 'IN', '0000000000', 'admin', new Date().toISOString(), true, false]
     );
 
     console.log('👤 Admin user created successfully');
@@ -516,7 +516,7 @@ export class PostgresDatabase extends IDatabase {
       try {
         for (const row of users) {
           await client.query(
-            `INSERT INTO users (id, full_name, email, password, mobile_number, country_code, role, signup_date, testimonial_allowed, is_suspended)
+            `INSERT INTO users (id, full_name, email, password, country_code, mobile_number, role, signup_date, testimonial_allowed, is_suspended)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
             [
               row[0],
@@ -594,9 +594,9 @@ export class PostgresDatabase extends IDatabase {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       await this._query(
-        `INSERT INTO users (full_name, email, password, mobile_number, country_code, role, signup_date, testimonial_allowed, is_suspended)
+        `INSERT INTO users (full_name, email, password, country_code, mobile_number, role, signup_date, testimonial_allowed, is_suspended)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [fullName, emailLower, hashedPassword, mobileNumber, countryCode, role, new Date().toISOString(), this._toBoolean(testimonialAllowed), this._toBoolean(isSuspended)]
+        [fullName, emailLower, hashedPassword, countryCode, mobileNumber, role, new Date().toISOString(), this._toBoolean(testimonialAllowed), this._toBoolean(isSuspended)]
       );
 
       return this.getUserByEmail(emailLower);
