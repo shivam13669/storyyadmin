@@ -290,10 +290,10 @@ export class PostgresDatabase extends IDatabase {
   async _cleanupGoogleJunkMobileNumbers() {
     try {
       const result = await this._query(
-        `UPDATE users SET mobile_number = NULL WHERE mobile_number LIKE 'GOOGLE_%' AND mobile_number IS NOT NULL`
+        `UPDATE users SET mobile_number = NULL, country_code = NULL WHERE mobile_number LIKE 'GOOGLE_%' AND mobile_number IS NOT NULL`
       );
       if (result.rowCount > 0) {
-        console.log(`✅ Cleaned up ${result.rowCount} junk Google mobile numbers`);
+        console.log(`✅ Cleaned up ${result.rowCount} junk Google mobile numbers and country codes`);
       }
     } catch (error) {
       console.warn(`⚠️ Failed to cleanup Google junk mobile numbers: ${error.message}`);
