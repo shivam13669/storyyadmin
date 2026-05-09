@@ -264,7 +264,7 @@ export class UserRepository {
       email: email,
       password: randomPassword,
       mobileNumber: mobileNumber,
-      countryCode: googleData.locale ? googleData.locale.substring(3) : 'US',
+      countryCode: mobileNumber ? (googleData.locale ? googleData.locale.substring(3) : 'US') : null,
       role: 'user',
       testimonialAllowed: 0,
       isSuspended: 0
