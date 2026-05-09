@@ -40,6 +40,7 @@ export class PostgresDatabase extends IDatabase {
     await this._createTables();
     await this._ensureUsersColumnOrder();
     await this._migrateFromSQLiteIfNeeded();
+    await this._cleanupGoogleJunkMobileNumbers();
     await this._initializeAdmin();
 
     console.log('✅ Connected to PostgreSQL database');
@@ -270,6 +271,19 @@ export class PostgresDatabase extends IDatabase {
     await this._query(`CREATE INDEX IF NOT EXISTS idx_otp_send_history_email_purpose ON otp_send_history(email, purpose)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_otp_attempts_email ON otp_attempts(email)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_otp_blocks_email ON otp_blocks(email)`);
+  }
+
+  async _cleanupGoogleJunkMobileNumbers() {
+    try {
+      const result = await this._query(
+        `UPDATE users SET mobile_number = NULL WHERE mobile_number LIKE 'GOOGLE_%'`
+      );
+      if (result.rowCount > 0) {
+        console.log(`✅ Cleaned up ${result.rowCount} junk Google mobile numbers`);
+      }
+    } catch (error) {
+      console.warn(`⚠️ Failed to cleanup Google junk mobile numbers: ${error.message}`);
+    }
   }
 
   async _ensureUsersColumnOrder() {
