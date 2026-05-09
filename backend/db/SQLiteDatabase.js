@@ -60,7 +60,7 @@ export class SQLiteDatabase extends IDatabase {
           fullName TEXT NOT NULL,
           email TEXT UNIQUE NOT NULL,
           password TEXT NOT NULL,
-          mobileNumber TEXT NOT NULL,
+          mobileNumber TEXT UNIQUE,
           countryCode TEXT NOT NULL,
           role TEXT NOT NULL DEFAULT 'user',
           signupDate TEXT NOT NULL,
@@ -711,6 +711,9 @@ export class SQLiteDatabase extends IDatabase {
 
   async mobileNumberExists(mobileNumber) {
     try {
+      if (!mobileNumber) {
+        return false;
+      }
       const result = this.db.exec(
         `SELECT id FROM users WHERE mobileNumber = ?`,
         [mobileNumber]

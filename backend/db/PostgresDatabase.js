@@ -135,7 +135,7 @@ export class PostgresDatabase extends IDatabase {
         full_name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        mobile_number TEXT NOT NULL UNIQUE,
+        mobile_number TEXT UNIQUE,
         country_code TEXT NOT NULL,
         role TEXT NOT NULL DEFAULT 'user',
         signup_date TEXT NOT NULL,
@@ -835,6 +835,9 @@ export class PostgresDatabase extends IDatabase {
 
   async mobileNumberExists(mobileNumber) {
     try {
+      if (!mobileNumber) {
+        return false;
+      }
       const result = await this._query(`SELECT id FROM users WHERE mobile_number = $1`, [mobileNumber]);
       return result.rows.length > 0;
     } catch (error) {
