@@ -39,6 +39,8 @@ export class PostgresDatabase extends IDatabase {
 
     await this._createTables();
     await this._makeMobileNumberNullable();
+    await this._makeCountryCodeNullable();
+    await this._syncCountryCodeWithMobileNumber();
     await this._ensureUsersColumnOrder();
     await this._migrateFromSQLiteIfNeeded();
     await this._cleanupGoogleJunkMobileNumbers();
@@ -284,6 +286,32 @@ export class PostgresDatabase extends IDatabase {
       } else {
         console.warn(`⚠️ Failed to make mobile_number nullable: ${error.message}`);
       }
+    }
+  }
+
+  async _makeCountryCodeNullable() {
+    try {
+      await this._query(`ALTER TABLE users ALTER COLUMN country_code DROP NOT NULL`);
+      console.log('✅ Made country_code nullable');
+    } catch (error) {
+      if (error.message.includes('does not exist') || error.message.includes('already')) {
+        console.log('ℹ️  country_code is already nullable');
+      } else {
+        console.warn(`⚠️ Failed to make country_code nullable: ${error.message}`);
+      }
+    }
+  }
+
+  async _syncCountryCodeWithMobileNumber() {
+    try {
+      const result = await this._query(
+        `UPDATE users SET country_code = NULL WHERE mobile_number IS NULL AND country_code IS NOT NULL`
+      );
+      if (result.rowCount > 0) {
+        console.log(`✅ Synced country_code to NULL for ${result.rowCount} users with NULL mobile_number`);
+      }
+    } catch (error) {
+      console.warn(`⚠️ Failed to sync country_code with mobile_number: ${error.message}`);
     }
   }
 
