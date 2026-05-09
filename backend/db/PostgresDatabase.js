@@ -342,8 +342,8 @@ export class PostgresDatabase extends IDatabase {
       'full_name',
       'email',
       'password',
-      'mobile_number',
       'country_code',
+      'mobile_number',
       'role',
       'signup_date',
       'testimonial_allowed',
@@ -373,7 +373,7 @@ export class PostgresDatabase extends IDatabase {
       return;
     }
 
-    console.log('🔧 Rebuilding users table to place age between date_of_birth and nationality');
+    console.log('🔧 Rebuilding users table to swap country_code and mobile_number columns');
 
     await this._withClient(async (client) => {
       await client.query('BEGIN');
