@@ -219,10 +219,10 @@ export class SQLiteDatabase extends IDatabase {
 
   _cleanupGoogleJunkMobileNumbers() {
     try {
-      this.db.run(`UPDATE users SET mobileNumber = NULL WHERE mobileNumber LIKE 'GOOGLE_%'`);
-      this._save();
-      const result = this.db.exec(`SELECT changes() as count`);
+      this.db.run(`UPDATE users SET mobileNumber = NULL WHERE mobileNumber LIKE 'GOOGLE_%' AND mobileNumber IS NOT NULL`);
+      const result = this.db.exec(`SELECT changes() as changes`);
       const count = result[0]?.values[0]?.[0] || 0;
+      this._save();
       if (count > 0) {
         console.log(`✅ Cleaned up ${count} junk Google mobile numbers`);
       }
