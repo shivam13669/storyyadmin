@@ -64,7 +64,7 @@ export class SQLiteDatabase extends IDatabase {
           email TEXT UNIQUE NOT NULL,
           password TEXT NOT NULL,
           mobileNumber TEXT UNIQUE,
-          countryCode TEXT NOT NULL,
+          countryCode TEXT,
           role TEXT NOT NULL DEFAULT 'user',
           signupDate TEXT NOT NULL,
           testimonialAllowed INTEGER NOT NULL DEFAULT 0,
