@@ -64,7 +64,7 @@ export class SQLiteDatabase extends IDatabase {
           email TEXT UNIQUE NOT NULL,
           password TEXT NOT NULL,
           mobileNumber TEXT UNIQUE,
-          countryCode TEXT,
+          countryCode TEXT NOT NULL,
           role TEXT NOT NULL DEFAULT 'user',
           signupDate TEXT NOT NULL,
           testimonialAllowed INTEGER NOT NULL DEFAULT 0,
@@ -219,12 +219,12 @@ export class SQLiteDatabase extends IDatabase {
 
   _cleanupGoogleJunkMobileNumbers() {
     try {
-      this.db.run(`UPDATE users SET mobileNumber = NULL, countryCode = NULL WHERE mobileNumber LIKE 'GOOGLE_%' AND mobileNumber IS NOT NULL`);
+      this.db.run(`UPDATE users SET mobileNumber = NULL WHERE mobileNumber LIKE 'GOOGLE_%' AND mobileNumber IS NOT NULL`);
       const result = this.db.exec(`SELECT changes() as changes`);
       const count = result[0]?.values[0]?.[0] || 0;
       this._save();
       if (count > 0) {
-        console.log(`✅ Cleaned up ${count} junk Google mobile numbers and country codes`);
+        console.log(`✅ Cleaned up ${count} junk Google mobile numbers`);
       }
     } catch (error) {
       console.warn(`⚠️ Failed to cleanup Google junk mobile numbers: ${error.message}`);
