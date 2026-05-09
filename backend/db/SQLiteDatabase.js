@@ -41,6 +41,9 @@ export class SQLiteDatabase extends IDatabase {
       // Clean up junk Google mobile numbers from existing users
       this._cleanupGoogleJunkMobileNumbers();
 
+      // Sync country_code to NULL where mobile_number is NULL
+      this._syncCountryCodeWithMobileNumber();
+
       // Initialize admin user
       await this._initializeAdmin();
 
@@ -228,6 +231,20 @@ export class SQLiteDatabase extends IDatabase {
       }
     } catch (error) {
       console.warn(`⚠️ Failed to cleanup Google junk mobile numbers: ${error.message}`);
+    }
+  }
+
+  _syncCountryCodeWithMobileNumber() {
+    try {
+      this.db.run(`UPDATE users SET countryCode = NULL WHERE mobileNumber IS NULL AND countryCode IS NOT NULL`);
+      const result = this.db.exec(`SELECT changes() as changes`);
+      const count = result[0]?.values[0]?.[0] || 0;
+      this._save();
+      if (count > 0) {
+        console.log(`✅ Synced country_code to NULL for ${count} users with NULL mobile_number`);
+      }
+    } catch (error) {
+      console.warn(`⚠️ Failed to sync country_code with mobile_number: ${error.message}`);
     }
   }
 
