@@ -386,8 +386,8 @@ export class PostgresDatabase extends IDatabase {
             full_name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
-            mobile_number TEXT NOT NULL UNIQUE,
             country_code TEXT NOT NULL,
+            mobile_number TEXT NOT NULL UNIQUE,
             role TEXT NOT NULL DEFAULT 'user',
             signup_date TEXT NOT NULL,
             testimonial_allowed BOOLEAN NOT NULL DEFAULT FALSE,
@@ -412,13 +412,13 @@ export class PostgresDatabase extends IDatabase {
 
         await client.query(`
           INSERT INTO users (
-            id, full_name, email, password, mobile_number, country_code, role, signup_date,
+            id, full_name, email, password, country_code, mobile_number, role, signup_date,
             testimonial_allowed, is_suspended, phone_last_changed_at, gender, date_of_birth,
             age, nationality, marital_status, anniversary, state, district, passport_number,
             passport_expiry_date, passport_issuing_country, pan_card_number, aadhaar_card_no, documents
           )
           SELECT
-            id, full_name, email, password, mobile_number, country_code, role, signup_date,
+            id, full_name, email, password, country_code, mobile_number, role, signup_date,
             testimonial_allowed, is_suspended, phone_last_changed_at, gender, date_of_birth,
             age, nationality, marital_status, anniversary, state, district, passport_number,
             passport_expiry_date, passport_issuing_country, pan_card_number, aadhaar_card_no, documents
