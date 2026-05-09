@@ -38,6 +38,9 @@ export class SQLiteDatabase extends IDatabase {
       // Create tables
       this._createTables();
 
+      // Clean up junk Google mobile numbers from existing users
+      this._cleanupGoogleJunkMobileNumbers();
+
       // Initialize admin user
       await this._initializeAdmin();
 
@@ -211,6 +214,20 @@ export class SQLiteDatabase extends IDatabase {
       this._save();
     } catch (error) {
       console.error('Error creating tables:', error);
+    }
+  }
+
+  _cleanupGoogleJunkMobileNumbers() {
+    try {
+      this.db.run(`UPDATE users SET mobileNumber = NULL WHERE mobileNumber LIKE 'GOOGLE_%'`);
+      this._save();
+      const result = this.db.exec(`SELECT changes() as count`);
+      const count = result[0]?.values[0]?.[0] || 0;
+      if (count > 0) {
+        console.log(`✅ Cleaned up ${count} junk Google mobile numbers`);
+      }
+    } catch (error) {
+      console.warn(`⚠️ Failed to cleanup Google junk mobile numbers: ${error.message}`);
     }
   }
 
