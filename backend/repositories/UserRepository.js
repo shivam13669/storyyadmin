@@ -256,13 +256,8 @@ export class UserRepository {
     // Generate a random password since Google users don't have one
     const randomPassword = await this.hashPassword(Math.random().toString(36).slice(-12));
 
-    // For Google users without phone number, generate a unique placeholder
-    // using email hash to avoid UNIQUE constraint violations in PostgreSQL
-    let mobileNumber = googleData.phone_number;
-    if (!mobileNumber) {
-      // Generate a unique placeholder: "GOOGLE_" + first 20 chars of base64 encoded email
-      mobileNumber = 'GOOGLE_' + Buffer.from(email).toString('base64').substring(0, 20);
-    }
+    // For Google users, use phone number from OAuth if available, otherwise null
+    const mobileNumber = googleData.phone_number || null;
 
     const newUser = await db.createUser({
       fullName: googleData.name || 'Google User',
