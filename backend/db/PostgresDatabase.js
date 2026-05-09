@@ -285,26 +285,15 @@ export class PostgresDatabase extends IDatabase {
         console.warn(`⚠️ Failed to make mobile_number nullable: ${error.message}`);
       }
     }
-
-    try {
-      await this._query(`ALTER TABLE users ALTER COLUMN country_code DROP NOT NULL`);
-      console.log('✅ Made country_code nullable');
-    } catch (error) {
-      if (error.message.includes('does not exist') || error.message.includes('already')) {
-        console.log('ℹ️  country_code is already nullable');
-      } else {
-        console.warn(`⚠️ Failed to make country_code nullable: ${error.message}`);
-      }
-    }
   }
 
   async _cleanupGoogleJunkMobileNumbers() {
     try {
       const result = await this._query(
-        `UPDATE users SET mobile_number = NULL, country_code = NULL WHERE mobile_number LIKE 'GOOGLE_%' AND mobile_number IS NOT NULL`
+        `UPDATE users SET mobile_number = NULL WHERE mobile_number LIKE 'GOOGLE_%' AND mobile_number IS NOT NULL`
       );
       if (result.rowCount > 0) {
-        console.log(`✅ Cleaned up ${result.rowCount} junk Google mobile numbers and country codes`);
+        console.log(`✅ Cleaned up ${result.rowCount} junk Google mobile numbers`);
       }
     } catch (error) {
       console.warn(`⚠️ Failed to cleanup Google junk mobile numbers: ${error.message}`);
