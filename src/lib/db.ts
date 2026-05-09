@@ -151,10 +151,10 @@ function createTables() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       fullName TEXT NOT NULL,
       email TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
       countryCode TEXT NOT NULL,
       mobileNumber TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'user',
+      password TEXT NOT NULL,
       signupDate TEXT NOT NULL,
       testimonialAllowed INTEGER NOT NULL DEFAULT 0,
       isSuspended INTEGER NOT NULL DEFAULT 0
@@ -227,9 +227,9 @@ async function initializeAdmin() {
       const hashedPassword = await bcrypt.hash(adminPassword, 10);
       
       dbInstance.run(
-        `INSERT INTO users (id, fullName, email, password, mobileNumber, countryCode, role, signupDate, testimonialAllowed, isSuspended) 
+        `INSERT INTO users (id, fullName, email, countryCode, mobileNumber, role, password, signupDate, testimonialAllowed, isSuspended)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [1, 'Nitin Mishra', adminEmail, hashedPassword, '0000000000', 'IN', 'admin', new Date().toISOString(), 1, 0]
+        [1, 'Nitin Mishra', adminEmail, 'IN', '0000000000', 'admin', hashedPassword, new Date().toISOString(), 1, 0]
       );
       saveDatabase();
       console.log('Admin user created successfully');
@@ -247,10 +247,10 @@ function sqlToUser(row: any[]): User {
     id: row[0],
     fullName: row[1],
     email: row[2],
-    password: row[3],
+    countryCode: row[3],
     mobileNumber: row[4],
-    countryCode: row[5],
-    role: row[6] as 'user' | 'admin',
+    role: row[5] as 'user' | 'admin',
+    password: row[6],
     signupDate: row[7],
     testimonialAllowed: row[8] === 1,
     isSuspended: row[9] === 1,
@@ -310,15 +310,15 @@ export async function createUser(userData: Omit<User, 'id' | 'password'> & { pas
   const nextId = idResult.length > 0 && idResult[0].values.length > 0 ? idResult[0].values[0][0] : 1;
 
   db.run(
-    `INSERT INTO users (fullName, email, password, mobileNumber, countryCode, role, signupDate, testimonialAllowed, isSuspended) 
+    `INSERT INTO users (fullName, email, countryCode, mobileNumber, role, password, signupDate, testimonialAllowed, isSuspended)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       userData.fullName,
       email,
-      hashedPassword,
-      userData.mobileNumber,
       userData.countryCode,
+      userData.mobileNumber,
       'user',
+      hashedPassword,
       new Date().toISOString(),
       0, // testimonialAllowed
       0, // isSuspended
