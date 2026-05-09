@@ -138,10 +138,10 @@ export class PostgresDatabase extends IDatabase {
         id SERIAL PRIMARY KEY,
         full_name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
         country_code TEXT,
         mobile_number TEXT UNIQUE,
         role TEXT NOT NULL DEFAULT 'user',
+        password TEXT NOT NULL,
         signup_date TEXT NOT NULL,
         testimonial_allowed BOOLEAN NOT NULL DEFAULT FALSE,
         is_suspended BOOLEAN NOT NULL DEFAULT FALSE,
@@ -341,10 +341,10 @@ export class PostgresDatabase extends IDatabase {
       'id',
       'full_name',
       'email',
-      'password',
       'country_code',
       'mobile_number',
       'role',
+      'password',
       'signup_date',
       'testimonial_allowed',
       'is_suspended',
@@ -385,10 +385,10 @@ export class PostgresDatabase extends IDatabase {
             id SERIAL PRIMARY KEY,
             full_name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
             country_code TEXT,
             mobile_number TEXT UNIQUE,
             role TEXT NOT NULL DEFAULT 'user',
+            password TEXT NOT NULL,
             signup_date TEXT NOT NULL,
             testimonial_allowed BOOLEAN NOT NULL DEFAULT FALSE,
             is_suspended BOOLEAN NOT NULL DEFAULT FALSE,
@@ -412,13 +412,13 @@ export class PostgresDatabase extends IDatabase {
 
         await client.query(`
           INSERT INTO users (
-            id, full_name, email, password, country_code, mobile_number, role, signup_date,
+            id, full_name, email, country_code, mobile_number, role, password, signup_date,
             testimonial_allowed, is_suspended, phone_last_changed_at, gender, date_of_birth,
             age, nationality, marital_status, anniversary, state, district, passport_number,
             passport_expiry_date, passport_issuing_country, pan_card_number, aadhaar_card_no, documents
           )
           SELECT
-            id, full_name, email, password, country_code, mobile_number, role, signup_date,
+            id, full_name, email, country_code, mobile_number, role, password, signup_date,
             testimonial_allowed, is_suspended, phone_last_changed_at, gender, date_of_birth,
             age, nationality, marital_status, anniversary, state, district, passport_number,
             passport_expiry_date, passport_issuing_country, pan_card_number, aadhaar_card_no, documents
