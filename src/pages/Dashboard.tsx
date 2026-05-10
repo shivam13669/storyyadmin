@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import NotFound from "./NotFound";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -185,19 +186,14 @@ const Dashboard = () => {
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Redirect if not authenticated or if admin (admin should go to admin dashboard)
-  useEffect(() => {
-    // Wait for auth to load before checking
-    if (authLoading) return;
+  if (!authLoading && !isAuthenticated) {
+    return <NotFound />;
+  }
 
-    if (!isAuthenticated) {
-      navigate("/not-found", { replace: true });
-      return;
-    }
-    if (isAdmin) {
-      navigate("/admin/dashboard");
-      return;
-    }
-  }, [isAuthenticated, isAdmin, authLoading, navigate]);
+  if (!authLoading && isAdmin) {
+    navigate("/admin/dashboard");
+    return null;
+  }
 
   // Sync editedName with user fullName when user data loads
   useEffect(() => {
