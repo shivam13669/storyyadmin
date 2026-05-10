@@ -71,7 +71,7 @@ const AdminDashboard = () => {
     if (authLoading) return;
 
     if (!isAuthenticated) {
-      navigate("/");
+      navigate("/*", { replace: true });
       return;
     }
 
