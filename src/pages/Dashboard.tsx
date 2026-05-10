@@ -190,7 +190,7 @@ const Dashboard = () => {
     if (authLoading) return;
 
     if (!isAuthenticated) {
-      navigate("/*", { replace: true });
+      navigate("/not-found", { replace: true });
       return;
     }
     if (isAdmin) {
