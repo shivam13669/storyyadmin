@@ -59,6 +59,7 @@ const AppContent = () => {
                 <Route path="/cookie-policy" element={<CookiePolicyPage />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/not-found" element={<NotFound />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

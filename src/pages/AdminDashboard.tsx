@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import NotFound from "./NotFound";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -67,14 +66,19 @@ const AdminDashboard = () => {
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Redirect if not admin
-  if (!authLoading && !isAuthenticated) {
-    return <NotFound />;
-  }
+  useEffect(() => {
+    if (authLoading) return;
 
-  if (!authLoading && !isAdmin) {
-    navigate("/dashboard");
-    return null;
-  }
+    if (!isAuthenticated) {
+      navigate("/not-found", { replace: true });
+      return;
+    }
+
+    if (!isAdmin) {
+      navigate("/dashboard");
+      return;
+    }
+  }, [isAuthenticated, isAdmin, authLoading, navigate]);
 
   // Load data
   const loadData = async () => {
