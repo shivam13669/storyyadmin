@@ -1,16 +1,22 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import img404 from "@/assets/404.png";
 
 const NotFound = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
-  }, [location.pathname]);
+
+    // Redirect to /not-found if not already there
+    if (location.pathname !== "/not-found") {
+      navigate("/not-found", { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <>
