@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import NotFound from "./NotFound";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -184,20 +185,7 @@ const Dashboard = () => {
 
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Redirect if not authenticated or if admin (admin should go to admin dashboard)
-  useEffect(() => {
-    // Wait for auth to load before checking
-    if (authLoading) return;
-
-    if (!isAuthenticated) {
-      navigate("/");
-      return;
-    }
-    if (isAdmin) {
-      navigate("/admin/dashboard");
-      return;
-    }
-  }, [isAuthenticated, isAdmin, authLoading, navigate]);
+  // No redirect needed - NotFound is shown for admin users directly
 
   // Sync editedName with user fullName when user data loads
   useEffect(() => {
@@ -531,8 +519,12 @@ const Dashboard = () => {
     : 0;
 
   // Don't render content until auth is verified
-  // Show loading while auth is still loading, or if not authenticated, or if user is admin
-  if (authLoading || !isAuthenticated || isAdmin) {
+  // Show NotFound if not authenticated or if admin (dashboard is for users only)
+  if (!authLoading && (!isAuthenticated || isAdmin)) {
+    return <NotFound />;
+  }
+
+  if (authLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>

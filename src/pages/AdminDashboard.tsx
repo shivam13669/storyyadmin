@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import NotFound from "./NotFound";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -67,19 +68,16 @@ const AdminDashboard = () => {
 
   // Redirect if not admin
   useEffect(() => {
-    // Wait for auth to load before checking
     if (authLoading) return;
 
     if (!isAuthenticated) {
-      navigate("/");
       return;
     }
 
     if (!isAdmin) {
       navigate("/dashboard");
-      return;
     }
-  }, [isAuthenticated, isAdmin, authLoading, navigate]);
+  }, [isAdmin, isAuthenticated, authLoading, navigate]);
 
   // Load data
   const loadData = async () => {
@@ -221,8 +219,12 @@ const AdminDashboard = () => {
   };
 
   // Don't render content until auth is verified
-  // Show loading while auth is still loading, or if not authenticated, or if not admin
-  if (authLoading || !isAuthenticated || !isAdmin) {
+  // Show NotFound if not authenticated, loading while auth is loading or not admin
+  if (!authLoading && !isAuthenticated) {
+    return <NotFound />;
+  }
+
+  if (authLoading || !isAdmin) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
