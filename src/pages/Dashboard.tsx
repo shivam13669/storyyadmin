@@ -185,18 +185,7 @@ const Dashboard = () => {
 
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Redirect if admin (admin should go to admin dashboard)
-  useEffect(() => {
-    if (authLoading) return;
-
-    if (!isAuthenticated) {
-      return;
-    }
-
-    if (isAdmin) {
-      navigate("/admin/dashboard");
-    }
-  }, [isAdmin, isAuthenticated, authLoading, navigate]);
+  // No redirect needed - NotFound is shown for admin users directly
 
   // Sync editedName with user fullName when user data loads
   useEffect(() => {
@@ -530,12 +519,12 @@ const Dashboard = () => {
     : 0;
 
   // Don't render content until auth is verified
-  // Show NotFound if not authenticated, loading while auth is loading or user is admin
-  if (!authLoading && !isAuthenticated) {
+  // Show NotFound if not authenticated or if admin (dashboard is for users only)
+  if (!authLoading && (!isAuthenticated || isAdmin)) {
     return <NotFound />;
   }
 
-  if (authLoading || isAdmin) {
+  if (authLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
