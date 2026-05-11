@@ -66,19 +66,18 @@ const AdminDashboard = () => {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Render NotFound if not authenticated
-  if (!authLoading && !isAuthenticated) {
-    return <NotFound />;
-  }
-
   // Redirect if not admin
   useEffect(() => {
     if (authLoading) return;
 
+    if (!isAuthenticated) {
+      return;
+    }
+
     if (!isAdmin) {
       navigate("/dashboard");
     }
-  }, [isAdmin, authLoading, navigate]);
+  }, [isAdmin, isAuthenticated, authLoading, navigate]);
 
   // Load data
   const loadData = async () => {
@@ -220,8 +219,12 @@ const AdminDashboard = () => {
   };
 
   // Don't render content until auth is verified
-  // Show loading while auth is still loading, or if not authenticated, or if not admin
-  if (authLoading || !isAuthenticated || !isAdmin) {
+  // Show NotFound if not authenticated, loading while auth is loading or not admin
+  if (!authLoading && !isAuthenticated) {
+    return <NotFound />;
+  }
+
+  if (authLoading || !isAdmin) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
