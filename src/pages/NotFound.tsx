@@ -6,10 +6,14 @@ const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
+    // Only log error for truly non-existent routes, not protected routes
+    const protectedRoutes = ["/dashboard", "/admin/dashboard"];
+    if (!protectedRoutes.includes(location.pathname)) {
+      console.error(
+        "404 Error: User attempted to access non-existent route:",
+        location.pathname
+      );
+    }
   }, [location.pathname]);
 
   return (
