@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogClose,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -576,6 +577,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="!left-0 !top-auto !bottom-0 !w-full !max-w-none !translate-x-0 !translate-y-0 !h-[78vh] border-0 bg-white p-0 overflow-hidden shadow-2xl max-h-[78vh] rounded-t-[28px] rounded-b-none overflow-x-hidden md:!left-1/2 md:!top-[4rem] md:!bottom-auto md:!h-auto md:!w-[85vw] md:!max-w-[1000px] md:!translate-x-[-50%] md:!translate-y-0 md:max-h-[85vh] md:rounded-lg">
         <DialogTitle className="sr-only">Login or Sign Up</DialogTitle>
+        <DialogDescription className="sr-only">Login to your account or create a new account</DialogDescription>
         <div className="flex h-full min-h-0 min-w-0 md:min-h-[600px]">
           {/* Left Side - Premium Hero Image */}
           <div className="hidden md:flex md:w-[55%] relative overflow-hidden">
