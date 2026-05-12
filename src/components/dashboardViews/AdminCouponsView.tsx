@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { AlertCircle, CheckCircle, Copy, Trash2, ChevronDown, Edit2 } from "lucide-react";
+import { AlertCircle, CheckCircle, Copy, Trash2, ChevronDown, Edit2, Eye } from "lucide-react";
 import { format } from "date-fns";
 import { destinations } from "@/data/destinations";
 import { Coupon } from "@/utils/couponUtils";
@@ -34,6 +34,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [editingCouponId, setEditingCouponId] = useState<string | number | null>(null);
+  const [expandedApplicable, setExpandedApplicable] = useState<Set<string | number>>(new Set());
 
   // Update coupons when initialCoupons changes from parent
   useEffect(() => {
@@ -255,6 +256,16 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
   const handleCopyCode = (code: string) => {
     navigator.clipboard.writeText(code);
     toast({ title: "Success", description: "Coupon code copied to clipboard" });
+  };
+
+  const toggleApplicableExpanded = (couponId: string | number) => {
+    const newExpanded = new Set(expandedApplicable);
+    if (newExpanded.has(couponId)) {
+      newExpanded.delete(couponId);
+    } else {
+      newExpanded.add(couponId);
+    }
+    setExpandedApplicable(newExpanded);
   };
 
   const activeCoupons = coupons.filter((c) => c.isActive && new Date(c.expiryDate) > new Date());
@@ -557,27 +568,50 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                         </Badge>
                       </TableCell>
                       <TableCell className="text-gray-600 text-sm">
-                        {coupon.applicablePackages === "all" ? (
-                          <Badge variant="secondary">All Packages</Badge>
-                        ) : Array.isArray(coupon.applicablePackages) ? (
-                          <div className="flex flex-wrap gap-1">
-                            {coupon.applicablePackages.slice(0, 2).map((slug) => {
-                              const pkg = allPackages.find((p) => p.slug === slug);
-                              return (
-                                <Badge key={slug} variant="secondary" className="text-xs">
-                                  {pkg?.name}
-                                </Badge>
-                              );
-                            })}
-                            {coupon.applicablePackages.length > 2 && (
-                              <Badge variant="secondary" className="text-xs">
-                                +{coupon.applicablePackages.length - 2} more
-                              </Badge>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1">
+                            {coupon.applicablePackages === "all" ? (
+                              <Badge variant="secondary">All Packages</Badge>
+                            ) : Array.isArray(coupon.applicablePackages) ? (
+                              <div className="flex flex-wrap gap-1">
+                                {expandedApplicable.has(coupon.id)
+                                  ? coupon.applicablePackages.map((slug) => {
+                                      const pkg = allPackages.find((p) => p.slug === slug);
+                                      return (
+                                        <Badge key={slug} variant="secondary" className="text-xs">
+                                          {pkg?.name}
+                                        </Badge>
+                                      );
+                                    })
+                                  : coupon.applicablePackages.slice(0, 2).map((slug) => {
+                                      const pkg = allPackages.find((p) => p.slug === slug);
+                                      return (
+                                        <Badge key={slug} variant="secondary" className="text-xs">
+                                          {pkg?.name}
+                                        </Badge>
+                                      );
+                                    })}
+                                {!expandedApplicable.has(coupon.id) && coupon.applicablePackages.length > 2 && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    +{coupon.applicablePackages.length - 2} more
+                                  </Badge>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-gray-400">—</span>
                             )}
                           </div>
-                        ) : (
-                          <span className="text-gray-400">—</span>
-                        )}
+                          {Array.isArray(coupon.applicablePackages) && coupon.applicablePackages.length > 2 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                              onClick={() => toggleApplicableExpanded(coupon.id)}
+                            >
+                              <Eye className="w-4 h-4 text-blue-600" />
+                            </Button>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
@@ -655,27 +689,50 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                         </Badge>
                       </TableCell>
                       <TableCell className="text-gray-600 text-sm">
-                        {coupon.applicablePackages === "all" ? (
-                          <Badge variant="secondary">All Packages</Badge>
-                        ) : Array.isArray(coupon.applicablePackages) ? (
-                          <div className="flex flex-wrap gap-1">
-                            {coupon.applicablePackages.slice(0, 2).map((slug) => {
-                              const pkg = allPackages.find((p) => p.slug === slug);
-                              return (
-                                <Badge key={slug} variant="secondary" className="text-xs">
-                                  {pkg?.name}
-                                </Badge>
-                              );
-                            })}
-                            {coupon.applicablePackages.length > 2 && (
-                              <Badge variant="secondary" className="text-xs">
-                                +{coupon.applicablePackages.length - 2} more
-                              </Badge>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1">
+                            {coupon.applicablePackages === "all" ? (
+                              <Badge variant="secondary">All Packages</Badge>
+                            ) : Array.isArray(coupon.applicablePackages) ? (
+                              <div className="flex flex-wrap gap-1">
+                                {expandedApplicable.has(coupon.id)
+                                  ? coupon.applicablePackages.map((slug) => {
+                                      const pkg = allPackages.find((p) => p.slug === slug);
+                                      return (
+                                        <Badge key={slug} variant="secondary" className="text-xs">
+                                          {pkg?.name}
+                                        </Badge>
+                                      );
+                                    })
+                                  : coupon.applicablePackages.slice(0, 2).map((slug) => {
+                                      const pkg = allPackages.find((p) => p.slug === slug);
+                                      return (
+                                        <Badge key={slug} variant="secondary" className="text-xs">
+                                          {pkg?.name}
+                                        </Badge>
+                                      );
+                                    })}
+                                {!expandedApplicable.has(coupon.id) && coupon.applicablePackages.length > 2 && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    +{coupon.applicablePackages.length - 2} more
+                                  </Badge>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-gray-400">—</span>
                             )}
                           </div>
-                        ) : (
-                          <span className="text-gray-400">—</span>
-                        )}
+                          {Array.isArray(coupon.applicablePackages) && coupon.applicablePackages.length > 2 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                              onClick={() => toggleApplicableExpanded(coupon.id)}
+                            >
+                              <Eye className="w-4 h-4 text-blue-600" />
+                            </Button>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
