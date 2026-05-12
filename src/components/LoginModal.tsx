@@ -3,7 +3,7 @@ import { Eye, EyeOff, Mail, Lock, ArrowRight, CheckCircle, User, Phone, Search, 
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { toast } from "sonner";
 import { signup, sendOTP, verifyOTP, resetPasswordWithEmail } from "@/lib/api";
-import { useAuth } from "@/context/AuthContext"
+import { useAuth } from "@/context/AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
 import {
   Dialog,
