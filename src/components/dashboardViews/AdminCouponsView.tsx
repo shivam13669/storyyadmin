@@ -591,7 +591,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                                         </Badge>
                                       );
                                     })}
-                                {!expandedApplicable.has(coupon.id) && coupon.applicablePackages.length > 2 && (
+                                {!expandedApplicable.has(coupon.id) && coupon.applicablePackages.slice(0, 2).length < coupon.applicablePackages.length && (
                                   <Badge variant="secondary" className="text-xs">
                                     +{coupon.applicablePackages.length - 2} more
                                   </Badge>
@@ -601,7 +601,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                               <span className="text-gray-400">—</span>
                             )}
                           </div>
-                          {Array.isArray(coupon.applicablePackages) && coupon.applicablePackages.length > 2 && (
+                          {Array.isArray(coupon.applicablePackages) && coupon.applicablePackages.length > 0 && (
                             <Button
                               variant="ghost"
                               size="sm"
@@ -712,7 +712,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                                         </Badge>
                                       );
                                     })}
-                                {!expandedApplicable.has(coupon.id) && coupon.applicablePackages.length > 2 && (
+                                {!expandedApplicable.has(coupon.id) && coupon.applicablePackages.slice(0, 2).length < coupon.applicablePackages.length && (
                                   <Badge variant="secondary" className="text-xs">
                                     +{coupon.applicablePackages.length - 2} more
                                   </Badge>
@@ -722,7 +722,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                               <span className="text-gray-400">—</span>
                             )}
                           </div>
-                          {Array.isArray(coupon.applicablePackages) && coupon.applicablePackages.length > 2 && (
+                          {Array.isArray(coupon.applicablePackages) && coupon.applicablePackages.length > 0 && (
                             <Button
                               variant="ghost"
                               size="sm"
