@@ -18,6 +18,7 @@ import { AlertCircle, CheckCircle, Copy, Trash2, ChevronDown, Edit2, Eye } from 
 import { format } from "date-fns";
 import { destinations } from "@/data/destinations";
 import { Coupon } from "@/utils/couponUtils";
+import { ApplicablePackagesModal } from "@/components/ApplicablePackagesModal";
 
 interface AdminCouponsViewProps {
   initialCoupons?: Coupon[];
@@ -35,6 +36,8 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
   const [success, setSuccess] = useState("");
   const [editingCouponId, setEditingCouponId] = useState<string | number | null>(null);
   const [expandedApplicable, setExpandedApplicable] = useState<Set<string | number>>(new Set());
+  const [showPackagesModal, setShowPackagesModal] = useState(false);
+  const [selectedCouponForModal, setSelectedCouponForModal] = useState<Coupon | null>(null);
 
   // Update coupons when initialCoupons changes from parent
   useEffect(() => {
@@ -258,14 +261,9 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
     toast({ title: "Success", description: "Coupon code copied to clipboard" });
   };
 
-  const toggleApplicableExpanded = (couponId: string | number) => {
-    const newExpanded = new Set(expandedApplicable);
-    if (newExpanded.has(couponId)) {
-      newExpanded.delete(couponId);
-    } else {
-      newExpanded.add(couponId);
-    }
-    setExpandedApplicable(newExpanded);
+  const handleViewPackages = (coupon: Coupon) => {
+    setSelectedCouponForModal(coupon);
+    setShowPackagesModal(true);
   };
 
   const activeCoupons = coupons.filter((c) => c.isActive && new Date(c.expiryDate) > new Date());
@@ -568,41 +566,14 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                         </Badge>
                       </TableCell>
                       <TableCell className="text-gray-600 text-sm">
-                        {expandedApplicable.has(coupon.id) ? (
-                          <div className="flex items-center gap-2">
-                            <div className="flex flex-wrap gap-1">
-                              {coupon.applicablePackages === "all" ? (
-                                <Badge variant="secondary">All Packages</Badge>
-                              ) : Array.isArray(coupon.applicablePackages) ? (
-                                coupon.applicablePackages.map((slug) => {
-                                  const pkg = allPackages.find((p) => p.slug === slug);
-                                  return (
-                                    <Badge key={slug} variant="secondary" className="text-xs">
-                                      {pkg?.name}
-                                    </Badge>
-                                  );
-                                })
-                              ) : null}
-                            </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-6 w-6 p-0"
-                              onClick={() => toggleApplicableExpanded(coupon.id)}
-                            >
-                              <Eye className="w-4 h-4 text-blue-600" />
-                            </Button>
-                          </div>
-                        ) : (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 w-6 p-0"
-                            onClick={() => toggleApplicableExpanded(coupon.id)}
-                          >
-                            <Eye className="w-4 h-4 text-blue-600" />
-                          </Button>
-                        )}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0"
+                          onClick={() => handleViewPackages(coupon)}
+                        >
+                          <Eye className="w-4 h-4 text-blue-600" />
+                        </Button>
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
@@ -680,41 +651,14 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                         </Badge>
                       </TableCell>
                       <TableCell className="text-gray-600 text-sm">
-                        {expandedApplicable.has(coupon.id) ? (
-                          <div className="flex items-center gap-2">
-                            <div className="flex flex-wrap gap-1">
-                              {coupon.applicablePackages === "all" ? (
-                                <Badge variant="secondary">All Packages</Badge>
-                              ) : Array.isArray(coupon.applicablePackages) ? (
-                                coupon.applicablePackages.map((slug) => {
-                                  const pkg = allPackages.find((p) => p.slug === slug);
-                                  return (
-                                    <Badge key={slug} variant="secondary" className="text-xs">
-                                      {pkg?.name}
-                                    </Badge>
-                                  );
-                                })
-                              ) : null}
-                            </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-6 w-6 p-0"
-                              onClick={() => toggleApplicableExpanded(coupon.id)}
-                            >
-                              <Eye className="w-4 h-4 text-blue-600" />
-                            </Button>
-                          </div>
-                        ) : (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 w-6 p-0"
-                            onClick={() => toggleApplicableExpanded(coupon.id)}
-                          >
-                            <Eye className="w-4 h-4 text-blue-600" />
-                          </Button>
-                        )}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0"
+                          onClick={() => handleViewPackages(coupon)}
+                        >
+                          <Eye className="w-4 h-4 text-blue-600" />
+                        </Button>
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
@@ -750,6 +694,17 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
           </CardContent>
         </Card>
       )}
+
+      <ApplicablePackagesModal
+        isOpen={showPackagesModal}
+        couponCode={selectedCouponForModal?.code || ""}
+        applicablePackages={selectedCouponForModal?.applicablePackages || "all"}
+        allPackages={allPackages}
+        onClose={() => {
+          setShowPackagesModal(false);
+          setSelectedCouponForModal(null);
+        }}
+      />
     </div>
   );
 }
