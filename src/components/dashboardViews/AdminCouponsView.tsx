@@ -601,16 +601,14 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                               <span className="text-gray-400">—</span>
                             )}
                           </div>
-                          {(coupon.applicablePackages === "all" || (Array.isArray(coupon.applicablePackages) && coupon.applicablePackages.length > 0)) && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-6 w-6 p-0"
-                              onClick={() => toggleApplicableExpanded(coupon.id)}
-                            >
-                              <Eye className="w-4 h-4 text-blue-600" />
-                            </Button>
-                          )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0"
+                            onClick={() => toggleApplicableExpanded(coupon.id)}
+                          >
+                            <Eye className="w-4 h-4 text-blue-600" />
+                          </Button>
                         </div>
                       </TableCell>
                       <TableCell className="text-gray-600">
@@ -722,16 +720,14 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                               <span className="text-gray-400">—</span>
                             )}
                           </div>
-                          {(coupon.applicablePackages === "all" || (Array.isArray(coupon.applicablePackages) && coupon.applicablePackages.length > 0)) && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-6 w-6 p-0"
-                              onClick={() => toggleApplicableExpanded(coupon.id)}
-                            >
-                              <Eye className="w-4 h-4 text-blue-600" />
-                            </Button>
-                          )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0"
+                            onClick={() => toggleApplicableExpanded(coupon.id)}
+                          >
+                            <Eye className="w-4 h-4 text-blue-600" />
+                          </Button>
                         </div>
                       </TableCell>
                       <TableCell className="text-gray-600">
