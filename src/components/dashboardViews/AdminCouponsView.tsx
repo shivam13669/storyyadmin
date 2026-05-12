@@ -568,39 +568,32 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                         </Badge>
                       </TableCell>
                       <TableCell className="text-gray-600 text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1">
-                            {coupon.applicablePackages === "all" ? (
-                              <Badge variant="secondary">All Packages</Badge>
-                            ) : Array.isArray(coupon.applicablePackages) ? (
-                              <div className="flex flex-wrap gap-1">
-                                {expandedApplicable.has(coupon.id)
-                                  ? coupon.applicablePackages.map((slug) => {
-                                      const pkg = allPackages.find((p) => p.slug === slug);
-                                      return (
-                                        <Badge key={slug} variant="secondary" className="text-xs">
-                                          {pkg?.name}
-                                        </Badge>
-                                      );
-                                    })
-                                  : coupon.applicablePackages.slice(0, 2).map((slug) => {
-                                      const pkg = allPackages.find((p) => p.slug === slug);
-                                      return (
-                                        <Badge key={slug} variant="secondary" className="text-xs">
-                                          {pkg?.name}
-                                        </Badge>
-                                      );
-                                    })}
-                                {!expandedApplicable.has(coupon.id) && coupon.applicablePackages.slice(0, 2).length < coupon.applicablePackages.length && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    +{coupon.applicablePackages.length - 2} more
-                                  </Badge>
-                                )}
-                              </div>
-                            ) : (
-                              <span className="text-gray-400">—</span>
-                            )}
+                        {expandedApplicable.has(coupon.id) ? (
+                          <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap gap-1">
+                              {coupon.applicablePackages === "all" ? (
+                                <Badge variant="secondary">All Packages</Badge>
+                              ) : Array.isArray(coupon.applicablePackages) ? (
+                                coupon.applicablePackages.map((slug) => {
+                                  const pkg = allPackages.find((p) => p.slug === slug);
+                                  return (
+                                    <Badge key={slug} variant="secondary" className="text-xs">
+                                      {pkg?.name}
+                                    </Badge>
+                                  );
+                                })
+                              ) : null}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                              onClick={() => toggleApplicableExpanded(coupon.id)}
+                            >
+                              <Eye className="w-4 h-4 text-blue-600" />
+                            </Button>
                           </div>
+                        ) : (
                           <Button
                             variant="ghost"
                             size="sm"
@@ -609,7 +602,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                           >
                             <Eye className="w-4 h-4 text-blue-600" />
                           </Button>
-                        </div>
+                        )}
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
@@ -687,39 +680,32 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                         </Badge>
                       </TableCell>
                       <TableCell className="text-gray-600 text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1">
-                            {coupon.applicablePackages === "all" ? (
-                              <Badge variant="secondary">All Packages</Badge>
-                            ) : Array.isArray(coupon.applicablePackages) ? (
-                              <div className="flex flex-wrap gap-1">
-                                {expandedApplicable.has(coupon.id)
-                                  ? coupon.applicablePackages.map((slug) => {
-                                      const pkg = allPackages.find((p) => p.slug === slug);
-                                      return (
-                                        <Badge key={slug} variant="secondary" className="text-xs">
-                                          {pkg?.name}
-                                        </Badge>
-                                      );
-                                    })
-                                  : coupon.applicablePackages.slice(0, 2).map((slug) => {
-                                      const pkg = allPackages.find((p) => p.slug === slug);
-                                      return (
-                                        <Badge key={slug} variant="secondary" className="text-xs">
-                                          {pkg?.name}
-                                        </Badge>
-                                      );
-                                    })}
-                                {!expandedApplicable.has(coupon.id) && coupon.applicablePackages.slice(0, 2).length < coupon.applicablePackages.length && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    +{coupon.applicablePackages.length - 2} more
-                                  </Badge>
-                                )}
-                              </div>
-                            ) : (
-                              <span className="text-gray-400">—</span>
-                            )}
+                        {expandedApplicable.has(coupon.id) ? (
+                          <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap gap-1">
+                              {coupon.applicablePackages === "all" ? (
+                                <Badge variant="secondary">All Packages</Badge>
+                              ) : Array.isArray(coupon.applicablePackages) ? (
+                                coupon.applicablePackages.map((slug) => {
+                                  const pkg = allPackages.find((p) => p.slug === slug);
+                                  return (
+                                    <Badge key={slug} variant="secondary" className="text-xs">
+                                      {pkg?.name}
+                                    </Badge>
+                                  );
+                                })
+                              ) : null}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                              onClick={() => toggleApplicableExpanded(coupon.id)}
+                            >
+                              <Eye className="w-4 h-4 text-blue-600" />
+                            </Button>
                           </div>
+                        ) : (
                           <Button
                             variant="ghost"
                             size="sm"
@@ -728,7 +714,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                           >
                             <Eye className="w-4 h-4 text-blue-600" />
                           </Button>
-                        </div>
+                        )}
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
