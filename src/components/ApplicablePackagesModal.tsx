@@ -36,21 +36,19 @@ export function ApplicablePackagesModal({
 
         <div className="space-y-6">
           {applicablePackages === "all" ? (
-            <div className="border-2 border-blue-100 bg-blue-50 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-blue-200 rounded-lg">
-                  <Package className="w-6 h-6 text-blue-700" />
+            <div className="border border-gray-200 rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <Package className="w-5 h-5 text-blue-600" />
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900">All Packages</h3>
-                  <p className="text-sm text-gray-600 mt-1">This coupon applies to every package</p>
-                </div>
+                <h3 className="text-lg font-semibold text-gray-900">All Packages</h3>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <p className="text-gray-600 mb-4">This coupon is applicable to all available packages.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {allPackages.map((pkg) => (
-                  <div key={pkg.slug} className="bg-white rounded-lg p-4 border border-blue-200">
-                    <p className="font-semibold text-gray-900 text-sm">{pkg.name}</p>
-                    <p className="text-xs text-gray-600 mt-1">{pkg.destination}</p>
+                  <div key={pkg.slug} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <p className="font-medium text-gray-900">{pkg.name}</p>
+                    <p className="text-sm text-gray-600 mt-1">{pkg.destination}</p>
                   </div>
                 ))}
               </div>
@@ -71,21 +69,18 @@ export function ApplicablePackagesModal({
                 });
 
                 return Object.entries(groupedByDestination).map(([destination, packages]) => (
-                  <div key={destination} className="border-2 border-green-100 bg-green-50 rounded-xl p-6">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-3 bg-green-200 rounded-lg">
-                        <Package className="w-6 h-6 text-green-700" />
+                  <div key={destination} className="border border-gray-200 rounded-lg p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-purple-100 rounded-lg">
+                        <Package className="w-5 h-5 text-purple-600" />
                       </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-900">{destination}</h3>
-                        <p className="text-sm text-gray-600 mt-1">{packages.length} package{packages.length > 1 ? 's' : ''} selected</p>
-                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900">{destination}</h3>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {packages.map((pkg) => (
-                        <div key={pkg.slug} className="bg-white rounded-lg p-4 border-2 border-green-300 shadow-sm">
-                          <p className="font-semibold text-gray-900 text-sm">{pkg.name}</p>
-                          <p className="text-xs text-gray-600 mt-1">{pkg.destination}</p>
+                        <div key={pkg.slug} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                          <p className="font-medium text-gray-900">{pkg.name}</p>
+                          <p className="text-sm text-gray-600 mt-1">{pkg.destination}</p>
                         </div>
                       ))}
                     </div>
@@ -94,10 +89,8 @@ export function ApplicablePackagesModal({
               })()}
             </div>
           ) : (
-            <div className="border-2 border-gray-200 bg-gray-50 rounded-xl p-12 text-center">
-              <Package className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600 font-medium">No packages specified</p>
-              <p className="text-sm text-gray-500 mt-1">This coupon doesn't have specific packages selected</p>
+            <div className="text-center py-8 text-gray-600">
+              <p>No packages specified</p>
             </div>
           )}
         </div>
