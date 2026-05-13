@@ -1119,7 +1119,14 @@ export class SQLiteDatabase extends IDatabase {
       expiryDate: row[6],
       isActive: row[7] === 1,
       createdDate: row[8],
-      applicablePackages: row[9]
+      applicablePackages: (() => {
+        try {
+          const parsed = JSON.parse(row[9]);
+          return parsed;
+        } catch {
+          return row[9];
+        }
+      })()
     };
   }
 }
