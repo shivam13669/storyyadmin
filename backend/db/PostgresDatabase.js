@@ -1145,7 +1145,7 @@ export class PostgresDatabase extends IDatabase {
           const parsed = JSON.parse(row.applicable_packages);
           return parsed;
         } catch {
-          return row.applicable_packages === "all" ? "all" : row.applicable_packages;
+          return row.applicable_packages;
         }
       })(),
     };

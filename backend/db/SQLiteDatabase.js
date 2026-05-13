@@ -1124,7 +1124,7 @@ export class SQLiteDatabase extends IDatabase {
           const parsed = JSON.parse(row[9]);
           return parsed;
         } catch {
-          return row[9] === "all" ? "all" : row[9];
+          return row[9];
         }
       })()
     };
