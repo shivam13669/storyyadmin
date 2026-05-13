@@ -41,7 +41,19 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
 
   // Update coupons when initialCoupons changes from parent
   useEffect(() => {
-    setCoupons(initialCoupons);
+    const parsedCoupons = initialCoupons.map((coupon) => ({
+      ...coupon,
+      applicablePackages: typeof coupon.applicablePackages === 'string'
+        ? (() => {
+            try {
+              return JSON.parse(coupon.applicablePackages);
+            } catch {
+              return coupon.applicablePackages;
+            }
+          })()
+        : coupon.applicablePackages,
+    }));
+    setCoupons(parsedCoupons);
   }, [initialCoupons]);
 
   const [formData, setFormData] = useState({
@@ -157,7 +169,13 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
         }
 
         const data = await response.json();
-        setCoupons(coupons.map((c) => (c.id === editingCouponId ? data.coupon : c)));
+        const parsedCoupon = {
+          ...data.coupon,
+          applicablePackages: typeof data.coupon.applicablePackages === 'string'
+            ? JSON.parse(data.coupon.applicablePackages)
+            : data.coupon.applicablePackages,
+        };
+        setCoupons(coupons.map((c) => (c.id === editingCouponId ? parsedCoupon : c)));
         setSuccess("Coupon updated successfully!");
         toast({ title: "Success", description: `Coupon ${data.coupon.code} updated` });
       } else {
@@ -183,7 +201,13 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
         }
 
         const data = await response.json();
-        setCoupons([...coupons, data.coupon]);
+        const parsedCoupon = {
+          ...data.coupon,
+          applicablePackages: typeof data.coupon.applicablePackages === 'string'
+            ? JSON.parse(data.coupon.applicablePackages)
+            : data.coupon.applicablePackages,
+        };
+        setCoupons([...coupons, parsedCoupon]);
         setSuccess("Coupon created successfully!");
         toast({ title: "Success", description: `Coupon ${data.coupon.code} created` });
       }
