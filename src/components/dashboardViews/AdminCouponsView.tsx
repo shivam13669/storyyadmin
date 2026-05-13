@@ -159,7 +159,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
             discountType: formData.discountType,
             maxUses: Number(formData.maxUses),
             expiryDate: formData.expiryDate,
-            applicablePackages: formData.applicablePackages,
+            applicablePackages: JSON.stringify(formData.applicablePackages),
           }),
         });
 
@@ -191,7 +191,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
             discountType: formData.discountType,
             maxUses: Number(formData.maxUses),
             expiryDate: formData.expiryDate,
-            applicablePackages: formData.applicablePackages,
+            applicablePackages: JSON.stringify(formData.applicablePackages),
           }),
         });
 
