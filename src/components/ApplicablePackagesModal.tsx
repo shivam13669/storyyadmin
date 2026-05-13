@@ -56,27 +56,42 @@ export function ApplicablePackagesModal({
               </div>
             </div>
           ) : Array.isArray(applicablePackages) && applicablePackages.length > 0 ? (
-            <div className="border-2 border-green-100 bg-green-50 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-green-200 rounded-lg">
-                  <Package className="w-6 h-6 text-green-700" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900">Selected Packages</h3>
-                  <p className="text-sm text-gray-600 mt-1">{applicablePackages.length} package{applicablePackages.length > 1 ? 's' : ''} selected</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {applicablePackages.map((slug) => {
+            <div className="space-y-6">
+              {(() => {
+                const groupedByDestination: Record<string, any[]> = {};
+
+                applicablePackages.forEach((slug) => {
                   const pkg = allPackages.find((p) => p.slug === slug);
-                  return (
-                    <div key={slug} className="bg-white rounded-lg p-4 border-2 border-green-300 shadow-sm">
-                      <p className="font-semibold text-gray-900 text-sm">{pkg?.name || slug}</p>
-                      <p className="text-xs text-gray-600 mt-1">{pkg?.destination || "—"}</p>
+                  if (pkg) {
+                    if (!groupedByDestination[pkg.destination]) {
+                      groupedByDestination[pkg.destination] = [];
+                    }
+                    groupedByDestination[pkg.destination].push(pkg);
+                  }
+                });
+
+                return Object.entries(groupedByDestination).map(([destination, packages]) => (
+                  <div key={destination} className="border-2 border-green-100 bg-green-50 rounded-xl p-6">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-3 bg-green-200 rounded-lg">
+                        <Package className="w-6 h-6 text-green-700" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">{destination}</h3>
+                        <p className="text-sm text-gray-600 mt-1">{packages.length} package{packages.length > 1 ? 's' : ''} selected</p>
+                      </div>
                     </div>
-                  );
-                })}
-              </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {packages.map((pkg) => (
+                        <div key={pkg.slug} className="bg-white rounded-lg p-4 border-2 border-green-300 shadow-sm">
+                          <p className="font-semibold text-gray-900 text-sm">{pkg.name}</p>
+                          <p className="text-xs text-gray-600 mt-1">{pkg.destination}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ));
+              })()}
             </div>
           ) : (
             <div className="border-2 border-gray-200 bg-gray-50 rounded-xl p-12 text-center">
