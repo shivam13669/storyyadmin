@@ -602,48 +602,58 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         {/* Top Bar */}
-        <div className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 py-4 flex flex-col gap-3 sm:px-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-4 min-w-0">
+        <div className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
+              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg flex-shrink-0"
             >
-              {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">
+            <div className="min-w-0">
+              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">
                 {activeNav === "profile" ? "My Profile" : "My Trips Dashboard"}
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-xs sm:text-sm text-gray-600 truncate">
                 {activeNav === "profile"
                   ? `Hi, ${user?.fullName?.split(" ")[0]}`
                   : "Manage your bookings and adventures"}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 sm:gap-4 self-end sm:self-auto">
+          <div className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
             <Button
               onClick={loadData}
               disabled={loading}
               variant="outline"
               size="sm"
-              className="flex items-center gap-2"
+              className="hidden sm:flex items-center gap-2 px-2 sm:px-3"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-              Refresh
+              <span className="hidden md:inline">Refresh</span>
+            </Button>
+            <Button
+              onClick={loadData}
+              disabled={loading}
+              variant="outline"
+              size="sm"
+              className="sm:hidden p-2"
+              title="Refresh data"
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             </Button>
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
               >
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold flex-shrink-0">
                   {user?.fullName?.charAt(0).toUpperCase()}
                 </div>
-                <span className="text-sm font-medium text-gray-900 hidden sm:block">
+                <span className="text-xs sm:text-sm font-medium text-gray-900 hidden sm:block">
                   {user?.fullName?.split(" ")[0]}
                 </span>
-                <ChevronDown className="w-4 h-4 text-gray-600" />
+                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 flex-shrink-0" />
               </button>
 
               {/* Dropdown Menu */}
