@@ -44,13 +44,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
     const parsedCoupons = initialCoupons.map((coupon) => ({
       ...coupon,
       applicablePackages: typeof coupon.applicablePackages === 'string'
-        ? (() => {
-            try {
-              return JSON.parse(coupon.applicablePackages);
-            } catch {
-              return coupon.applicablePackages;
-            }
-          })()
+        ? (coupon.applicablePackages === "all" ? "all" : JSON.parse(coupon.applicablePackages))
         : coupon.applicablePackages,
     }));
     setCoupons(parsedCoupons);
@@ -172,7 +166,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
         const parsedCoupon = {
           ...data.coupon,
           applicablePackages: typeof data.coupon.applicablePackages === 'string'
-            ? JSON.parse(data.coupon.applicablePackages)
+            ? (data.coupon.applicablePackages === "all" ? "all" : JSON.parse(data.coupon.applicablePackages))
             : data.coupon.applicablePackages,
         };
         setCoupons(coupons.map((c) => (c.id === editingCouponId ? parsedCoupon : c)));
@@ -204,7 +198,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
         const parsedCoupon = {
           ...data.coupon,
           applicablePackages: typeof data.coupon.applicablePackages === 'string'
-            ? JSON.parse(data.coupon.applicablePackages)
+            ? (data.coupon.applicablePackages === "all" ? "all" : JSON.parse(data.coupon.applicablePackages))
             : data.coupon.applicablePackages,
         };
         setCoupons([...coupons, parsedCoupon]);
