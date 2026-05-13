@@ -316,7 +316,7 @@ const AdminDashboard = () => {
             </button>
             <div className="min-w-0">
               <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">Admin Dashboard</h2>
-              <p className="text-xs sm:text-sm text-gray-600 truncate">Complete overview of your travel operations</p>
+              <p className="text-xs sm:text-sm text-gray-600">Complete overview of your travel operations</p>
             </div>
           </div>
           <div className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
