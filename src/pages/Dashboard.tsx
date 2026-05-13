@@ -614,7 +614,7 @@ const Dashboard = () => {
               <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">
                 {activeNav === "profile" ? "My Profile" : "My Trips Dashboard"}
               </h2>
-              <p className="text-xs sm:text-sm text-gray-600 truncate">
+              <p className="text-xs sm:text-sm text-gray-600">
                 {activeNav === "profile"
                   ? `Hi, ${user?.fullName?.split(" ")[0]}`
                   : "Manage your bookings and adventures"}
