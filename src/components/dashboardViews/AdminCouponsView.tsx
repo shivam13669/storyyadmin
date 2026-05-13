@@ -14,10 +14,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { AlertCircle, CheckCircle, Copy, Trash2, ChevronDown, Edit2 } from "lucide-react";
+import { AlertCircle, CheckCircle, Copy, Trash2, ChevronDown, Edit2, Eye } from "lucide-react";
 import { format } from "date-fns";
 import { destinations } from "@/data/destinations";
 import { Coupon } from "@/utils/couponUtils";
+import { ApplicablePackagesModal } from "@/components/ApplicablePackagesModal";
 
 interface AdminCouponsViewProps {
   initialCoupons?: Coupon[];
@@ -34,10 +35,25 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [editingCouponId, setEditingCouponId] = useState<string | number | null>(null);
+  const [expandedApplicable, setExpandedApplicable] = useState<Set<string | number>>(new Set());
+  const [showPackagesModal, setShowPackagesModal] = useState(false);
+  const [selectedCouponForModal, setSelectedCouponForModal] = useState<Coupon | null>(null);
 
   // Update coupons when initialCoupons changes from parent
   useEffect(() => {
-    setCoupons(initialCoupons);
+    const parsedCoupons = initialCoupons.map((coupon) => ({
+      ...coupon,
+      applicablePackages: typeof coupon.applicablePackages === 'string'
+        ? (() => {
+            try {
+              return JSON.parse(coupon.applicablePackages);
+            } catch {
+              return coupon.applicablePackages;
+            }
+          })()
+        : coupon.applicablePackages,
+    }));
+    setCoupons(parsedCoupons);
   }, [initialCoupons]);
 
   const [formData, setFormData] = useState({
@@ -143,7 +159,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
             discountType: formData.discountType,
             maxUses: Number(formData.maxUses),
             expiryDate: formData.expiryDate,
-            applicablePackages: formData.applicablePackages,
+            applicablePackages: JSON.stringify(formData.applicablePackages),
           }),
         });
 
@@ -153,7 +169,13 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
         }
 
         const data = await response.json();
-        setCoupons(coupons.map((c) => (c.id === editingCouponId ? data.coupon : c)));
+        const parsedCoupon = {
+          ...data.coupon,
+          applicablePackages: typeof data.coupon.applicablePackages === 'string'
+            ? JSON.parse(data.coupon.applicablePackages)
+            : data.coupon.applicablePackages,
+        };
+        setCoupons(coupons.map((c) => (c.id === editingCouponId ? parsedCoupon : c)));
         setSuccess("Coupon updated successfully!");
         toast({ title: "Success", description: `Coupon ${data.coupon.code} updated` });
       } else {
@@ -169,7 +191,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
             discountType: formData.discountType,
             maxUses: Number(formData.maxUses),
             expiryDate: formData.expiryDate,
-            applicablePackages: formData.applicablePackages,
+            applicablePackages: JSON.stringify(formData.applicablePackages),
           }),
         });
 
@@ -179,7 +201,13 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
         }
 
         const data = await response.json();
-        setCoupons([...coupons, data.coupon]);
+        const parsedCoupon = {
+          ...data.coupon,
+          applicablePackages: typeof data.coupon.applicablePackages === 'string'
+            ? JSON.parse(data.coupon.applicablePackages)
+            : data.coupon.applicablePackages,
+        };
+        setCoupons([...coupons, parsedCoupon]);
         setSuccess("Coupon created successfully!");
         toast({ title: "Success", description: `Coupon ${data.coupon.code} created` });
       }
@@ -255,6 +283,11 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
   const handleCopyCode = (code: string) => {
     navigator.clipboard.writeText(code);
     toast({ title: "Success", description: "Coupon code copied to clipboard" });
+  };
+
+  const handleViewPackages = (coupon: Coupon) => {
+    setSelectedCouponForModal(coupon);
+    setShowPackagesModal(true);
   };
 
   const activeCoupons = coupons.filter((c) => c.isActive && new Date(c.expiryDate) > new Date());
@@ -557,27 +590,14 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                         </Badge>
                       </TableCell>
                       <TableCell className="text-gray-600 text-sm">
-                        {coupon.applicablePackages === "all" ? (
-                          <Badge variant="secondary">All Packages</Badge>
-                        ) : Array.isArray(coupon.applicablePackages) ? (
-                          <div className="flex flex-wrap gap-1">
-                            {coupon.applicablePackages.slice(0, 2).map((slug) => {
-                              const pkg = allPackages.find((p) => p.slug === slug);
-                              return (
-                                <Badge key={slug} variant="secondary" className="text-xs">
-                                  {pkg?.name}
-                                </Badge>
-                              );
-                            })}
-                            {coupon.applicablePackages.length > 2 && (
-                              <Badge variant="secondary" className="text-xs">
-                                +{coupon.applicablePackages.length - 2} more
-                              </Badge>
-                            )}
-                          </div>
-                        ) : (
-                          <span className="text-gray-400">—</span>
-                        )}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0"
+                          onClick={() => handleViewPackages(coupon)}
+                        >
+                          <Eye className="w-4 h-4 text-blue-600" />
+                        </Button>
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
@@ -655,27 +675,14 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                         </Badge>
                       </TableCell>
                       <TableCell className="text-gray-600 text-sm">
-                        {coupon.applicablePackages === "all" ? (
-                          <Badge variant="secondary">All Packages</Badge>
-                        ) : Array.isArray(coupon.applicablePackages) ? (
-                          <div className="flex flex-wrap gap-1">
-                            {coupon.applicablePackages.slice(0, 2).map((slug) => {
-                              const pkg = allPackages.find((p) => p.slug === slug);
-                              return (
-                                <Badge key={slug} variant="secondary" className="text-xs">
-                                  {pkg?.name}
-                                </Badge>
-                              );
-                            })}
-                            {coupon.applicablePackages.length > 2 && (
-                              <Badge variant="secondary" className="text-xs">
-                                +{coupon.applicablePackages.length - 2} more
-                              </Badge>
-                            )}
-                          </div>
-                        ) : (
-                          <span className="text-gray-400">—</span>
-                        )}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0"
+                          onClick={() => handleViewPackages(coupon)}
+                        >
+                          <Eye className="w-4 h-4 text-blue-600" />
+                        </Button>
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {coupon.usedCount} / {coupon.maxUses}
@@ -711,6 +718,17 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
           </CardContent>
         </Card>
       )}
+
+      <ApplicablePackagesModal
+        isOpen={showPackagesModal}
+        couponCode={selectedCouponForModal?.code || ""}
+        applicablePackages={selectedCouponForModal?.applicablePackages || "all"}
+        allPackages={allPackages}
+        onClose={() => {
+          setShowPackagesModal(false);
+          setSelectedCouponForModal(null);
+        }}
+      />
     </div>
   );
 }

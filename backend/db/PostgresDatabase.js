@@ -1140,7 +1140,14 @@ export class PostgresDatabase extends IDatabase {
       expiryDate: row.expiry_date,
       isActive: row.is_active,
       createdDate: row.created_date,
-      applicablePackages: row.applicable_packages,
+      applicablePackages: (() => {
+        try {
+          const parsed = JSON.parse(row.applicable_packages);
+          return parsed;
+        } catch {
+          return row.applicable_packages;
+        }
+      })(),
     };
   }
 
