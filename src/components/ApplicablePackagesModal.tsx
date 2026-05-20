@@ -68,24 +68,34 @@ export function ApplicablePackagesModal({
                   }
                 });
 
-                return Object.entries(groupedByDestination).map(([destination, packages]) => (
-                  <div key={destination} className="border border-gray-200 rounded-lg p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-2 bg-purple-100 rounded-lg">
-                        <Package className="w-5 h-5 text-purple-600" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900">{destination}</h3>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {packages.map((pkg) => (
-                        <div key={pkg.slug} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                          <p className="font-medium text-gray-900">{pkg.name}</p>
-                          <p className="text-sm text-gray-600 mt-1">{pkg.destination}</p>
+                return Object.entries(groupedByDestination).map(([destination, packages]) => {
+                  const totalPackagesForDestination = allPackages.filter((p) => p.destination === destination).length;
+                  const selectedPackagesCount = packages.length;
+
+                  return (
+                    <div key={destination} className="border border-gray-200 rounded-lg p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-purple-100 rounded-lg">
+                          <Package className="w-5 h-5 text-purple-600" />
                         </div>
-                      ))}
+                        <div className="flex items-center gap-3">
+                          <h3 className="text-lg font-semibold text-gray-900">{destination}</h3>
+                          <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                            {selectedPackagesCount}/{totalPackagesForDestination}
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {packages.map((pkg) => (
+                          <div key={pkg.slug} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <p className="font-medium text-gray-900">{pkg.name}</p>
+                            <p className="text-sm text-gray-600 mt-1">{pkg.destination}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ));
+                  );
+                });
               })()}
             </div>
           ) : (
