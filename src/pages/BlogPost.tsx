@@ -91,7 +91,7 @@ const BlogPost = () => {
       ? `
       <p>Planning a <strong>Leh Ladakh bike trip package 2026</strong> is an exhilarating feeling, but the difference between a legendary adventure and a difficult ordeal lies in your luggage. When you're riding through the Zanskar Loop or climbing the 19,024ft to <strong>Umling La Pass</strong>, you can't just "pop into a shop" for a forgotten spark plug or a thermal liner.</p>
 
-      <p>At <strong>Stories by Foot</strong> (<a href="https://www.storiesbyfoot.com" target="_blank" class="underline">www.storiesbyfoot.com</a>), we've led thousands of riders across the Himalayas. We've used that experience to curate the definitive Ladakh motorcycle tour essentials list. Whether you are embarking on a <strong>Leh Ladakh bike expedition from Manali</strong> or a shorter 6-day circuit, here is what you need to carry.</p>
+      <p>At <strong>Stories by Foot</strong> (www.storiesbyfoot.com), we've led thousands of riders across the Himalayas. We've used that experience to curate the definitive Ladakh motorcycle tour essentials list. Whether you are embarking on a <strong>Leh Ladakh bike expedition from Manali</strong> or a shorter 6-day circuit, here is what you need to carry.</p>
 
       <h3>1. The Rider's Armor: Safety Gear is Non-Negotiable</h3>
       <p>In Ladakh, you "dress for the slide, not the ride." The terrain on the Srinagar to Leh and Manali to Leh highways is unpredictable, featuring everything from loose gravel to deep water crossings.</p>
@@ -150,13 +150,13 @@ const BlogPost = () => {
 
       <h3>Ready to Ride with Stories by Foot?</h3>
       <p>At <strong>Stories by Foot</strong>, we handle the heavy lifting. Our <strong>Leh Ladakh bike trip packages 2026</strong> include a backup vehicle, a professional mechanic, and medical-grade oxygen so you can focus on the ride.</p>
-      <p>Check out our 2026 Departure Dates at <a href="https://www.storiesbyfoot.com" target="_blank" class="underline">www.storiesbyfoot.com</a> and let's conquer the mountains together!</p>
+      <p>Check out our 2026 Departure Dates at www.storiesbyfoot.com and let's conquer the mountains together!</p>
       `
       : slug === "petrol-pump-guide-of-ladakh"
         ? `
         <p>Embarking on a <strong>Leh Ladakh bike trip package 2026</strong> is the ultimate dream, but in the <strong>Land of High Passes</strong>, your fuel gauge is as important as your GPS. As routes expand to the world's highest motorable road at <strong>Umling La</strong>, the strategy for managing your petrol has changed. In the high-altitude desert, running out of fuel isn't just an inconvenience—it's a safety risk.</p>
 
-        <p>At <strong>Stories by Foot</strong> (<a href="https://www.storiesbyfoot.com" target="_blank" class="underline">www.storiesbyfoot.com</a>), we've mapped every operational pump and hidden fuel point to ensure your <strong>Ladakh motorcycle tour price</strong> includes the peace of mind that you'll never be stranded. Here is the definitive guide to fueling your 2026 Himalayan expedition.</p>
+        <p>At <strong>Stories by Foot</strong> (www.storiesbyfoot.com), we've mapped every operational pump and hidden fuel point to ensure your <strong>Ladakh motorcycle tour price</strong> includes the peace of mind that you'll never be stranded. Here is the definitive guide to fueling your 2026 Himalayan expedition.</p>
 
         <p>Finding petrol in the high-altitude wilderness of Ladakh is as much about strategy as it is about geography. For your 2026 expedition, you must plan your fuel stops with precision, especially when heading into the remote eastern sectors.</p>
 
@@ -243,7 +243,7 @@ const BlogPost = () => {
           `
           : slug === "ladakh-the-land-of-high-passes"
             ? `
-            <p>Ladakh is more than a destination; it is a spiritual homecoming for the adventurous soul. Known as the "Land of High Passes," this high-altitude desert in the northernmost tip of India offers a landscape so surreal it feels like another planet. At <strong>Stories by Foot</strong> (<a href="https://www.storiesbyfoot.com" target="_blank" class="underline">www.storiesbyfoot.com</a>), we specialize in turning this rugged terrain into a canvas for your most epic travel stories.</p>
+            <p>Ladakh is more than a destination; it is a spiritual homecoming for the adventurous soul. Known as the "Land of High Passes," this high-altitude desert in the northernmost tip of India offers a landscape so surreal it feels like another planet. At <strong>Stories by Foot</strong> (www.storiesbyfoot.com), we specialize in turning this rugged terrain into a canvas for your most epic travel stories.</p>
 
             <p>Whether you are looking for a <strong>Leh Ladakh bike trip package 2026</strong> or planning a solo <strong>Leh Ladakh bike expedition from Manali</strong>, understanding the geography, culture, and logistics of this region is the first step toward a successful journey.</p>
 
@@ -341,7 +341,7 @@ const BlogPost = () => {
       <h3>Ready to Discover Hidden Ladakh?</h3>
       <p>At <strong>Stories by Foot</strong>, we don't just take you on a bike trip; we immerse you in the living heritage of the Himalayas. The Aryan Valley is one of our most cherished circuits, and it's a place where you'll meet people whose ancestors walked alongside the armies of ancient empires.</p>
 
-      <p>Check out our <strong>Ladakh Travel Packages</strong> at <a href="https://www.storiesbyfoot.com" target="_blank" class="underline">www.storiesbyfoot.com</a> and let's explore the hidden corners of this magical land together.</p>
+      <p>Check out our <strong>Ladakh Travel Packages</strong> at www.storiesbyfoot.com and let's explore the hidden corners of this magical land together.</p>
     `
               : slug === "pregnancy-tourism-in-ladakh"
                 ? `
@@ -386,7 +386,7 @@ const BlogPost = () => {
       <p><strong>Let's move beyond the myths and experience the real Aryan Valley.</strong></p>
     `
               : `
-      <p>Are you ready to trade the humdrum of the city for the roar of an engine against the backdrop of the world's highest peaks? A <strong>Leh Ladakh bike trip package 2026</strong> is more than just a tour; it's a rite of passage for every adventure rider. At <strong>Stories by Foot</strong> (<a href="https://www.storiesbyfoot.com" target="_blank" class="underline">www.storiesbyfoot.com</a>), we don't just offer trips; we offer the chance to write your own Himalayan saga.</p>
+      <p>Are you ready to trade the humdrum of the city for the roar of an engine against the backdrop of the world's highest peaks? A <strong>Leh Ladakh bike trip package 2026</strong> is more than just a tour; it's a rite of passage for every adventure rider. At <strong>Stories by Foot</strong> (www.storiesbyfoot.com), we don't just offer trips; we offer the chance to write your own Himalayan saga.</p>
 
       <p>As we head into the 2026 riding season, the landscape of Ladakh travel is changing. With the recent opening of the <strong>Shinku La Tunnel</strong> and the growing fame of <strong>Umling La</strong>, the "classic" routes are evolving into something even more epic. Whether you are looking for a <strong>Leh Ladakh bike expedition from Delhi</strong> or a specialized <strong>Ladakh motorcycle tour price</strong> that fits your budget, this guide is your roadmap to the heavens.</p>
 
@@ -494,7 +494,7 @@ const BlogPost = () => {
       <h3>6. How to Book with Stories by Foot</h3>
       <p>Ready to join the tribe? Booking your <strong>Leh Ladakh bike expedition from Delhi</strong> or Manali is simple:</p>
       <ol>
-        <li><strong>Select Your Date:</strong> Check our 2026 Fixed Departure calendar on <a href="https://www.storiesbyfoot.com" target="_blank" class="underline">www.storiesbyfoot.com</a>.</li>
+        <li><strong>Select Your Date:</strong> Check our 2026 Fixed Departure calendar on www.storiesbyfoot.com.</li>
         <li><strong>Pick Your Ride:</strong> Choose between the classic Royal Enfield Bullet, the versatile Himalayan 450, or bring your own bike.</li>
         <li><strong>Confirm & Prep:</strong> Once you pay your deposit, you'll receive our "Himalayan Survival Guide" and a fitness plan to prepare your lungs for the altitude.</li>
       </ol>
@@ -503,7 +503,7 @@ const BlogPost = () => {
       <p>Ladakh changes you. There is something about the silence of the <strong>Puga Valley</strong> and the sheer scale of the <strong>Tanglang La Pass</strong> that puts life into perspective. At <strong>Stories by Foot</strong>, we are committed to making sure your story is one of triumph, safety, and pure, unadulterated joy.</p>
 
       <p>Don't let 2026 pass you by. The mountains are calling, the roads are open, and your bike is waiting.</p>
-      <p>Explore our 2026 Ladakh Packages at <a href="https://www.storiesbyfoot.com" target="_blank" class="underline">www.storiesbyfoot.com</a> and let's start riding!</p>
+      <p>Explore our 2026 Ladakh Packages at www.storiesbyfoot.com and let's start riding!</p>
     `
   };
 
