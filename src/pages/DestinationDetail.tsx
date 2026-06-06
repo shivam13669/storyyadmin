@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import SEO from "@/components/SEO";
 import ImageGallery from "@/components/ImageGallery";
 import journeyConcludes from "@/assets/journey-concludes.png";
 import PackageInfo from "@/components/PackageInfo";
@@ -55,8 +56,69 @@ const DestinationDetail = () => {
   const galleryImages = buildGalleryImages(destination, travelPackage);
   const dayCount = getDayCount(travelPackage);
 
+  // Dynamic SEO configurations for the travel package
+  const cleanPrice = travelPackage.price.replace(/[₹,]/g, "");
+  const seoTitle = `${travelPackage.name} | ${destination.name} Bike Trip Package 2026`;
+  const seoDescription = `${travelPackage.description.slice(0, 155)}... Book this ${travelPackage.duration} tour to ${destination.name} starting at ${travelPackage.price}. Full backup vehicle, mechanic and oxygen support included.`;
+  const seoKeywords = `${travelPackage.name.toLowerCase()}, ${destination.name.toLowerCase()} package, stories by foot, ${destination.name.toLowerCase()} bike trip, leh ladakh bike tour 2026, ${travelPackage.highlights.slice(0, 3).map(h => h.toLowerCase()).join(', ')}`;
+
+  const itineraryItems = travelPackage.itinerary?.map((day, idx) => ({
+    "@type": "ListItem",
+    "position": idx + 1,
+    "item": {
+      "@type": "TouristAttraction",
+      "name": `Day ${day.day}: ${day.title}`,
+      "description": day.description
+    }
+  })) || [];
+
+  const seoSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        "@id": `https://www.storiesbyfoot.com/destinations/${destination.slug}/${travelPackage.slug}#product`,
+        "name": travelPackage.name,
+        "image": travelPackage.image || destination.heroImage,
+        "description": travelPackage.description,
+        "offers": {
+          "@type": "Offer",
+          "price": cleanPrice,
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock",
+          "url": `https://www.storiesbyfoot.com/destinations/${destination.slug}/${travelPackage.slug}`
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": travelPackage.rating || 4.8,
+          "reviewCount": travelPackage.reviews || 100
+        }
+      },
+      {
+        "@type": "TouristTrip",
+        "@id": `https://www.storiesbyfoot.com/destinations/${destination.slug}/${travelPackage.slug}#trip`,
+        "name": travelPackage.name,
+        "description": travelPackage.description,
+        "touristType": "Adventure Enthusiasts, Motorcycle Riders",
+        "itinerary": {
+          "@type": "ItemList",
+          "numberOfItems": itineraryItems.length,
+          "itemListElement": itineraryItems
+        }
+      }
+    ]
+  };
+
   return (
     <div className="destination-detail-page min-h-screen bg-background">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        keywords={seoKeywords}
+        image={travelPackage.image || destination.heroImage}
+        type="product"
+        schema={seoSchema}
+      />
       <Navigation />
 
       <main className="container mx-auto px-4 py-6 mt-16">

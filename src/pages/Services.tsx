@@ -1,6 +1,7 @@
 import Navigation from "@/components/Navigation";
 import { useState } from "react";
 import { X } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const services = [
   {
@@ -114,6 +115,11 @@ const ServicesPage = () => {
 
   return (
     <>
+      <SEO
+        title="Adventure Biking Services & Support | Stories by Foot"
+        description="Explore the professional services of Stories by Foot. Motorbike expeditions, 4x4 overland tours, airport transfers, stays, inner line permits, and emergency backup support."
+        keywords="motorbike rental support, 4x4 adventure support, inner line permits ladakh, stories by foot services, backup vehicle support"
+      />
       <div className="min-h-screen relative overflow-hidden py-16 px-6 bg-gradient-to-br from-sky-50 via-white to-emerald-50">
       <Navigation />
 

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import SEO from "@/components/SEO";
 import "@/styles/blog-v2.css";
 
 const Blog = () => {
@@ -38,6 +39,11 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <SEO
+        title="Himalayan Riding Stories, Guides & Travel Tips | Stories by Foot Blog"
+        description="Read the latest guides, packing lists, and expert tips for your Leh Ladakh bike trip, Zanskar loops, petrol pumps in Ladakh, and Himalayan road trip survival from the Stories by Foot team."
+        keywords="ladakh bike trip guide, stories by foot blog, ladakh packing list, petrol pump in ladakh, zanskar travel guide, himalayan biking stories"
+      />
       <Navigation />
 
       <main className="flex-grow pt-16 blog-v2-container">

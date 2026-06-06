@@ -1,10 +1,16 @@
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HelpCircle, Mail, MessageCircle } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const SupportPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SEO
+        title="Support & FAQs | Help Center | Stories by Foot"
+        description="Find support and answers to frequently asked questions about booking, cancellation policies, packing lists, and contact details for Stories by Foot."
+        keywords="stories by foot support, ladakh trip help, cancel bike trip booking, road trip faqs, stories by foot email"
+      />
       <Navigation />
       <main className="pt-24 pb-20">
         <div className="container mx-auto px-4">

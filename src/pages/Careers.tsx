@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { MapPin, Briefcase, Users, Heart, Award, Zap, Search, X, Star } from "lucide-react";
 import { useState } from "react";
+import SEO from "@/components/SEO";
 
 const jobListings = [
   {
@@ -228,6 +229,11 @@ export default function CareersPage() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
+      <SEO
+        title="Careers | Join Our Team | Stories by Foot"
+        description="Join Stories by Foot. Work with passionate travelers, expedition leaders, content creators, operations experts and web developers. View open positions and apply."
+        keywords="travel jobs india, stories by foot careers, hire expedition leader, content creator jobs travel, react developer jobs"
+      />
       <Navigation />
 
       {/* Hero Section with Background */}

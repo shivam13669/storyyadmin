@@ -2,6 +2,7 @@ import Navigation from "@/components/Navigation";
 import { Link } from "react-router-dom";
 import { MapPin, Zap, Heart, Users, Target, Shield, Compass, Award } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import SEO from "@/components/SEO";
 
 const AnimatedNumber = ({ endString }: { endString: string }) => {
   const [count, setCount] = useState(0);
@@ -138,6 +139,11 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
+      <SEO
+        title="About Us | Our Story & Vision | Stories by Foot"
+        description="Learn the story of Stories by Foot. Founded in 2020, we curate premium motorcycle tour packages and adventure expeditions across Ladakh, Zanskar, Bhutan and Spiti."
+        keywords="about stories by foot, stories by foot founder, ladakh tour company, adventure travel agency, motorcycle tour operator"
+      />
       <Navigation />
 
       {/* Hero Section */}

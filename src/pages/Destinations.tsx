@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { destinationIconMap, destinations } from "@/data/destinations";
@@ -175,12 +176,41 @@ const DestinationsPage = () => {
     return sorted;
   }, [filteredPackages, sortBy]);
 
+  // Dynamic SEO attributes
+  const seoData = useMemo(() => {
+    if (activeSlug === "all") {
+      return {
+        title: "Himalayan Adventure Tour Packages & Bike Expeditions 2026 | Stories by Foot",
+        description: "Browse all Himalayan adventure tour packages by Stories by Foot. Premium motorcycle expeditions in Ladakh, Zanskar, Bhutan, Meghalaya, and Nepal. Choose your epic road trip today!",
+        keywords: "himalayan tour packages, adventure tours, bike trip package, stories by foot destinations, motorbiking in india, ladakh packages, tawang bike trip, bhutan tour",
+      };
+    }
+
+    const name = activeDestination?.name || "Himalayan";
+    const tagline = activeDestination?.tagline || "Rugged passes and starry desert skies";
+
+    // Customize description for Ladakh particularly to emphasize user keywords
+    let desc = `Explore premium ${name} tour packages with Stories by Foot. ${tagline}. Our guided expeditions offer full backup support, mechanic, and safety gear.`;
+    if (activeSlug === "ladakh") {
+      desc = `Conquer Ladakh with our expert-guided Leh Ladakh bike trip packages 2026. Ride Khardung La, Pangong Tso, and Umling La with full backup vehicle, mechanic, and oxygen support.`;
+    } else if (activeSlug === "zanskar") {
+      desc = `Adventure deep into Zanskar Valley with Stories by Foot. Ride Shinku La Pass, explore remote monasteries, and cross Drang-Drung Glacier on our premium motorcycle tours.`;
+    }
+
+    return {
+      title: `${name} Tour Packages & Biking Expeditions 2026 | Stories by Foot`,
+      description: desc,
+      keywords: `${name.toLowerCase()} packages, ${name.toLowerCase()} bike trip, stories by foot ${name.toLowerCase()}, ${name.toLowerCase()} tour, best time to visit ${name.toLowerCase()}`,
+    };
+  }, [activeSlug, activeDestination]);
+
   const handleOpenPackage = (packageSlug: string, destinationSlug: string) => {
     navigate(`/destinations/${destinationSlug}/${packageSlug}`);
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SEO {...seoData} />
       <Navigation />
 
       <main className="pb-20">

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import SEO from "@/components/SEO";
 import "@/styles/blog-v2.css";
 
 const BlogPost = () => {
@@ -510,8 +511,56 @@ const BlogPost = () => {
   const mainTitle = titleParts[0];
   const subTitle = titleParts[1];
 
+  // Dynamic SEO attributes for the blog post
+  const cleanTitle = post.title.replace(/<br\s*\/?>/gi, "");
+  const seoTitle = `${cleanTitle} | Stories by Foot Blog`;
+  const seoDescription = post.content
+    ? post.content
+        .replace(/<[^>]*>/g, "") // remove HTML tags
+        .replace(/\s+/g, " ") // clean whitespace
+        .trim()
+        .slice(0, 155) + "..."
+    : "Read this travel guide on the Stories by Foot blog.";
+  
+  const seoKeywords = post.tags ? `${post.tags.join(", ")}, stories by foot blog, ladakh biking, zanskar tour` : "stories by foot, ladakh blog, himalayas riding";
+
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://www.storiesbyfoot.com/blog/${slug}`
+    },
+    "headline": cleanTitle,
+    "image": [
+      post.img || "https://www.storiesbyfoot.com/placeholder.svg"
+    ],
+    "author": {
+      "@type": "Organization",
+      "name": "Stories by Foot",
+      "url": "https://www.storiesbyfoot.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Stories by Foot",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.storiesbyfoot.com/favicon.ico"
+      }
+    },
+    "description": seoDescription
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        keywords={seoKeywords}
+        image={post.img}
+        type="article"
+        schema={blogSchema}
+      />
       <Navigation />
 
       <main className="flex-grow pt-16 blog-v2-container pb-20">
