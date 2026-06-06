@@ -10,6 +10,36 @@ const SupportPage = () => {
         title="Support & FAQs | Help Center | Stories by Foot"
         description="Find support and answers to frequently asked questions about booking, cancellation policies, packing lists, and contact details for Stories by Foot."
         keywords="stories by foot support, ladakh trip help, cancel bike trip booking, road trip faqs, stories by foot email"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How do I book a trip?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Browse our destinations, select a package, and complete the booking form. You'll receive a confirmation email once your booking is processed."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I cancel my booking?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Cancellation policies vary by package. Please check your booking confirmation or contact support for specific cancellation terms."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What should I bring on a trip?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A detailed packing list will be sent to you via email after booking confirmation. It varies based on the destination and type of trip."
+              }
+            }
+          ]
+        }}
       />
       <Navigation />
       <main className="pt-24 pb-20">

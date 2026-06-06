@@ -178,11 +178,24 @@ const DestinationsPage = () => {
 
   // Dynamic SEO attributes
   const seoData = useMemo(() => {
+    const defaultSchema = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Himalayan Adventure Tour Packages",
+      "numberOfItems": filteredPackages.length,
+      "itemListElement": filteredPackages.slice(0, 15).map((pkg, idx) => ({
+        "@type": "ListItem",
+        "position": idx + 1,
+        "url": `https://www.storiesbyfoot.com/destinations/${pkg.destinationSlug}/${pkg.slug}`
+      }))
+    };
+
     if (activeSlug === "all") {
       return {
         title: "Himalayan Adventure Tour Packages & Bike Expeditions 2026 | Stories by Foot",
         description: "Browse all Himalayan adventure tour packages by Stories by Foot. Premium motorcycle expeditions in Ladakh, Zanskar, Bhutan, Meghalaya, and Nepal. Choose your epic road trip today!",
         keywords: "himalayan tour packages, adventure tours, bike trip package, stories by foot destinations, motorbiking in india, ladakh packages, tawang bike trip, bhutan tour",
+        schema: defaultSchema,
       };
     }
 
@@ -197,12 +210,44 @@ const DestinationsPage = () => {
       desc = `Adventure deep into Zanskar Valley with Stories by Foot. Ride Shinku La Pass, explore remote monasteries, and cross Drang-Drung Glacier on our premium motorcycle tours.`;
     }
 
+    const destinationSchema = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TouristDestination",
+          "name": name,
+          "description": desc,
+          "touristType": "Adventure Enthusiasts, Motorcycle Riders",
+          "includesPlace": {
+            "@type": "Place",
+            "name": name,
+            "address": {
+              "@type": "PostalAddress",
+              "addressCountry": "IN",
+              "addressRegion": name
+            }
+          }
+        },
+        {
+          "@type": "ItemList",
+          "name": `${name} Tour Packages`,
+          "numberOfItems": filteredPackages.length,
+          "itemListElement": filteredPackages.slice(0, 15).map((pkg, idx) => ({
+            "@type": "ListItem",
+            "position": idx + 1,
+            "url": `https://www.storiesbyfoot.com/destinations/${pkg.destinationSlug}/${pkg.slug}`
+          }))
+        }
+      ]
+    };
+
     return {
       title: `${name} Tour Packages & Biking Expeditions 2026 | Stories by Foot`,
       description: desc,
       keywords: `${name.toLowerCase()} packages, ${name.toLowerCase()} bike trip, stories by foot ${name.toLowerCase()}, ${name.toLowerCase()} tour, best time to visit ${name.toLowerCase()}`,
+      schema: destinationSchema,
     };
-  }, [activeSlug, activeDestination]);
+  }, [activeSlug, activeDestination, filteredPackages]);
 
   const handleOpenPackage = (packageSlug: string, destinationSlug: string) => {
     navigate(`/destinations/${destinationSlug}/${packageSlug}`);

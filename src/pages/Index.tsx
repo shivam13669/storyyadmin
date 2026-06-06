@@ -43,6 +43,36 @@ const Index = () => {
               ]
             },
             {
+              "@type": "TravelAgency",
+              "@id": "https://www.storiesbyfoot.com/#travelagency",
+              "name": "Stories by Foot",
+              "url": "https://www.storiesbyfoot.com",
+              "logo": "https://www.storiesbyfoot.com/favicon.ico",
+              "image": "https://www.storiesbyfoot.com/favicon.ico",
+              "telephone": "+91-6205129118",
+              "email": "contact@storiesbyfoot.com",
+              "priceRange": "$$$",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "91, GK Crystal Home, KL Highway",
+                "addressLocality": "SAS Nagar",
+                "addressRegion": "Punjab",
+                "postalCode": "140307",
+                "addressCountry": "IN"
+              },
+              "areaServed": [
+                "Ladakh",
+                "Zanskar",
+                "Tawang",
+                "Bhutan",
+                "Nepal",
+                "Meghalaya"
+              ],
+              "sameAs": [
+                "https://www.instagram.com/storiesbyfoot/"
+              ]
+            },
+            {
               "@type": "WebSite",
               "@id": "https://www.storiesbyfoot.com/#website",
               "url": "https://www.storiesbyfoot.com",
