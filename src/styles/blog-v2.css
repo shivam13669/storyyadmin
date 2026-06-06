@@ -107,6 +107,17 @@
   text-decoration: none;
 }
 
+.blog-v2-container p a,
+.blog-v2-container a.underline {
+  display: inline;
+  text-decoration: underline;
+}
+
+.blog-v2-container p a:hover,
+.blog-v2-container a.underline:hover {
+  opacity: 0.8;
+}
+
 .blog-v2-container img { height: auto; }
 
 .blog-v2-container input,
