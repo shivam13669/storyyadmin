@@ -1,4 +1,4 @@
-# Stories by Foot - Travel COmpany
+# Stories by Foot - Travel Company
 **Walk the Road. Live the Story.**
 
 Stories by Foot is a modern, full-stack travel company built with React, TypeScript, and Express. It enables users to browse adventure destinations, manage bookings, and connect with travel communities while providing administrators with comprehensive management tools.
