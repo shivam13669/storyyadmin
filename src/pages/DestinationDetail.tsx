@@ -58,9 +58,41 @@ const DestinationDetail = () => {
 
   // Dynamic SEO configurations for the travel package
   const cleanPrice = travelPackage.price.replace(/[₹,]/g, "");
-  const seoTitle = `${travelPackage.name} | ${destination.name} Bike Trip Package 2026`;
-  const seoDescription = `${travelPackage.description.slice(0, 155)}... Book this ${travelPackage.duration} tour to ${destination.name} starting at ${travelPackage.price}. Full backup vehicle, mechanic and oxygen support included.`;
-  const seoKeywords = `${travelPackage.name.toLowerCase()}, ${destination.name.toLowerCase()} package, stories by foot, ${destination.name.toLowerCase()} bike trip, leh ladakh bike tour 2026, ${travelPackage.highlights.slice(0, 3).map(h => h.toLowerCase()).join(', ')}`;
+  const seoTitle = `${travelPackage.name} | ${destination.name} Tour Package 2026`;
+  const seoDescription = `${travelPackage.description.slice(0, 155)}... Book this ${travelPackage.duration} tour to ${destination.name} starting at ${travelPackage.price}. Full backup support, mechanic & road captains included.`;
+
+  // Generate super targeted phrases for SEO (e.g. "tawang trip", "khardungla trip", "bhutan tour")
+  const extractedPhrases: string[] = [];
+  
+  // Add package name phrases
+  extractedPhrases.push(travelPackage.name.toLowerCase());
+  extractedPhrases.push(`${travelPackage.name.toLowerCase()} trip`);
+  extractedPhrases.push(`${travelPackage.name.toLowerCase()} tour`);
+  
+  // Add destination specific phrases
+  extractedPhrases.push(`${destination.name.toLowerCase()} tour package`);
+  extractedPhrases.push(`${destination.name.toLowerCase()} bike trip`);
+  extractedPhrases.push(`stories by foot ${destination.name.toLowerCase()}`);
+  extractedPhrases.push(`${destination.name.toLowerCase()} motorcycle expedition`);
+  
+  // Add highlight-based keywords (like specific passes/locations, e.g. khardung la, pangong, tawang, zanskar, shinku la)
+  travelPackage.highlights.forEach(highlight => {
+    // Split on typical separators to extract clean locations
+    const subParts = highlight.split(/[|:-]/);
+    subParts.forEach(part => {
+      const cleanPart = part.replace(/[()]/g, "").trim().toLowerCase();
+      if (cleanPart && cleanPart.length > 3 && cleanPart.length < 40) {
+        extractedPhrases.push(cleanPart);
+        extractedPhrases.push(`${cleanPart} trip`);
+        extractedPhrases.push(`${cleanPart} tour`);
+      }
+    });
+  });
+
+  // Unique and filter short/long keywords
+  const seoKeywords = Array.from(new Set(extractedPhrases))
+    .slice(0, 30) // Limit to top 30 highly relevant tags
+    .join(", ");
 
   const itineraryItems = travelPackage.itinerary?.map((day, idx) => ({
     "@type": "ListItem",
