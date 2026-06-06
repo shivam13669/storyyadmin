@@ -1,8 +1,7 @@
-# Stories by Foot - Adventure Travel Booking Platform
-
+# Stories by Foot - Travel COmpany
 **Walk the Road. Live the Story.**
 
-Stories by Foot is a modern, full-stack travel and adventure booking platform built with React, TypeScript, and Express. It enables users to browse adventure destinations, manage bookings, and connect with travel communities while providing administrators with comprehensive management tools.
+Stories by Foot is a modern, full-stack travel company built with React, TypeScript, and Express. It enables users to browse adventure destinations, manage bookings, and connect with travel communities while providing administrators with comprehensive management tools.
 
 **Live Demo:** https://storiesbyfoot.vercel.app/
 
