@@ -20,9 +20,9 @@ const Index = () => {
   return (
     <div className="w-full bg-white flex flex-col pt-16 min-h-screen">
       <SEO
-        title="Stories by Foot | Epic Ladakh Motorcycle Tour Packages & Himalayan Expeditions 2026"
-        description="Conquer the mighty Himalayas with Stories by Foot. Premium Leh Ladakh bike trip packages 2026, Hanle, Umling La, and Zanskar loops with backup support, mechanics, and oxygen. Book your ultimate adventure ride today."
-        keywords="stories by foot, ladakh bike trip, leh ladakh bike trip package 2026, ladakh packages, manali to leh bike tour, srinagar to leh bike trip, umling la pass ride, zanskar loop, motorcycle tour price, motorbiking himalayas"
+        title="Leh Ladakh Bike Trip 2026 | Tour Packages & SUV Road Trips | Stories by Foot"
+        description="Experience the ultimate Leh Ladakh bike trip in 2026. Premium Ladakh bike tour packages, SUV road trips, Nubra Valley, Pangong Lake, and Umling La expeditions with full backup support. Book with the best Ladakh travel agency."
+        keywords="Leh Ladakh Bike Trip, Ladakh Bike Tour Package, Leh Ladakh Tour Package, Ladakh Road Trip, Ladakh Motorcycle Tour, Ladakh Group Tour, Ladakh SUV Tour, Pangong Lake Tour, Nubra Valley Tour, Umling La Bike Expedition, Royal Enfield Ladakh trip, Delhi to Leh Ladakh bike trip, Manali to Leh bike trip, Srinagar to Leh bike trip, stories by foot"
         schema={{
           "@context": "https://schema.org",
           "@graph": [
