@@ -1106,7 +1106,7 @@ export const destinations: Destination[] = [
         ],
       },
       {
-        slug: "ultimate-ulingla",
+        slug: "ultimate-umlingla",
         name: "Ultimate UmlingLa",
         duration: "7 nights · 8 days",
         description:
