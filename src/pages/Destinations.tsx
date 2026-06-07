@@ -29,7 +29,7 @@ const DestinationsPage = () => {
   }, [location.key, location.pathname]);
 
   // Read the 'dest' path parameter or 'dest' query parameter to set initial destination
-  const pathDest = params.dest;
+  const pathDest = params.slug || params.dest;
   const searchParams = new URLSearchParams(location.search);
   const queryDest = searchParams.get("dest");
   const destParam = pathDest || queryDest;
