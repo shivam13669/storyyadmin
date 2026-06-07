@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
+import SEO from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -239,6 +240,11 @@ const TestimonialsPage = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SEO
+        title="Traveler Stories & Reviews | Testimonials | Stories by Foot"
+        description="Read reviews and stories from travelers who completed motorcycle expeditions and road trips in Ladakh, Spiti, Tawang, and Bhutan with Stories by Foot."
+        keywords="stories by foot reviews, traveler testimonials, ladakh bike trip reviews, spiti valley road trip feedback"
+      />
       <Navigation />
       <main className="pt-24 pb-20">
         <section className="relative overflow-hidden">
