@@ -78,6 +78,309 @@
       .swiper-slider-corporate .swiper-slide-caption h2 {
         text-shadow: 2px 2px 12px rgba(0,0,0,0.8);
       }
+
+      /* Custom Category styles */
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 24px;
+        margin-top: -60px;
+        position: relative;
+        z-index: 10;
+      }
+      .category-card {
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.06);
+        border-radius: 16px;
+        padding: 30px 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        text-decoration: none !important;
+        display: block;
+      }
+      .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        border-color: #01b3a7;
+      }
+      .category-card .icon-wrap {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 16px;
+        background: rgba(1, 179, 167, 0.08);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #01b3a7;
+        transition: all 0.3s ease;
+      }
+      .category-card:hover .icon-wrap {
+        background: #01b3a7;
+        color: #fff;
+      }
+      .category-card h5 {
+        margin: 0 0 6px 0;
+        font-weight: 700;
+        color: #151515;
+      }
+      .category-card p {
+        margin: 0;
+        font-size: 13px;
+        color: #777;
+        line-height: 1.4;
+      }
+
+      /* Custom Destination card styles */
+      .dest-card-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 30px;
+      }
+      @media (min-width: 768px) {
+        .dest-card-wrapper {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (min-width: 992px) {
+        .dest-card-wrapper {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      .dest-grid-card {
+        position: relative;
+        border-radius: 24px;
+        overflow: hidden;
+        height: 320px;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        display: block;
+        text-decoration: none !important;
+      }
+      .dest-grid-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+      }
+      .dest-grid-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+      }
+      .dest-grid-card:hover img {
+        transform: scale(1.06);
+      }
+      .dest-grid-card .overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.85) 100%);
+      }
+      .dest-grid-card .content {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        right: 24px;
+        color: #fff;
+        text-align: left;
+      }
+      .dest-grid-card .content h4 {
+        margin: 0 0 6px 0;
+        font-weight: 700;
+        color: #fff;
+        font-size: 24px;
+      }
+      .dest-grid-card .content p {
+        margin: 0;
+        font-size: 14px;
+        color: rgba(255,255,255,0.85);
+      }
+
+      /* Tour Package card styles */
+      .pkg-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 30px;
+      }
+      .pkg-card {
+        background: #fff;
+        border-radius: 20px;
+        border: 1px solid rgba(0,0,0,0.05);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.03);
+        display: flex;
+        flex-direction: column;
+      }
+      .pkg-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        border-color: rgba(1, 179, 167, 0.2);
+      }
+      .pkg-img-wrap {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+      }
+      .pkg-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      .pkg-card:hover .pkg-img-wrap img {
+        transform: scale(1.05);
+      }
+      .pkg-badge {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: #01b3a7;
+        color: #fff;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .pkg-batch {
+        position: absolute;
+        bottom: 12px;
+        left: 16px;
+        background: rgba(0, 0, 0, 0.75);
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 500;
+        backdrop-filter: blur(4px);
+      }
+      .pkg-content {
+        padding: 20px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+      .pkg-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 10px;
+      }
+      .pkg-stars {
+        color: #ffc107;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .pkg-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+        line-height: 1.3;
+      }
+      .pkg-title a {
+        color: #151515;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      .pkg-title a:hover {
+        color: #01b3a7;
+      }
+      .pkg-text {
+        font-size: 13px;
+        color: #777;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        flex-grow: 1;
+      }
+      .pkg-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(0,0,0,0.06);
+        padding-top: 15px;
+        margin-top: auto;
+      }
+      .pkg-price-label {
+        font-size: 10px;
+        color: #888;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+      }
+      .pkg-price {
+        font-size: 18px;
+        font-weight: 700;
+        color: #01b3a7;
+      }
+      .pkg-price-old {
+        font-size: 13px;
+        text-decoration: line-through;
+        color: #aaa;
+        margin-right: 6px;
+      }
+      .pkg-btn {
+        background: #151515;
+        color: #fff;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none !important;
+      }
+      .pkg-btn:hover {
+        background: #01b3a7;
+        color: #fff;
+      }
+
+      /* Trust Section */
+      .trust-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid rgba(0,0,0,0.05);
+        padding: 30px 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        height: 100%;
+      }
+      .trust-card:hover {
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        border-color: rgba(1, 179, 167, 0.2);
+        transform: translateY(-3px);
+      }
+      .trust-icon-wrap {
+        width: 56px;
+        height: 56px;
+        margin: 0 auto 16px;
+        background: rgba(1, 179, 167, 0.08);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #01b3a7;
+      }
+      .trust-card h5 {
+        font-weight: 700;
+        margin: 0 0 8px 0;
+        color: #151515;
+      }
+      .trust-card p {
+        margin: 0;
+        font-size: 13px;
+        color: #777;
+        line-height: 1.4;
+      }
     </style>
   </head>
   <body>
@@ -151,295 +454,340 @@
         <!-- Swiper Pagination-->
         <div class="swiper-pagination"></div>
       </section>
-      <!-- Section Box Categories-->
-      <section class="section section-lg section-top-1 bg-gray-4">
-        <div class="container offset-negative-1">
-          <div class="box-categories cta-box-wrap">
-            <div class="box-categories-content">
-              <div class="row justify-content-center">
-                <div class="col-md-4 wow fadeInDown col-9" data-wow-delay=".2s">
-                  <ul class="list-marked-2 box-categories-list">
-                    <li><a href="#"><img src="images/cta-1-368x420.jpg" alt="" width="368" height="420"/></a>
-                      <h5 class="box-categories-title">Balloon Flights</h5>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-md-4 wow fadeInDown col-9" data-wow-delay=".2s">
-                  <ul class="list-marked-2 box-categories-list">
-                    <li><a href="#"><img src="images/cta-2-368x420.jpg" alt="" width="368" height="420"/></a>
-                      <h5 class="box-categories-title">Mountain Holiday</h5>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-md-4 wow fadeInDown col-9" data-wow-delay=".2s">
-                  <ul class="list-marked-2 box-categories-list">
-                    <li><a href="#"><img src="images/cta-3-368x420.jpg" alt="" width="368" height="420"/></a>
-                      <h5 class="box-categories-title">Beach Holidays</h5>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div><a class="link-classic wow fadeInUp" href="#">Other Tours<span></span></a>
-          <!-- Owl Carousel-->
-        </div>
-      </section>
-      <!-- Discover New Horizons-->
-      <section class="section section-sm section-first bg-default text-md-left">
+      <!-- Section Trip Categories -->
+      <section class="section section-lg bg-gray-4 pb-0 pt-3">
         <div class="container">
-          <div class="row row-50 align-items-center justify-content-center justify-content-xl-between">
-            <div class="col-lg-6 text-center wow fadeInUp"><img src="images/index-3-556x382.jpg" alt="" width="556" height="382"/>
-            </div>
-            <div class="col-lg-6 wow fadeInRight" data-wow-delay=".1s">
-              <div class="box-width-lg-470">
-                <h3>Discover New Horizons</h3>
-                <!-- Bootstrap tabs-->
-                <div class="tabs-custom tabs-horizontal tabs-line tabs-line-big tabs-line-style-2 text-center text-md-left" id="tabs-7">
-                  <!-- Nav tabs-->
-                  <ul class="nav nav-tabs">
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-7-1" data-toggle="tab">About us</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-7-2" data-toggle="tab">Why choose us</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-7-3" data-toggle="tab">Our mission</a></li>
-                  </ul>
-                  <!-- Tab panes-->
-                  <div class="tab-content">
-                    <div class="tab-pane fade show active" id="tabs-7-1">
-                      <p>Stories by Foot is committed to bringing our clients the best in value and quality travel arrangements. We are passionate about travel and sharing the world's wonders with you.</p>
-                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="/contact" target="_parent">Get in Touch</a><a class="button button-black-outline button-md" href="/about" target="_parent">Read More</a></div>
-                    </div>
-                    <div class="tab-pane fade" id="tabs-7-2">
-                      <p>We are proud to offer excellent quality and value for money in our tours, which give you the chance to experience your chosen destination in an authentic and exciting way.</p>
-                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="/contact" target="_parent">Get in Touch</a><a class="button button-black-outline button-md" href="/about" target="_parent">Read More</a></div>
-                    </div>
-                    <div class="tab-pane fade" id="tabs-7-3">
-                      <p>Our mission is to provide the ultimate travel planning experience while becoming a one-stop shop for every travel service available in the industry.</p>
-                      <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="/contact" target="_parent">Get in Touch</a><a class="button button-black-outline button-md" href="/about" target="_parent">Read More</a></div>
-                    </div>
-                  </div>
-                </div>
+          <div class="category-grid">
+            <a href="/destinations?category=Biking" target="_parent" class="category-card wow fadeInUp" data-wow-delay=".1s">
+              <div class="icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="5.5" cy="17.5" r="2.5"></circle>
+                  <circle cx="18.5" cy="17.5" r="2.5"></circle>
+                  <path d="M15 6h5a2 2 0 0 1 2 2v2"></path>
+                  <path d="M12 17.5V14l-3-3 4-3 2 3h2"></path>
+                </svg>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!--	Our Services-->
-      <section class="section section-sm">
-        <div class="container">
-          <h3>Our Services</h3>
-          <div class="row row-30">
-            <div class="col-sm-6 col-lg-4">
-              <article class="box-icon-classic">
-                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
-                  <div class="unit-left">
-                    <div class="box-icon-classic-icon fl-bigmug-line-equalization3"></div>
-                  </div>
-                  <div class="unit-body">
-                    <h5 class="box-icon-classic-title"><a href="#">Personalized Matching</a></h5>
-                    <p class="box-icon-classic-text">Our unique matching system lets you find just the tour you want for your next holiday.</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <article class="box-icon-classic">
-                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
-                  <div class="unit-left">
-                    <div class="box-icon-classic-icon fl-bigmug-line-circular220"></div>
-                  </div>
-                  <div class="unit-body">
-                    <h5 class="box-icon-classic-title"><a href="#">Wide Variety of Tours</a></h5>
-                    <p class="box-icon-classic-text">We offer a wide variety of personally picked tours with destinations all over the globe.</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <article class="box-icon-classic">
-                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
-                  <div class="unit-left">
-                    <div class="box-icon-classic-icon fl-bigmug-line-favourites5"></div>
-                  </div>
-                  <div class="unit-body">
-                    <h5 class="box-icon-classic-title"><a href="#">Highly Qualified Service</a></h5>
-                    <p class="box-icon-classic-text">Our tour managers are qualified, skilled, and friendly to bring you the best service.</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <article class="box-icon-classic">
-                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
-                  <div class="unit-left">
-                    <div class="box-icon-classic-icon fl-bigmug-line-headphones32"></div>
-                  </div>
-                  <div class="unit-body">
-                    <h5 class="box-icon-classic-title"><a href="#">24/7 Support</a></h5>
-                    <p class="box-icon-classic-text">You can always get professional support from our staff 24/7 and ask any question you have.</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <article class="box-icon-classic">
-                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
-                  <div class="unit-left">
-                    <div class="box-icon-classic-icon fl-bigmug-line-hot67"></div>
-                  </div>
-                  <div class="unit-body">
-                    <h5 class="box-icon-classic-title"><a href="#">Handpicked Hotels</a></h5>
-                    <p class="box-icon-classic-text">Our team offers only the best selection of affordable and luxury hotels to our clients.</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <article class="box-icon-classic">
-                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
-                  <div class="unit-left">
-                    <div class="box-icon-classic-icon fl-bigmug-line-wallet26"></div>
-                  </div>
-                  <div class="unit-body">
-                    <h5 class="box-icon-classic-title"><a href="#">Best Price Guarantee</a></h5>
-                    <p class="box-icon-classic-text">If you find tours that are cheaper than ours, we will compensate the difference.</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- Most Loved Destinations -->
-      <section class="section" style="position: relative; background-image: url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?q=80&w=1920&auto=format&fit=crop'); background-size: cover; background-position: center; padding: 120px 0; overflow: visible;">
-        <!-- Dark Overlay -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%); z-index: 1;"></div>
-        
-        <div class="container" style="position: relative; z-index: 2;">
-          <div class="text-center" style="margin-bottom: 60px;">
-            <div style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; color: #fff; font-size: 16px; font-weight: 600; font-family: 'Poppins', sans-serif; margin-bottom: 20px;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 20c2-2 4-2 6-2s4 2 6 2 4-2 6-2 4 2 6 2"></path>
-                <path d="M12 18v-8"></path>
-                <path d="M12 10c-1-3-4-4-6-3-2 1-3 3-2 5 2 2 5 1 8-2z"></path>
-                <path d="M12 10c1-3 4-4 6-3 2 1 3 3 2 5-2 2-5 1-8-2z"></path>
-              </svg>
-              Most Loved Destinations
-            </div>
-            <h2 style="color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 48px; line-height: 1.2; max-width: 800px; margin: 0 auto;">Explore The World’s Most Popular Destinations</h2>
-          </div>
-          
-          <div class="row justify-content-center">
-            <div class="col-12" style="max-width: 580px; margin: 0 auto; padding-top: 12px;">
-              <div class="owl-carousel" data-items="1" data-sm-items="1" data-md-items="1" data-lg-items="1" data-xl-items="1" data-margin="30" data-autoplay="true" data-loop="true" data-nav="false" data-dots="false" data-mouse-drag="true" data-autoplay-timeout="3000">
-                
-                <!-- Japan Card -->
-                <a href="#" class="destination-card" style="display: block; position: relative; border-radius: 24px; overflow: hidden; text-decoration: none; transition: all 0.4s ease; transform: translateY(0); width: 100%; height: 380px;">
-                  <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?q=80&w=800&auto=format&fit=crop" alt="Japan" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s ease;" class="dest-img" />
-                  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%);"></div>
-                  
-                  <div style="position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease;" class="dest-arrow">
-                    <span class="icon fa fa-arrow-right" style="transform: rotate(-45deg); font-size: 16px;"></span>
-                  </div>
-                  
-                  <div style="position: absolute; bottom: 30px; left: 30px; right: 30px; text-align: left;">
-                    <h3 style="color: white; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 28px; margin-bottom: 8px; letter-spacing: -0.5px;">Japan</h3>
-                    <p style="color: rgba(255,255,255,0.85); font-size: 15px; margin: 0; font-family: 'Poppins', sans-serif; font-weight: 400;">Technology, vibrant nightlife & traditions</p>
-                  </div>
-                </a>
-
-                <!-- Switzerland Card -->
-                <a href="#" class="destination-card" style="display: block; position: relative; border-radius: 24px; overflow: hidden; text-decoration: none; transition: all 0.4s ease; transform: translateY(0); width: 100%; height: 380px;">
-                  <img src="https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?q=80&w=800&auto=format&fit=crop" alt="Switzerland" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s ease;" class="dest-img" />
-                  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%);"></div>
-                  
-                  <div style="position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease;" class="dest-arrow">
-                    <span class="icon fa fa-arrow-right" style="transform: rotate(-45deg); font-size: 16px;"></span>
-                  </div>
-                  
-                  <div style="position: absolute; bottom: 30px; left: 30px; right: 30px; text-align: left;">
-                    <h3 style="color: white; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 28px; margin-bottom: 8px; letter-spacing: -0.5px;">Switzerland</h3>
-                    <p style="color: rgba(255,255,255,0.85); font-size: 15px; margin: 0; font-family: 'Poppins', sans-serif; font-weight: 400;">Stunning landscapes and pure alpine beauty</p>
-                  </div>
-                </a>
-
-                <!-- Paris Card -->
-                <a href="#" class="destination-card" style="display: block; position: relative; border-radius: 24px; overflow: hidden; text-decoration: none; transition: all 0.4s ease; transform: translateY(0); width: 100%; height: 380px;">
-                  <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop" alt="Paris" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.8s ease;" class="dest-img" />
-                  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%);"></div>
-                  
-                  <div style="position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease;" class="dest-arrow">
-                    <span class="icon fa fa-arrow-right" style="transform: rotate(-45deg); font-size: 16px;"></span>
-                  </div>
-                  
-                  <div style="position: absolute; bottom: 30px; left: 30px; right: 30px; text-align: left;">
-                    <h3 style="color: white; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 28px; margin-bottom: 8px; letter-spacing: -0.5px;">Paris</h3>
-                    <p style="color: rgba(255,255,255,0.85); font-size: 15px; margin: 0; font-family: 'Poppins', sans-serif; font-weight: 400;">City of light, love, and endless romance</p>
-                  </div>
-                </a>
-
+              <h5>Biking Expeditions</h5>
+              <p>Conquer the high-altitude passes of Ladakh & Spiti on two wheels.</p>
+            </a>
+            
+            <a href="/destinations?category=Backpacking" target="_parent" class="category-card wow fadeInUp" data-wow-delay=".2s">
+              <div class="icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
               </div>
-            </div>
+              <h5>Himalayan Backpacking</h5>
+              <p>Guided treks & offbeat group journeys through mountain valleys.</p>
+            </a>
+            
+            <a href="/destinations?category=Overland" target="_parent" class="category-card wow fadeInUp" data-wow-delay=".3s">
+              <div class="icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="3" width="15" height="13" rx="2" ry="2"></rect>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                  <circle cx="14.5" cy="18.5" r="2.5"></circle>
+                </svg>
+              </div>
+              <h5>Customized Road Trips</h5>
+              <p>Bespoke 4x4 self-drive convoys tailored to your group size.</p>
+            </a>
+            
+            <a href="/destinations?category=Weekend" target="_parent" class="category-card wow fadeInUp" data-wow-delay=".4s">
+              <div class="icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </div>
+              <h5>Weekend Getaways</h5>
+              <p>Short retreats and adventure breaks for corporate groups & students.</p>
+            </a>
           </div>
         </div>
-        <style>
-          .destination-card:hover {
-            transform: translateY(-8px) !important;
-          }
-        </style>
       </section>
 
-      <!-- Hot tours-->
+      <!-- Section Popular Destinations -->
       <section class="section section-sm bg-default">
         <div class="container">
-          <h3 class="oh-desktop"><span class="d-inline-block wow slideInDown">Hot Tours</span></h3>
-          <div class="row row-sm row-40 row-md-50">
-            <div class="col-sm-6 col-md-12 wow fadeInRight">
-              <!-- Product Big-->
-              <article class="product-big">
-                <div class="unit flex-column flex-md-row align-items-md-stretch">
-                  <div class="unit-left"><a class="product-big-figure" href="#"><img src="https://cdn.builder.io/api/v1/image/assets%2F4115ef14871b4c9f98220cd4c098fc4d%2Ffd209fc8b4f148bc938f2bae1f79a749?format=webp" alt="Trans Himalayan Ride" width="600" height="366"/></a></div>
-                  <div class="unit-body">
-                    <div class="product-big-body">
-                      <h5 class="product-big-title"><a href="#">Trans Himalayan Ride</a></h5>
-                      <div class="group-sm group-middle justify-content-start">
-                        <div class="product-big-rating"><span class="icon material-icons-star"></span><span class="icon material-icons-star"></span><span class="icon material-icons-star"></span><span class="icon material-icons-star"></span><span class="icon material-icons-star"></span></div><a class="product-big-reviews" href="#">315 customer reviews</a>
-                      </div>
-                      <p class="product-big-text">A grand circuit spanning over 3000 kilometers from the plains of Chandigarh to the highest reaches of the trans-Himalayan desert. Conquer legendary passes and experience Ladakh's most remote frontiers...</p><a class="button button-black-outline button-ujarak" href="#">Book This Tour</a>
-                      <div class="product-big-price-wrap"><span class="product-big-price">₹25,499</span></div>
-                    </div>
-                  </div>
+          <div class="text-center" style="margin-bottom: 40px; margin-top: 30px;">
+            <span style="color: #01b3a7; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">Where to go?</span>
+            <h3 style="font-weight: 700; margin-top: 5px;">Popular Destinations</h3>
+          </div>
+          
+          <div class="dest-card-wrapper">
+            <a href="/destinations/ladakh" target="_parent" class="dest-grid-card wow fadeInUp" data-wow-delay=".1s">
+              <img src="https://cdn.builder.io/api/v1/image/assets%2F76004f6138934696a9d5b53b7a2ec8b1%2Fe413e4f9377b436f9b2830f4d4d696c4?format=webp&width=600" alt="Ladakh" />
+              <div class="overlay"></div>
+              <div class="content">
+                <h4>Ladakh</h4>
+                <p>The Land of High Passes, Umling La & Pangong Lake</p>
+              </div>
+            </a>
+            
+            <a href="/destinations/zanskar" target="_parent" class="dest-grid-card wow fadeInUp" data-wow-delay=".2s">
+              <img src="https://cdn.builder.io/api/v1/image/assets%2F76004f6138934696a9d5b53b7a2ec8b1%2Fcb35e2849362485493f50fa8a980c199?format=webp&width=600" alt="Zanskar" />
+              <div class="overlay"></div>
+              <div class="content">
+                <h4>Zanskar</h4>
+                <p>Isolated valleys, Shinku La & honeycomb Gompas</p>
+              </div>
+            </a>
+            
+            <a href="/destinations/tawang" target="_parent" class="dest-grid-card wow fadeInUp" data-wow-delay=".3s">
+              <img src="https://cdn.builder.io/api/v1/image/assets%2F76004f6138934696a9d5b53b7a2ec8b1%2Fb43a1ae1012c4304b871c14da4052c20?format=webp&width=600" alt="Tawang" />
+              <div class="overlay"></div>
+              <div class="content">
+                <h4>Tawang</h4>
+                <p>Monasteries, misty mountains & cascading falls</p>
+              </div>
+            </a>
+
+            <a href="/destinations/bhutan" target="_parent" class="dest-grid-card wow fadeInUp" data-wow-delay=".1s">
+              <img src="https://cdn.builder.io/api/v1/image/assets%2F76004f6138934696a9d5b53b7a2ec8b1%2F9594b942348f416db273b387c03cbfbc?format=webp&width=600" alt="Bhutan" />
+              <div class="overlay"></div>
+              <div class="content">
+                <h4>Bhutan</h4>
+                <p>The Kingdom of Happiness & Tiger's Nest Gompa</p>
+              </div>
+            </a>
+
+            <a href="/destinations/nepal" target="_parent" class="dest-grid-card wow fadeInUp" data-wow-delay=".2s">
+              <img src="https://cdn.builder.io/api/v1/image/assets%2F76004f6138934696a9d5b53b7a2ec8b1%2F5061e66c75644089a066b3dc02fb3282?format=webp&width=600" alt="Nepal" />
+              <div class="overlay"></div>
+              <div class="content">
+                <h4>Nepal</h4>
+                <p>Everest trails, Annapurna ranges & Kathmandu temples</p>
+              </div>
+            </a>
+
+            <a href="/destinations/meghalaya" target="_parent" class="dest-grid-card wow fadeInUp" data-wow-delay=".3s">
+              <img src="https://images.unsplash.com/photo-1542718610-a1d656d1884c?q=80&w=600&auto=format&fit=crop" alt="Meghalaya" />
+              <div class="overlay"></div>
+              <div class="content">
+                <h4>Meghalaya</h4>
+                <p>Double-decker living root bridges & azure pools</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section Why Choose Us (Trust Badges) -->
+      <section class="section section-sm bg-gray-4">
+        <div class="container">
+          <div class="text-center" style="margin-bottom: 40px; margin-top: 10px;">
+            <span style="color: #01b3a7; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">Our Strength</span>
+            <h3 style="font-weight: 700; margin-top: 5px;">Why Ride With Stories by Foot?</h3>
+          </div>
+          
+          <div class="row row-30">
+            <div class="col-sm-6 col-md-3">
+              <div class="trust-card wow fadeInUp" data-wow-delay=".1s">
+                <div class="trust-icon-wrap">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M12 2v9"></path>
+                    <path d="M8 5h8"></path>
+                  </svg>
                 </div>
-              </article>
+                <h5>CE-Certified Captains</h5>
+                <p>Professional road captains and guides certified in safety protocols.</p>
+              </div>
             </div>
-            <div class="col-sm-6 col-md-12 wow fadeInLeft">
-              <!-- Product Big-->
-              <article class="product-big">
-                <div class="unit flex-column flex-md-row align-items-md-stretch">
-                  <div class="unit-left"><a class="product-big-figure" href="#"><img src="https://cdn.builder.io/api/v1/image/assets%2F4115ef14871b4c9f98220cd4c098fc4d%2Fec67ce82355543d1b932ec13c367b77b?format=webp" alt="Khardungla Changla Loop" width="600" height="366"/></a></div>
-                  <div class="unit-body">
-                    <div class="product-big-body">
-                      <h5 class="product-big-title"><a href="#">Khardungla Changla Loop</a></h5>
-                      <div class="group-sm group-middle justify-content-start">
-                        <div class="product-big-rating"><span class="icon material-icons-star"></span><span class="icon material-icons-star"></span><span class="icon material-icons-star"></span><span class="icon material-icons-star"></span><span class="icon material-icons-star_half"></span></div><a class="product-big-reviews" href="#">428 customer reviews</a>
-                      </div>
-                      <p class="product-big-text">Embark on a breathtaking 6-day journey through the majestic landscapes of Ladakh. Experience high-altitude adventure with the legendary Khardungla and Changla passes, serene Pangong Lake, mystical monasteries, and the enchanting Nubra Valley...</p><a class="button button-black-outline button-ujarak" href="#">Book This Tour</a>
-                      <div class="product-big-price-wrap"><span class="product-big-price">₹18,333</span></div>
-                    </div>
-                  </div>
+            
+            <div class="col-sm-6 col-md-3">
+              <div class="trust-card wow fadeInUp" data-wow-delay=".2s">
+                <div class="trust-icon-wrap">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                  </svg>
                 </div>
-              </article>
+                <h5>24/7 Medical Support</h5>
+                <p>Every group travels with oxygen cylinders (Type-D) & comprehensive first aid.</p>
+              </div>
+            </div>
+            
+            <div class="col-sm-6 col-md-3">
+              <div class="trust-card wow fadeInUp" data-wow-delay=".3s">
+                <div class="trust-icon-wrap">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                </div>
+                <h5>Premium Biking Fleet</h5>
+                <p>Ride the latest liquid-cooled Royal Enfield Himalayan 450s & Scrams.</p>
+              </div>
+            </div>
+            
+            <div class="col-sm-6 col-md-3">
+              <div class="trust-card wow fadeInUp" data-wow-delay=".4s">
+                <div class="trust-icon-wrap">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="3" width="15" height="13" rx="2" ry="2"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="14.5" cy="18.5" r="2.5"></circle>
+                  </svg>
+                </div>
+                <h5>4x4 Backup Support</h5>
+                <p>A support vehicle carries your luggage, fuel reserves, and a professional mechanic.</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
-      <!-- Different People-->
-      <section class="section section-sm">
+
+      <!-- Section Trending Packages -->
+      <section class="section section-sm bg-default">
         <div class="container">
-          <h3 class="title-block find-car oh"><span class="d-inline-block wow slideInUp">Different People — One Mission</span></h3>
+          <div class="text-center" style="margin-bottom: 40px; margin-top: 10px;">
+            <span style="color: #01b3a7; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">Fixed Departures</span>
+            <h3 style="font-weight: 700; margin-top: 5px;">Trending Tour Packages</h3>
+          </div>
+          
+          <div class="pkg-grid">
+            <!-- Card 1 -->
+            <div class="pkg-card wow fadeInUp" data-wow-delay=".1s">
+              <div class="pkg-img-wrap">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F4115ef14871b4c9f98220cd4c098fc4d%2Fec67ce82355543d1b932ec13c367b77b?format=webp&width=400" alt="Khardungla Changla Loop" />
+                <span class="pkg-badge">Best Seller</span>
+                <span class="pkg-batch">Batch: June 13, 2026</span>
+              </div>
+              <div class="pkg-content">
+                <div class="pkg-meta">
+                  <span>5 Nights · 6 Days</span>
+                  <div class="pkg-stars">
+                    <span>4.9</span>
+                    <span style="color: #ffc107;">★</span>
+                  </div>
+                </div>
+                <h5 class="pkg-title"><a href="/destinations/ladakh/khardungla-changla-loop" target="_parent">Khardungla Changla Loop</a></h5>
+                <p class="pkg-text">Experience high-altitude adventure with the legendary Khardung La, Pangong Tso and Nubra Valley.</p>
+                <div class="pkg-footer">
+                  <div>
+                    <div class="pkg-price-label">Starts from</div>
+                    <div>
+                      <span class="pkg-price-old">₹36,000</span>
+                      <span class="pkg-price">₹25,000</span>
+                    </div>
+                  </div>
+                  <a href="/destinations/ladakh/khardungla-changla-loop" target="_parent" class="pkg-btn">View Details</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="pkg-card wow fadeInUp" data-wow-delay=".2s">
+              <div class="pkg-img-wrap">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F4115ef14871b4c9f98220cd4c098fc4d%2Ffd209fc8b4f148bc938f2bae1f79a749?format=webp&width=400" alt="India's Last Turn" />
+                <span class="pkg-badge">Trending</span>
+                <span class="pkg-batch">Batch: June 20, 2026</span>
+              </div>
+              <div class="pkg-content">
+                <div class="pkg-meta">
+                  <span>6 Nights · 7 Days</span>
+                  <div class="pkg-stars">
+                    <span>4.8</span>
+                    <span style="color: #ffc107;">★</span>
+                  </div>
+                </div>
+                <h5 class="pkg-title"><a href="/destinations/ladakh/indias-last-turn" target="_parent">India's Last Turn (Turtuk)</a></h5>
+                <p class="pkg-text">Explore the last village of India, walk inside apricot orchards, and experience Balti culture.</p>
+                <div class="pkg-footer">
+                  <div>
+                    <div class="pkg-price-label">Starts from</div>
+                    <div>
+                      <span class="pkg-price-old">₹42,000</span>
+                      <span class="pkg-price">₹28,000</span>
+                    </div>
+                  </div>
+                  <a href="/destinations/ladakh/indias-last-turn" target="_parent" class="pkg-btn">View Details</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="pkg-card wow fadeInUp" data-wow-delay=".3s">
+              <div class="pkg-img-wrap">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F4115ef14871b4c9f98220cd4c098fc4d%2Fe413e4f9377b436f9b2830f4d4d696c4?format=webp&width=400" alt="Migla Throne Ride" />
+                <span class="pkg-badge">Expert Choice</span>
+                <span class="pkg-batch">Batch: June 15, 2026</span>
+              </div>
+              <div class="pkg-content">
+                <div class="pkg-meta">
+                  <span>7 Nights · 8 Days</span>
+                  <div class="pkg-stars">
+                    <span>4.9</span>
+                    <span style="color: #ffc107;">★</span>
+                  </div>
+                </div>
+                <h5 class="pkg-title"><a href="/destinations/ladakh/migla-throne-ride" target="_parent">Migla Throne Ride (UmlingLa)</a></h5>
+                <p class="pkg-text">Summit the highest motorable road in the world at 19,024 feet and stargaze in Hanle.</p>
+                <div class="pkg-footer">
+                  <div>
+                    <div class="pkg-price-label">Starts from</div>
+                    <div>
+                      <span class="pkg-price-old">₹49,000</span>
+                      <span class="pkg-price">₹32,000</span>
+                    </div>
+                  </div>
+                  <a href="/destinations/ladakh/migla-throne-ride" target="_parent" class="pkg-btn">View Details</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="pkg-card wow fadeInUp" data-wow-delay=".4s">
+              <div class="pkg-img-wrap">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F4115ef14871b4c9f98220cd4c098fc4d%2Fec67ce82355543d1b932ec13c367b77b?format=webp&width=400" alt="Ultimate UmlingLa" />
+                <span class="pkg-badge">Best Value</span>
+                <span class="pkg-batch">Batch: June 27, 2026</span>
+              </div>
+              <div class="pkg-content">
+                <div class="pkg-meta">
+                  <span>7 Nights · 8 Days</span>
+                  <div class="pkg-stars">
+                    <span>4.9</span>
+                    <span style="color: #ffc107;">★</span>
+                  </div>
+                </div>
+                <h5 class="pkg-title"><a href="/destinations/ladakh/ultimate-umlingla" target="_parent">Ultimate UmlingLa</a></h5>
+                <p class="pkg-text">A complete 8-day circuit across the high-altitude desert, Nyoma route, and beautiful Tso Moriri.</p>
+                <div class="pkg-footer">
+                  <div>
+                    <div class="pkg-price-label">Starts from</div>
+                    <div>
+                      <span class="pkg-price-old">₹49,900</span>
+                      <span class="pkg-price">₹25,999</span>
+                    </div>
+                  </div>
+                  <a href="/destinations/ladakh/ultimate-umlingla" target="_parent" class="pkg-btn">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section Team -->
+      <section class="section section-sm bg-default">
+        <div class="container">
+          <div class="text-center" style="margin-bottom: 40px; margin-top: 10px;">
+            <span style="color: #01b3a7; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">The Crew</span>
+            <h3 style="font-weight: 700; margin-top: 5px;">Different People — One Mission</h3>
+          </div>
+          
           <div class="row row-30 justify-content-center box-ordered">
-            <div class="col-sm-6 col-md-4 col-lg-4">
-              <!-- Team Modern-->
+            <!-- Member 1 -->
+            <div class="col-sm-6 col-md-4">
               <article class="team-modern">
-                <div class="team-modern-header"><a class="team-modern-figure" href="#"><img class="img-circles" src="images/NMishra.jpeg" alt="Nitin" width="118" height="118" style="object-fit: cover; height: 118px;"/></a>
+                <div class="team-modern-header">
+                  <a class="team-modern-figure" href="#"><img class="img-circles" src="images/NMishra.jpeg" alt="Nitin" width="118" height="118" style="object-fit: cover; height: 118px;"/></a>
                   <svg x="0px" y="0px" width="270px" height="70px" viewbox="0 0 270 70" enable-background="new 0 0 270 70" xml:space="preserve">
                     <g>
                       <path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"></path>
@@ -453,10 +801,12 @@
                 </div>
               </article>
             </div>
-            <div class="col-sm-6 col-md-4 col-lg-4">
-              <!-- Team Modern-->
+
+            <!-- Member 2 -->
+            <div class="col-sm-6 col-md-4">
               <article class="team-modern">
-                <div class="team-modern-header"><a class="team-modern-figure" href="#"><img class="img-circles" src="images/sAnand.jpg" alt="Shivam Anand" width="118" height="118" style="object-fit: cover; height: 118px;"/></a>
+                <div class="team-modern-header">
+                  <a class="team-modern-figure" href="#"><img class="img-circles" src="images/sAnand.jpg" alt="Shivam Anand" width="118" height="118" style="object-fit: cover; height: 118px;"/></a>
                   <svg x="0px" y="0px" width="270px" height="70px" viewbox="0 0 270 70" enable-background="new 0 0 270 70" xml:space="preserve">
                     <g>
                       <path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"></path>
@@ -470,10 +820,12 @@
                 </div>
               </article>
             </div>
-            <div class="col-sm-6 col-md-4 col-lg-4">
-              <!-- Team Modern-->
+
+            <!-- Member 3 -->
+            <div class="col-sm-6 col-md-4">
               <article class="team-modern">
-                <div class="team-modern-header"><a class="team-modern-figure" href="#"><img class="img-circles" src="images/Jmishra.png" alt="Jagannath Mishra" width="118" height="118" style="object-fit: cover; height: 118px;"/></a>
+                <div class="team-modern-header">
+                  <a class="team-modern-figure" href="#"><img class="img-circles" src="images/Jmishra.png" alt="Jagannath Mishra" width="118" height="118" style="object-fit: cover; height: 118px;"/></a>
                   <svg x="0px" y="0px" width="270px" height="70px" viewbox="0 0 270 70" enable-background="new 0 0 270 70" xml:space="preserve">
                     <g>
                       <path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"></path>
@@ -486,17 +838,6 @@
                   <p style="font-size: 13px; line-height: 1.6; margin-top: 12px; color: #777;">Indian Army Veteran (22 yrs). Brings unmatched strategic expertise in complex logistics, terrain navigation, and ultimate safety.</p>
                 </div>
               </article>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- Section Subscribe-->
-      <section class="section bg-default text-center offset-top-50">
-        <div class="parallax-container" data-parallax-img="images/parallax-1-1920x850.jpg">
-          <div class="parallax-content section-xl section-inset-custom-1 context-dark bg-overlay-2-21">
-            <div class="container">
-              <h2 class="heading-2 oh font-weight-normal wow slideInDown"><span class="d-block font-weight-semi-bold">First-class Impressions</span><span class="d-block font-weight-light">are Waiting for You!</span></h2>
-              <p class="text-width-medium text-spacing-75 wow fadeInLeft" data-wow-delay=".1s">Our agency offers travelers various tours and excursions with destinations all over the world. Browse our website to find your dream tour!</p><a class="button button-secondary button-pipaluk" href="#">Book a Tour Now</a>
             </div>
           </div>
         </div>
