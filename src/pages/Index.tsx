@@ -27,22 +27,6 @@ const Index = () => {
           "@context": "https://schema.org",
           "@graph": [
             {
-              "@type": "Organization",
-              "@id": "https://www.storiesbyfoot.com/#organization",
-              "name": "Stories by Foot",
-              "url": "https://www.storiesbyfoot.com",
-              "logo": "https://www.storiesbyfoot.com/favicon.ico",
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+91-6205129118",
-                "contactType": "customer service",
-                "email": "contact@storiesbyfoot.com"
-              },
-              "sameAs": [
-                "https://www.instagram.com/storiesbyfoot/"
-              ]
-            },
-            {
               "@type": "TravelAgency",
               "@id": "https://www.storiesbyfoot.com/#travelagency",
               "name": "Stories by Foot",
@@ -78,7 +62,7 @@ const Index = () => {
               "url": "https://www.storiesbyfoot.com",
               "name": "Stories by Foot",
               "publisher": {
-                "@id": "https://www.storiesbyfoot.com/#organization"
+                "@id": "https://www.storiesbyfoot.com/#travelagency"
               },
               "potentialAction": {
                 "@type": "SearchAction",

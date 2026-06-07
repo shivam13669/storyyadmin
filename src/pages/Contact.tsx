@@ -13,7 +13,7 @@ const ContactPage = () => {
           "@context": "https://schema.org",
           "@type": "ContactPage",
           "name": "Contact Stories by Foot",
-          "description": "Get in touch with the Stories by Foot team. Contact us for booking enquiries, customized Ladakh tour itineraries, Spiti, Zanskar loops and direct assistance.",
+          "description": "Get in touch with the Stories by Foot team for booking enquiries, customized itineraries, Spiti, and Zanskar loop tours.",
           "url": "https://www.storiesbyfoot.com/contact",
           "mainEntity": {
             "@type": "TravelAgency",
