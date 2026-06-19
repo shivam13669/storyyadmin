@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -34,13 +35,47 @@ const AppContent = () => {
   const location = useLocation();
   // Hide footer on dashboard pages
   const isDashboard = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
+  const isHome = location.pathname === "/";
+  const [iframeHeight, setIframeHeight] = useState("100vh");
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === "resize-iframe") {
+        setIframeHeight(`${event.data.height}px`);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         <ScrollToTop />
+        <div
+          style={{
+            position: isHome ? "relative" : "absolute",
+            top: isHome ? "auto" : "-99999px",
+            left: isHome ? "auto" : "-99999px",
+            width: "100%",
+            height: isHome ? "auto" : "0px",
+            overflow: "hidden",
+            visibility: isHome ? "visible" : "hidden",
+            opacity: isHome ? 1 : 0,
+            pointerEvents: isHome ? "auto" : "none"
+          }}
+          className="w-full bg-white pt-16"
+        >
+          <iframe
+            src="/cliffhanger/index.html"
+            style={{ height: iframeHeight }}
+            className="w-full border-none block"
+            scrolling="no"
+            title="Cliffhanger Home"
+          />
+        </div>
         <Routes>
-
           <Route path="/" element={<Index />} />
           <Route path="/destinations" element={<DestinationsPage />} />
           <Route path="/destinations/:slug" element={<DestinationsPage />} />
