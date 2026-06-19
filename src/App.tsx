@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -35,68 +34,34 @@ const AppContent = () => {
   const location = useLocation();
   // Hide footer on dashboard pages
   const isDashboard = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
-  const isHome = location.pathname === "/";
-  const [iframeHeight, setIframeHeight] = useState("100vh");
-
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data && event.data.type === "resize-iframe") {
-        setIframeHeight(`${event.data.height}px`);
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         <ScrollToTop />
-        <div 
-          style={{ 
-            position: isHome ? "relative" : "absolute",
-            top: isHome ? "auto" : "-99999px",
-            left: isHome ? "auto" : "-99999px",
-            width: "100%",
-            height: isHome ? "auto" : "0px",
-            overflow: "hidden",
-            visibility: isHome ? "visible" : "hidden",
-            opacity: isHome ? 1 : 0,
-            pointerEvents: isHome ? "auto" : "none"
-          }} 
-          className="w-full bg-white pt-16"
-        >
-          <iframe
-            src="/cliffhanger/index.html"
-            style={{ height: iframeHeight }}
-            className="w-full border-none block"
-            scrolling="no"
-            title="Cliffhanger Home"
-          />
-        </div>
         <Routes>
+
           <Route path="/" element={<Index />} />
-                <Route path="/destinations" element={<DestinationsPage />} />
-                <Route path="/destinations/:slug" element={<DestinationsPage />} />
-                <Route path="/destinations/:slug/:packageSlug" element={<DestinationDetailPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/services" element={<ServicesPage />} />
-                <Route path="/support" element={<SupportPage />} />
-                <Route path="/testimonials" element={<TestimonialsPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/careers" element={<CareersPage />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/booking/:packageSlug" element={<BookingPage />} />
-                <Route path="/terms-and-condition" element={<TermsAndConditionPage />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-                <Route path="/cookie-policy" element={<CookiePolicyPage />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+          <Route path="/destinations" element={<DestinationsPage />} />
+          <Route path="/destinations/:slug" element={<DestinationsPage />} />
+          <Route path="/destinations/:slug/:packageSlug" element={<DestinationDetailPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/support" element={<SupportPage />} />
+          <Route path="/testimonials" element={<TestimonialsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/careers" element={<CareersPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/booking/:packageSlug" element={<BookingPage />} />
+          <Route path="/terms-and-condition" element={<TermsAndConditionPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
       {!isDashboard && <Footer />}
     </div>
@@ -104,9 +69,9 @@ const AppContent = () => {
 };
 
 const App = () => (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
         <CurrencyProvider>
           <TooltipProvider>
             <Toaster />
@@ -116,9 +81,9 @@ const App = () => (
             </BrowserRouter>
           </TooltipProvider>
         </CurrencyProvider>
-        </QueryClientProvider>
-      </AuthProvider>
-    </GoogleOAuthProvider>
+      </QueryClientProvider>
+    </AuthProvider>
+  </GoogleOAuthProvider>
 );
 
 export default App;
