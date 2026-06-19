@@ -662,6 +662,50 @@
         if (window.ResizeObserver) {
           new ResizeObserver(sendHeight).observe(document.body);
         }
+
+        window.addEventListener('message', function(event) {
+          if (event.data && event.data.type === 'home-visible') {
+            try {
+              var $swiperContainer = window.jQuery && window.jQuery('.swiper-container');
+              if ($swiperContainer && $swiperContainer.length) {
+                var swiper = $swiperContainer[0].swiper || $swiperContainer.data('swiper');
+                if (swiper) {
+                  // Force swiper dimensions update
+                  swiper.update(true);
+                  
+                  // Reset and re-trigger caption animations on the active slide
+                  var activeSlide = window.jQuery(swiper.slides[swiper.activeIndex]);
+                  var captions = activeSlide.find("[data-caption-animate]");
+                  
+                  // Set all captions to not-animated
+                  window.jQuery(swiper.container).find("[data-caption-animate]").each(function() {
+                    var $this = window.jQuery(this);
+                    var anim = $this.attr("data-caption-animate");
+                    $this.removeClass("animated " + anim).addClass("not-animated");
+                  });
+                  
+                  // Re-apply animations with a tiny delay to ensure paint has updated
+                  setTimeout(function() {
+                    captions.each(function() {
+                      var $this = window.jQuery(this);
+                      var anim = $this.attr("data-caption-animate");
+                      var delay = $this.attr("data-caption-delay");
+                      var duration = $this.attr("data-caption-duration");
+                      
+                      var reflow = this.offsetHeight; // Force reflow
+                      
+                      if (delay) $this.css('animation-delay', delay + 'ms');
+                      if (duration) $this.css('animation-duration', duration + 'ms');
+                      $this.removeClass("not-animated").addClass("animated " + anim);
+                    });
+                  }, 50);
+                }
+              }
+            } catch(e) {
+              console.error("Error updating swiper animations:", e);
+            }
+          }
+        });
       </script>
     </div>
     <!-- Global Mailform Output-->

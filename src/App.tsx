@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,6 +37,7 @@ const AppContent = () => {
   const isDashboard = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
   const isHome = location.pathname === "/";
   const [iframeHeight, setIframeHeight] = useState("100vh");
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -48,6 +49,17 @@ const AppContent = () => {
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);
+
+  useEffect(() => {
+    if (isHome && iframeRef.current && iframeRef.current.contentWindow) {
+      const timer = setTimeout(() => {
+        if (iframeRef.current && iframeRef.current.contentWindow) {
+          iframeRef.current.contentWindow.postMessage({ type: "home-visible" }, "*");
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isHome]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -68,6 +80,7 @@ const AppContent = () => {
           className="w-full bg-white pt-16"
         >
           <iframe
+            ref={iframeRef}
             src="/cliffhanger/index.html"
             style={{ height: iframeHeight }}
             className="w-full border-none block"
