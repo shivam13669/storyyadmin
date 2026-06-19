@@ -698,6 +698,14 @@
                       if (duration) $this.css('animation-duration', duration + 'ms');
                       $this.removeClass("not-animated").addClass("animated " + anim);
                     });
+
+                    // Resume autoplay if enabled
+                    if (typeof swiper.stopAutoplay === 'function') {
+                      swiper.stopAutoplay();
+                    }
+                    if (typeof swiper.startAutoplay === 'function') {
+                      swiper.startAutoplay();
+                    }
                   }, 50);
                 }
               }
