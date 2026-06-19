@@ -53,7 +53,20 @@ const AppContent = () => {
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         <ScrollToTop />
-        <div style={{ display: isHome ? "block" : "none" }} className="w-full bg-white pt-16">
+        <div 
+          style={{ 
+            position: isHome ? "relative" : "absolute",
+            top: isHome ? "auto" : "-99999px",
+            left: isHome ? "auto" : "-99999px",
+            width: "100%",
+            height: isHome ? "auto" : "0px",
+            overflow: "hidden",
+            visibility: isHome ? "visible" : "hidden",
+            opacity: isHome ? 1 : 0,
+            pointerEvents: isHome ? "auto" : "none"
+          }} 
+          className="w-full bg-white pt-16"
+        >
           <iframe
             src="/cliffhanger/index.html"
             style={{ height: iframeHeight }}
