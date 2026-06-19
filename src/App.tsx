@@ -67,14 +67,25 @@ const AppContent = () => {
             visibility: isHome ? "visible" : "hidden",
             opacity: isHome ? 1 : 0,
             pointerEvents: isHome ? "auto" : "none",
-            backgroundImage: isHome 
-              ? `linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%), url("https://cdn.builder.io/api/v1/image/assets%2F76004f6138934696a9d5b53b7a2ec8b1%2Fe413e4f9377b436f9b2830f4d4d696c4?format=webp&width=1920&height=1080")` 
-              : "none",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
           }}
           className="w-full bg-white"
         >
+          {isHome && !iframeLoaded && (
+            <div 
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "calc(100vh - 64px)",
+                backgroundImage: `linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%), url("https://cdn.builder.io/api/v1/image/assets%2F76004f6138934696a9d5b53b7a2ec8b1%2Fe413e4f9377b436f9b2830f4d4d696c4?format=webp&width=1920&height=1080")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                zIndex: 5,
+                pointerEvents: "none"
+              }}
+            />
+          )}
           <iframe
             src="/cliffhanger/index.html"
             style={{ 
