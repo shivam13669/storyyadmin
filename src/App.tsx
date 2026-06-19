@@ -37,11 +37,13 @@ const AppContent = () => {
   const isDashboard = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
   const isHome = location.pathname === "/";
   const [iframeHeight, setIframeHeight] = useState("100vh");
+  const [iframeLoaded, setIframeLoaded] = useState(false);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === "resize-iframe") {
         setIframeHeight(`${event.data.height}px`);
+        setIframeLoaded(true);
       }
     };
 
@@ -53,6 +55,7 @@ const AppContent = () => {
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         <ScrollToTop />
+        {isHome && <div className="h-16 w-full bg-white flex-shrink-0" />}
         <div
           style={{
             position: isHome ? "relative" : "absolute",
@@ -63,16 +66,26 @@ const AppContent = () => {
             overflow: "hidden",
             visibility: isHome ? "visible" : "hidden",
             opacity: isHome ? 1 : 0,
-            pointerEvents: isHome ? "auto" : "none"
+            pointerEvents: isHome ? "auto" : "none",
+            backgroundImage: isHome 
+              ? `linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%), url("https://cdn.builder.io/api/v1/image/assets%2F76004f6138934696a9d5b53b7a2ec8b1%2Fe413e4f9377b436f9b2830f4d4d696c4?format=webp&width=1920&height=1080")` 
+              : "none",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
-          className="w-full bg-white pt-16"
+          className="w-full bg-white"
         >
           <iframe
             src="/cliffhanger/index.html"
-            style={{ height: iframeHeight }}
+            style={{ 
+              height: iframeHeight,
+              opacity: iframeLoaded ? 1 : 0,
+              transition: "opacity 0.4s ease-in-out"
+            }}
             className="w-full border-none block"
             scrolling="no"
             title="Cliffhanger Home"
+            onLoad={() => setIframeLoaded(true)}
           />
         </div>
         <Routes>
