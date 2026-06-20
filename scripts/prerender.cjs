@@ -249,12 +249,14 @@ const main = () => {
     html = html.replace(/<head>/i, `<head>${metaTags}`);
 
     // C. Inject static crawlable content inside <div id="root">
+    // We position this container off-screen visually so users don't see a flash of unstyled content
+    // while React hydrates, but search engine crawlers can fully index the text and headings.
     const staticBody = `
       <div id="root">
-        <div style="max-width: 800px; margin: 40px auto; padding: 20px; font-family: sans-serif; line-height: 1.6; color: #333;">
+        <div style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;">
           ${seoData.body}
-          <hr style="margin: 40px 0; border: none; border-top: 1px solid #eee;" />
-          <footer style="font-size: 13px; color: #777;">
+          <hr />
+          <footer>
             <p>&copy; ${new Date().getFullYear()} Stories by Foot. Walk the Road. Live the Story. | www.storiesbyfoot.com</p>
           </footer>
         </div>
