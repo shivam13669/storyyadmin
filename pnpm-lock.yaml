@@ -104,6 +104,9 @@ importers:
       '@types/bcryptjs':
         specifier: ^2.4.6
         version: 2.4.6
+      '@vercel/analytics':
+        specifier: ^2.0.1
+        version: 2.0.1(react@18.3.1)
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
@@ -1740,6 +1743,35 @@ packages:
   '@typescript-eslint/visitor-keys@8.53.1':
     resolution: {integrity: sha512-oy+wV7xDKFPRyNggmXuZQSBzvoLnpmJs+GhzRhPjrxl2b/jIlyjVokzm47CZCDUdXKr2zd7ZLodPfOBpOPyPlg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@vercel/analytics@2.0.1':
+    resolution: {integrity: sha512-MTQG6V9qQrt1tsDeF+2Uoo5aPjqbVPys1xvnIftXSJYG2SrwXRHnqEvVoYID7BTruDz4lCd2Z7rM1BdkUehk2g==}
+    peerDependencies:
+      '@remix-run/react': ^2
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      nuxt: '>= 3'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@remix-run/react':
+        optional: true
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      nuxt:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   '@vercel/build-utils@13.19.0':
     resolution: {integrity: sha512-sEGu9b/fM98//e+B186t4lgEBdbA7o6XSfDusfDH0/tqCfnAVq+lZfT0IDxauIVLGXruG0ydpuYJrqRw31zsHA==}
@@ -4907,6 +4939,10 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.53.1
       eslint-visitor-keys: 4.2.1
+
+  '@vercel/analytics@2.0.1(react@18.3.1)':
+    optionalDependencies:
+      react: 18.3.1
 
   '@vercel/build-utils@13.19.0':
     dependencies:

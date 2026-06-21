@@ -30,6 +30,7 @@ const queryClient = new QueryClient();
 
 import { CurrencyProvider } from "@/context/CurrencyContext";
 import Footer from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/react";
 
 const AppContent = () => {
   const location = useLocation();
@@ -127,6 +128,7 @@ const App = () => (
             <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
               <AppContent />
             </BrowserRouter>
+            <Analytics />
           </TooltipProvider>
         </CurrencyProvider>
       </QueryClientProvider>
