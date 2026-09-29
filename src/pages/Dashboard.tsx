@@ -771,8 +771,8 @@ const Dashboard = () => {
                         size="sm"
                         className="w-full mt-4 text-primary"
                         onClick={() => {
+                          setActiveNav("bookings");
                           setSidebarOpen(false);
-                          navigate("/my-bookings");
                         }}
                       >
                         View all bookings →
@@ -824,8 +824,8 @@ const Dashboard = () => {
                         size="sm"
                         className="w-full mt-4 text-primary"
                         onClick={() => {
+                          setActiveNav("reviews");
                           setSidebarOpen(false);
-                          navigate("/my-reviews");
                         }}
                       >
                         View all reviews →
