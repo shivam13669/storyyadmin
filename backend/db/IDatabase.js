@@ -305,4 +305,25 @@ export class IDatabase {
   async getFailedAttemptBlocksInDay(email) {
     throw new Error('Method not implemented');
   }
+
+  // ============ Messages Operations ============
+  async createMessage({ customerId, senderRole, senderId, body }) {
+    throw new Error('Method not implemented');
+  }
+
+  async getMessagesByCustomerId(customerId, limit) {
+    throw new Error('Method not implemented');
+  }
+
+  async markMessagesDelivered(customerId, senderRole) {
+    throw new Error('Method not implemented');
+  }
+
+  async markMessagesSeen(customerId, senderRole) {
+    throw new Error('Method not implemented');
+  }
+
+  async getMessageConversations() {
+    throw new Error('Method not implemented');
+  }
 }

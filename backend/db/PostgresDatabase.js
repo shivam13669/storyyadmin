@@ -132,6 +132,98 @@ export class PostgresDatabase extends IDatabase {
     };
   }
 
+  _mapMessageRow(row) {
+    return {
+      id: row.id,
+      customerId: row.customer_id,
+      senderRole: row.sender_role,
+      senderId: row.sender_id,
+      body: row.body,
+      createdAt: row.created_at,
+      deliveredAt: row.delivered_at,
+      seenAt: row.seen_at,
+    };
+  }
+
+  async createMessage({ customerId, senderRole, senderId, body }) {
+    try {
+      const createdAt = new Date().toISOString();
+      const result = await this._query(
+        `INSERT INTO messages (customer_id, sender_role, sender_id, body, created_at)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING id, customer_id, sender_role, sender_id, body, created_at, delivered_at, seen_at`,
+        [customerId, senderRole, senderId, body, createdAt]
+      );
+
+      return this._mapMessageRow(result.rows[0]);
+    } catch (error) {
+      throw new Error(`Failed to create message: ${error.message}`);
+    }
+  }
+
+  async getMessagesByCustomerId(customerId, limit) {
+    try {
+      const result = await this._query(
+        `SELECT * FROM (
+           SELECT id, customer_id, sender_role, sender_id, body, created_at, delivered_at, seen_at
+           FROM messages WHERE customer_id = $1 ORDER BY id DESC LIMIT $2
+         ) recent ORDER BY id ASC`,
+        [customerId, limit]
+      );
+
+      return result.rows.map((row) => this._mapMessageRow(row));
+    } catch (error) {
+      throw new Error(`Failed to get messages: ${error.message}`);
+    }
+  }
+
+  async markMessagesDelivered(customerId, senderRole) {
+    try {
+      const now = new Date().toISOString();
+      const scope = customerId === null ? '' : ' AND customer_id = $3';
+      const params = customerId === null ? [now, senderRole] : [now, senderRole, customerId];
+
+      await this._query(
+        `UPDATE messages SET delivered_at = $1 WHERE sender_role = $2 AND delivered_at IS NULL${scope}`,
+        params
+      );
+    } catch (error) {
+      throw new Error(`Failed to mark messages delivered: ${error.message}`);
+    }
+  }
+
+  async markMessagesSeen(customerId, senderRole) {
+    try {
+      const now = new Date().toISOString();
+
+      await this._query(
+        `UPDATE messages SET seen_at = $1, delivered_at = COALESCE(delivered_at, $1)
+         WHERE customer_id = $2 AND sender_role = $3 AND seen_at IS NULL`,
+        [now, customerId, senderRole]
+      );
+    } catch (error) {
+      throw new Error(`Failed to mark messages seen: ${error.message}`);
+    }
+  }
+
+  async getMessageConversations() {
+    try {
+      const result = await this._query(
+        `SELECT u.id AS "customerId", u.full_name AS "fullName", u.email,
+           m.body AS "lastBody", m.created_at AS "lastCreatedAt",
+           (SELECT COUNT(*)::int FROM messages x
+              WHERE x.customer_id = u.id AND x.sender_role = 'user' AND x.seen_at IS NULL) AS "unreadCount"
+         FROM users u
+         JOIN messages m ON m.id = (SELECT MAX(id) FROM messages WHERE customer_id = u.id)
+         ORDER BY m.id DESC`
+      );
+
+      return result.rows;
+    } catch (error) {
+      throw new Error(`Failed to get message conversations: ${error.message}`);
+    }
+  }
+
   async _createTables() {
     await this._query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -265,6 +357,20 @@ export class PostgresDatabase extends IDatabase {
       )
     `);
 
+    await this._query(`
+      CREATE TABLE IF NOT EXISTS messages (
+        id SERIAL PRIMARY KEY,
+        customer_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        sender_role TEXT NOT NULL,
+        sender_id INTEGER NOT NULL,
+        body TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        delivered_at TEXT,
+        seen_at TEXT
+      )
+    `);
+
+    await this._query(`CREATE INDEX IF NOT EXISTS idx_messages_customer_id ON messages(customer_id)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_users_mobile_number ON users(mobile_number)`);
     await this._query(`CREATE INDEX IF NOT EXISTS idx_bookings_user_id ON bookings(user_id)`);

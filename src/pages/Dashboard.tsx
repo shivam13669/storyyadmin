@@ -26,11 +26,14 @@ import {
   Search,
   Trash2,
   Plus,
+  MessageCircle,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { UserProfileView } from "@/components/dashboardViews/UserProfileView";
+import { UserMessagesView } from "@/components/dashboardViews/UserMessagesView";
+import { usePresence } from "@/hooks/usePresence";
 import { ChangePasswordModal } from "@/components/ChangePasswordModal";
 import { AdvancedDatePicker } from "@/components/AdvancedDatePicker";
 import { changeUserPassword, getBookingsByUser, getTestimonialsByUser, updateUser, updateUserDocuments, Booking, Testimonial } from "@/lib/api";
@@ -139,6 +142,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 1024);
   const [activeNav, setActiveNav] = useState("overview");
+  usePresence(user?.id, "user");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
@@ -561,6 +565,7 @@ const Dashboard = () => {
           {[
             { id: "overview", label: "Overview", icon: Activity },
             { id: "bookings", label: "My Bookings", icon: Calendar },
+            { id: "messages", label: "Messages", icon: MessageCircle },
             { id: "reviews", label: "My Reviews", icon: Star },
             { id: "profile", label: "Profile", icon: User },
             { id: "settings", label: "Settings", icon: Settings },
@@ -612,11 +617,13 @@ const Dashboard = () => {
             </button>
             <div className="min-w-0">
               <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">
-                {activeNav === "profile" ? "My Profile" : "My Trips Dashboard"}
+                {activeNav === "profile" ? "My Profile" : activeNav === "messages" ? "Messages" : "My Trips Dashboard"}
               </h2>
               <p className="text-xs sm:text-sm text-gray-600">
                 {activeNav === "profile"
                   ? `Hi, ${user?.fullName?.split(" ")[0]}`
+                  : activeNav === "messages"
+                  ? "Chat with the Stories by Foot team"
                   : "Manage your bookings and adventures"}
               </p>
             </div>
@@ -1907,6 +1914,8 @@ const Dashboard = () => {
               </Card>
 
             </div>
+          ) : activeNav === "messages" && user ? (
+            <UserMessagesView userId={user.id} />
           ) : activeNav === "settings" ? (
             <>
               <Card className="border-0 shadow-md rounded-2xl">

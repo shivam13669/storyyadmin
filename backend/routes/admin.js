@@ -1,7 +1,10 @@
 import express from 'express';
 import { getDB } from '../db/index.js';
+import { normalizeMessageBody } from '../utils/messageUtils.js';
 
 const router = express.Router();
+
+const THREAD_LIMIT = 500;
 
 /**
  * GET /api/admin/health
@@ -223,13 +226,120 @@ router.post('/otp/clear-all-blocks', isAdmin, async (req, res) => {
   try {
     // This would need a method to clear all blocks
     // For security, we should require additional confirmation
-    
+
     res.json({
       message: 'This endpoint requires database method implementation',
       note: 'Would clear all active OTP blocks'
     });
   } catch (error) {
     console.error('Clear all blocks error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/admin/messages/conversations
+ * List customer conversations, newest first, with unread counts
+ */
+router.get('/messages/conversations', isAdmin, async (req, res) => {
+  try {
+    const conversations = await getDB().getMessageConversations();
+    res.json({ conversations });
+  } catch (error) {
+    console.error('Get message conversations error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/admin/messages/presence
+ * Heartbeat from an open admin dashboard; marks customer messages as delivered
+ */
+router.post('/messages/presence', isAdmin, async (req, res) => {
+  try {
+    await getDB().markMessagesDelivered(null, 'user');
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('Admin message presence error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/admin/messages/:customerId
+ * Get the thread between the admin and a customer
+ */
+router.get('/messages/:customerId', isAdmin, async (req, res) => {
+  try {
+    const customerId = parseInt(req.params.customerId, 10);
+
+    if (Number.isNaN(customerId)) {
+      return res.status(400).json({ error: 'Invalid customer ID' });
+    }
+
+    const messages = await getDB().getMessagesByCustomerId(customerId, THREAD_LIMIT);
+    res.json({ messages });
+  } catch (error) {
+    console.error('Get admin messages error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/admin/messages/:customerId
+ * Send a reply from the admin to a customer
+ */
+router.post('/messages/:customerId', isAdmin, async (req, res) => {
+  try {
+    const customerId = parseInt(req.params.customerId, 10);
+
+    if (Number.isNaN(customerId)) {
+      return res.status(400).json({ error: 'Invalid customer ID' });
+    }
+
+    const { body, error } = normalizeMessageBody(req.body?.body);
+
+    if (error) {
+      return res.status(400).json({ error });
+    }
+
+    const db = getDB();
+    const customer = await db.getUserById(customerId);
+
+    if (!customer) {
+      return res.status(404).json({ error: 'Customer not found' });
+    }
+
+    const message = await db.createMessage({
+      customerId,
+      senderRole: 'admin',
+      senderId: req.user.id,
+      body,
+    });
+
+    res.status(201).json({ message });
+  } catch (error) {
+    console.error('Send admin message error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/admin/messages/:customerId/seen
+ * Marks a customer's messages in the thread as seen
+ */
+router.post('/messages/:customerId/seen', isAdmin, async (req, res) => {
+  try {
+    const customerId = parseInt(req.params.customerId, 10);
+
+    if (Number.isNaN(customerId)) {
+      return res.status(400).json({ error: 'Invalid customer ID' });
+    }
+
+    await getDB().markMessagesSeen(customerId, 'user');
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('Mark admin messages seen error:', error);
     res.status(500).json({ error: error.message });
   }
 });

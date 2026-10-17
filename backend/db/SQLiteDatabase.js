@@ -204,7 +204,22 @@ export class SQLiteDatabase extends IDatabase {
         )
       `);
 
+      this.db.run(`
+        CREATE TABLE IF NOT EXISTS messages (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          customerId INTEGER NOT NULL,
+          senderRole TEXT NOT NULL,
+          senderId INTEGER NOT NULL,
+          body TEXT NOT NULL,
+          createdAt TEXT NOT NULL,
+          deliveredAt TEXT,
+          seenAt TEXT,
+          FOREIGN KEY (customerId) REFERENCES users(id)
+        )
+      `);
+
       // Create indexes
+      this.db.run(`CREATE INDEX IF NOT EXISTS idx_messages_customerId ON messages(customerId)`);
       this.db.run(`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
       this.db.run(`CREATE INDEX IF NOT EXISTS idx_bookings_userId ON bookings(userId)`);
       this.db.run(`CREATE INDEX IF NOT EXISTS idx_testimonials_userId ON testimonials(userId)`);
@@ -1106,6 +1121,130 @@ export class SQLiteDatabase extends IDatabase {
     }
 
     return this._mapCouponRow(result[0].values[0]);
+  }
+
+  async createMessage({ customerId, senderRole, senderId, body }) {
+    try {
+      const createdAt = new Date().toISOString();
+
+      this.db.run(
+        `INSERT INTO messages (customerId, senderRole, senderId, body, createdAt) VALUES (?, ?, ?, ?, ?)`,
+        [customerId, senderRole, senderId, body, createdAt]
+      );
+
+      this._save();
+
+      const result = this.db.exec(`SELECT last_insert_rowid()`);
+      return {
+        id: result[0].values[0][0],
+        customerId,
+        senderRole,
+        senderId,
+        body,
+        createdAt,
+        deliveredAt: null,
+        seenAt: null,
+      };
+    } catch (error) {
+      throw new Error(`Failed to create message: ${error.message}`);
+    }
+  }
+
+  async getMessagesByCustomerId(customerId, limit) {
+    try {
+      const result = this.db.exec(
+        `SELECT * FROM (
+           SELECT id, customerId, senderRole, senderId, body, createdAt, deliveredAt, seenAt
+           FROM messages WHERE customerId = ? ORDER BY id DESC LIMIT ?
+         ) ORDER BY id ASC`,
+        [customerId, limit]
+      );
+
+      if (!result || result.length === 0) {
+        return [];
+      }
+
+      return result[0].values.map(row => this._mapMessageRow(row));
+    } catch (error) {
+      throw new Error(`Failed to get messages: ${error.message}`);
+    }
+  }
+
+  async markMessagesDelivered(customerId, senderRole) {
+    try {
+      const now = new Date().toISOString();
+      const scope = customerId === null ? '' : ' AND customerId = ?';
+      const params = customerId === null ? [now, senderRole] : [now, senderRole, customerId];
+
+      this.db.run(
+        `UPDATE messages SET deliveredAt = ? WHERE senderRole = ? AND deliveredAt IS NULL${scope}`,
+        params
+      );
+
+      if (this.db.getRowsModified() > 0) {
+        this._save();
+      }
+    } catch (error) {
+      throw new Error(`Failed to mark messages delivered: ${error.message}`);
+    }
+  }
+
+  async markMessagesSeen(customerId, senderRole) {
+    try {
+      const now = new Date().toISOString();
+
+      this.db.run(
+        `UPDATE messages SET seenAt = ?, deliveredAt = COALESCE(deliveredAt, ?)
+         WHERE customerId = ? AND senderRole = ? AND seenAt IS NULL`,
+        [now, now, customerId, senderRole]
+      );
+
+      if (this.db.getRowsModified() > 0) {
+        this._save();
+      }
+    } catch (error) {
+      throw new Error(`Failed to mark messages seen: ${error.message}`);
+    }
+  }
+
+  async getMessageConversations() {
+    try {
+      const result = this.db.exec(
+        `SELECT u.id, u.fullName, u.email, m.body, m.createdAt,
+           (SELECT COUNT(*) FROM messages x WHERE x.customerId = u.id AND x.senderRole = 'user' AND x.seenAt IS NULL) AS unreadCount
+         FROM users u
+         JOIN messages m ON m.id = (SELECT MAX(id) FROM messages WHERE customerId = u.id)
+         ORDER BY m.id DESC`
+      );
+
+      if (!result || result.length === 0) {
+        return [];
+      }
+
+      return result[0].values.map(row => ({
+        customerId: row[0],
+        fullName: row[1],
+        email: row[2],
+        lastBody: row[3],
+        lastCreatedAt: row[4],
+        unreadCount: row[5],
+      }));
+    } catch (error) {
+      throw new Error(`Failed to get message conversations: ${error.message}`);
+    }
+  }
+
+  _mapMessageRow(row) {
+    return {
+      id: row[0],
+      customerId: row[1],
+      senderRole: row[2],
+      senderId: row[3],
+      body: row[4],
+      createdAt: row[5],
+      deliveredAt: row[6],
+      seenAt: row[7],
+    };
   }
 
   _mapCouponRow(row) {

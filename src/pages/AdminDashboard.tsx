@@ -29,6 +29,7 @@ import {
   UserCheck,
   Search,
   Filter,
+  MessageCircle,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -45,6 +46,8 @@ import { AdminReportsView } from "@/components/dashboardViews/AdminReportsView";
 import { CustomerManagementView } from "@/components/dashboardViews/CustomerManagementView";
 import { UserManagementSystemView } from "@/components/dashboardViews/UserManagementSystemView";
 import { AdminOTPManagementView } from "@/components/dashboardViews/AdminOTPManagementView";
+import { AdminMessagesView } from "@/components/dashboardViews/AdminMessagesView";
+import { usePresence } from "@/hooks/usePresence";
 import { ChangePasswordModal } from "@/components/ChangePasswordModal";
 import { changeUserPassword } from "@/lib/api";
 import { Shield } from "lucide-react";
@@ -60,6 +63,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 1024);
   const [activeNav, setActiveNav] = useState("overview");
+  usePresence(user?.id, "admin");
   const [customerTab, setCustomerTab] = useState("customer");
   const [adminTab, setAdminTab] = useState("management");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -263,6 +267,7 @@ const AdminDashboard = () => {
             { id: "admin", label: "Admin", icon: Users },
             { id: "customers", label: "Customers", icon: Users },
             { id: "bookings", label: "Bookings", icon: Briefcase },
+            { id: "messages", label: "Messages", icon: MessageCircle },
             { id: "reviews", label: "Testimonials", icon: FileText },
             { id: "coupons", label: "Coupons", icon: Briefcase },
             { id: "otp", label: "OTP Management", icon: Shield },
@@ -817,6 +822,8 @@ const AdminDashboard = () => {
             <AdminBookingsView bookings={bookings} users={users} />
           ) : activeNav === "reviews" ? (
             <AdminTestimonialsView testimonials={testimonials} onDataChange={loadData} />
+          ) : activeNav === "messages" && user ? (
+            <AdminMessagesView adminId={user.id} />
           ) : activeNav === "coupons" ? (
             <AdminCouponsView initialCoupons={coupons} onDataChange={loadData} />
           ) : activeNav === "otp" ? (

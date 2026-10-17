@@ -8,6 +8,7 @@ import bookingRoutes from './backend/routes/bookings.js';
 import testimonialRoutes from './backend/routes/testimonials.js';
 import couponRoutes from './backend/routes/coupons.js';
 import adminRoutes from './backend/routes/admin.js';
+import messageRoutes from './backend/routes/messages.js';
 import proxyMiddleware from 'express-http-proxy';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -54,6 +55,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/messages', messageRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

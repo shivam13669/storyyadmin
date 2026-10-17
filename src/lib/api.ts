@@ -1002,3 +1002,84 @@ export async function checkHealth(): Promise<{ status: string }> {
   const result = await response.json();
   return result;
 }
+
+// ============ Messages API ============
+
+export interface ChatMessage {
+  id: number;
+  customerId: number;
+  senderRole: 'user' | 'admin';
+  senderId: number;
+  body: string;
+  createdAt: string;
+  deliveredAt: string | null;
+  seenAt: string | null;
+}
+
+export interface MessageConversation {
+  customerId: number;
+  fullName: string;
+  email: string;
+  lastBody: string;
+  lastCreatedAt: string;
+  unreadCount: number;
+}
+
+async function messagesRequest<T>(
+  path: string,
+  userId: number,
+  options: { method?: 'GET' | 'POST'; body?: unknown } = {}
+): Promise<T> {
+  const response = await fetch(`${API_URL}${path}`, {
+    method: options.method ?? 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'userid': userId.toString(),
+    },
+    body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+  });
+
+  const result = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(result.error || `Request failed with status ${response.status}`);
+  }
+
+  return result as T;
+}
+
+export function sendMessagePresence(userId: number, role: 'user' | 'admin') {
+  const path = role === 'admin' ? '/admin/messages/presence' : '/messages/presence';
+  return messagesRequest<{ ok: boolean }>(path, userId, { method: 'POST' });
+}
+
+export function getMyMessages(userId: number) {
+  return messagesRequest<{ messages: ChatMessage[] }>('/messages', userId);
+}
+
+export function sendMyMessage(userId: number, body: string) {
+  return messagesRequest<{ message: ChatMessage }>('/messages', userId, { method: 'POST', body: { body } });
+}
+
+export function markMyMessagesSeen(userId: number) {
+  return messagesRequest<{ ok: boolean }>('/messages/seen', userId, { method: 'POST' });
+}
+
+export function getMessageConversations(adminId: number) {
+  return messagesRequest<{ conversations: MessageConversation[] }>('/admin/messages/conversations', adminId);
+}
+
+export function getAdminThread(adminId: number, customerId: number) {
+  return messagesRequest<{ messages: ChatMessage[] }>(`/admin/messages/${customerId}`, adminId);
+}
+
+export function sendAdminReply(adminId: number, customerId: number, body: string) {
+  return messagesRequest<{ message: ChatMessage }>(`/admin/messages/${customerId}`, adminId, {
+    method: 'POST',
+    body: { body },
+  });
+}
+
+export function markAdminThreadSeen(adminId: number, customerId: number) {
+  return messagesRequest<{ ok: boolean }>(`/admin/messages/${customerId}/seen`, adminId, { method: 'POST' });
+}
