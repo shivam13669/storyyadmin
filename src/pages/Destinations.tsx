@@ -332,7 +332,7 @@ const DestinationsPage = () => {
         </section>
 
         {/* Filters and Packages Container */}
-        <section className="container mx-auto px-4 mt-8">
+        <section className="px-4 mt-8">
           <div className="flex gap-6">
             {/* Sidebar - Hidden on mobile */}
             <div className="hidden lg:block w-72 flex-shrink-0">
