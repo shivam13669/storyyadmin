@@ -1025,10 +1025,17 @@ export interface MessageConversation {
   unreadCount: number;
 }
 
+export type ReadReceiptOverride = 'on' | 'off' | 'inherit';
+
+export interface ReadReceiptState {
+  enabled: boolean;
+  override: ReadReceiptOverride;
+}
+
 async function messagesRequest<T>(
   path: string,
   userId: number,
-  options: { method?: 'GET' | 'POST'; body?: unknown } = {}
+  options: { method?: 'GET' | 'POST' | 'PUT'; body?: unknown } = {}
 ): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
     method: options.method ?? 'GET',
@@ -1070,7 +1077,28 @@ export function getMessageConversations(adminId: number) {
 }
 
 export function getAdminThread(adminId: number, customerId: number) {
-  return messagesRequest<{ messages: ChatMessage[] }>(`/admin/messages/${customerId}`, adminId);
+  return messagesRequest<{ messages: ChatMessage[]; readReceipts: ReadReceiptState }>(
+    `/admin/messages/${customerId}`,
+    adminId
+  );
+}
+
+export function getMessageSettings(adminId: number) {
+  return messagesRequest<{ readReceiptsEnabled: boolean }>('/admin/messages/settings', adminId);
+}
+
+export function updateMessageSettings(adminId: number, readReceiptsEnabled: boolean) {
+  return messagesRequest<{ readReceiptsEnabled: boolean }>('/admin/messages/settings', adminId, {
+    method: 'PUT',
+    body: { readReceiptsEnabled },
+  });
+}
+
+export function updateCustomerReadReceipts(adminId: number, customerId: number, readReceipts: ReadReceiptOverride) {
+  return messagesRequest<{ readReceipts: ReadReceiptState }>(`/admin/messages/${customerId}/settings`, adminId, {
+    method: 'PUT',
+    body: { readReceipts },
+  });
 }
 
 export function sendAdminReply(adminId: number, customerId: number, body: string) {

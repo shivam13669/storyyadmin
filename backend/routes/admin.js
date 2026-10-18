@@ -1,6 +1,12 @@
 import express from 'express';
 import { getDB } from '../db/index.js';
-import { normalizeMessageBody } from '../utils/messageUtils.js';
+import {
+  getReadReceiptState,
+  getReadReceiptsGlobal,
+  normalizeMessageBody,
+  setReadReceiptsCustomerOverride,
+  setReadReceiptsGlobal,
+} from '../utils/messageUtils.js';
 
 const router = express.Router();
 
@@ -266,6 +272,73 @@ router.post('/messages/presence', isAdmin, async (req, res) => {
 });
 
 /**
+ * GET /api/admin/messages/settings
+ * Global message settings
+ */
+router.get('/messages/settings', isAdmin, async (req, res) => {
+  try {
+    const readReceiptsEnabled = await getReadReceiptsGlobal(getDB());
+    res.json({ readReceiptsEnabled });
+  } catch (error) {
+    console.error('Get message settings error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * PUT /api/admin/messages/settings
+ * Turn read receipts (blue ticks) on or off for all customers
+ */
+router.put('/messages/settings', isAdmin, async (req, res) => {
+  try {
+    const { readReceiptsEnabled } = req.body ?? {};
+
+    if (typeof readReceiptsEnabled !== 'boolean') {
+      return res.status(400).json({ error: 'readReceiptsEnabled must be a boolean' });
+    }
+
+    await setReadReceiptsGlobal(getDB(), readReceiptsEnabled);
+    res.json({ readReceiptsEnabled });
+  } catch (error) {
+    console.error('Update message settings error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * PUT /api/admin/messages/:customerId/settings
+ * Override read receipts for one customer: 'on', 'off', or 'inherit' (follow global)
+ */
+router.put('/messages/:customerId/settings', isAdmin, async (req, res) => {
+  try {
+    const customerId = parseInt(req.params.customerId, 10);
+
+    if (Number.isNaN(customerId)) {
+      return res.status(400).json({ error: 'Invalid customer ID' });
+    }
+
+    const { readReceipts } = req.body ?? {};
+
+    if (!['on', 'off', 'inherit'].includes(readReceipts)) {
+      return res.status(400).json({ error: "readReceipts must be 'on', 'off' or 'inherit'" });
+    }
+
+    const db = getDB();
+    const customer = await db.getUserById(customerId);
+
+    if (!customer) {
+      return res.status(404).json({ error: 'Customer not found' });
+    }
+
+    await setReadReceiptsCustomerOverride(db, customerId, readReceipts);
+    res.json({ readReceipts: await getReadReceiptState(db, customerId) });
+  } catch (error) {
+    console.error('Update customer message settings error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
  * GET /api/admin/messages/:customerId
  * Get the thread between the admin and a customer
  */
@@ -277,8 +350,10 @@ router.get('/messages/:customerId', isAdmin, async (req, res) => {
       return res.status(400).json({ error: 'Invalid customer ID' });
     }
 
-    const messages = await getDB().getMessagesByCustomerId(customerId, THREAD_LIMIT);
-    res.json({ messages });
+    const db = getDB();
+    const messages = await db.getMessagesByCustomerId(customerId, THREAD_LIMIT);
+    const readReceipts = await getReadReceiptState(db, customerId);
+    res.json({ messages, readReceipts });
   } catch (error) {
     console.error('Get admin messages error:', error);
     res.status(500).json({ error: error.message });

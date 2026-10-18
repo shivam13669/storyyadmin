@@ -218,6 +218,13 @@ export class SQLiteDatabase extends IDatabase {
         )
       `);
 
+      this.db.run(`
+        CREATE TABLE IF NOT EXISTS message_settings (
+          settingKey TEXT PRIMARY KEY,
+          settingValue TEXT NOT NULL
+        )
+      `);
+
       // Create indexes
       this.db.run(`CREATE INDEX IF NOT EXISTS idx_messages_customerId ON messages(customerId)`);
       this.db.run(`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
@@ -1231,6 +1238,38 @@ export class SQLiteDatabase extends IDatabase {
       }));
     } catch (error) {
       throw new Error(`Failed to get message conversations: ${error.message}`);
+    }
+  }
+
+  async getMessageSetting(key) {
+    try {
+      const result = this.db.exec(`SELECT settingValue FROM message_settings WHERE settingKey = ?`, [key]);
+
+      if (!result || result.length === 0 || result[0].values.length === 0) {
+        return null;
+      }
+
+      return result[0].values[0][0];
+    } catch (error) {
+      throw new Error(`Failed to get message setting: ${error.message}`);
+    }
+  }
+
+  async setMessageSetting(key, value) {
+    try {
+      if (value === null) {
+        this.db.run(`DELETE FROM message_settings WHERE settingKey = ?`, [key]);
+      } else {
+        this.db.run(
+          `INSERT INTO message_settings (settingKey, settingValue) VALUES (?, ?)
+           ON CONFLICT(settingKey) DO UPDATE SET settingValue = excluded.settingValue`,
+          [key, value]
+        );
+      }
+
+      this._save();
+    } catch (error) {
+      throw new Error(`Failed to set message setting: ${error.message}`);
     }
   }
 

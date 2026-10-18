@@ -224,6 +224,35 @@ export class PostgresDatabase extends IDatabase {
     }
   }
 
+  async getMessageSetting(key) {
+    try {
+      const result = await this._query(
+        `SELECT setting_value FROM message_settings WHERE setting_key = $1`,
+        [key]
+      );
+
+      return result.rows[0]?.setting_value ?? null;
+    } catch (error) {
+      throw new Error(`Failed to get message setting: ${error.message}`);
+    }
+  }
+
+  async setMessageSetting(key, value) {
+    try {
+      if (value === null) {
+        await this._query(`DELETE FROM message_settings WHERE setting_key = $1`, [key]);
+      } else {
+        await this._query(
+          `INSERT INTO message_settings (setting_key, setting_value) VALUES ($1, $2)
+           ON CONFLICT (setting_key) DO UPDATE SET setting_value = EXCLUDED.setting_value`,
+          [key, value]
+        );
+      }
+    } catch (error) {
+      throw new Error(`Failed to set message setting: ${error.message}`);
+    }
+  }
+
   async _createTables() {
     await this._query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -367,6 +396,13 @@ export class PostgresDatabase extends IDatabase {
         created_at TEXT NOT NULL,
         delivered_at TEXT,
         seen_at TEXT
+      )
+    `);
+
+    await this._query(`
+      CREATE TABLE IF NOT EXISTS message_settings (
+        setting_key TEXT PRIMARY KEY,
+        setting_value TEXT NOT NULL
       )
     `);
 

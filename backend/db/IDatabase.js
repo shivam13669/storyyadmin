@@ -326,4 +326,12 @@ export class IDatabase {
   async getMessageConversations() {
     throw new Error('Method not implemented');
   }
+
+  async getMessageSetting(key) {
+    throw new Error('Method not implemented');
+  }
+
+  async setMessageSetting(key, value) {
+    throw new Error('Method not implemented');
+  }
 }

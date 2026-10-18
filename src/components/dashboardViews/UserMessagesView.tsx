@@ -27,6 +27,15 @@ export const UserMessagesView = ({ userId }: { userId: number }) => {
 
   return (
     <div className="flex flex-col h-[70vh] min-h-[420px] bg-white rounded-2xl shadow-md overflow-hidden">
+      <div className="flex items-center gap-3 px-4 py-3 border-b bg-[#f0f2f5]">
+        <div className="w-10 h-10 rounded-full bg-emerald-600 text-white font-semibold flex items-center justify-center flex-shrink-0">
+          A
+        </div>
+        <div className="min-w-0">
+          <p className="font-semibold text-gray-900">Admin</p>
+          <p className="text-xs text-gray-500">Our team replies here</p>
+        </div>
+      </div>
       <ChatThread
         messages={messages}
         currentRole="user"

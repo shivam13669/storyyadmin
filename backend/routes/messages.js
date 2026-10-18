@@ -1,6 +1,10 @@
 import express from 'express';
 import { getDB } from '../db/index.js';
-import { normalizeMessageBody } from '../utils/messageUtils.js';
+import {
+  getReadReceiptState,
+  hideSeenStatusFromCustomer,
+  normalizeMessageBody,
+} from '../utils/messageUtils.js';
 
 const router = express.Router();
 
@@ -36,8 +40,11 @@ router.use(requireUser);
  */
 router.get('/', async (req, res) => {
   try {
-    const messages = await getDB().getMessagesByCustomerId(req.user.id, THREAD_LIMIT);
-    res.json({ messages });
+    const db = getDB();
+    const messages = await db.getMessagesByCustomerId(req.user.id, THREAD_LIMIT);
+    const { enabled } = await getReadReceiptState(db, req.user.id);
+
+    res.json({ messages: enabled ? messages : hideSeenStatusFromCustomer(messages) });
   } catch (error) {
     console.error('Get messages error:', error);
     res.status(500).json({ error: error.message });
