@@ -31,6 +31,9 @@ import {
 const LIST_POLL_INTERVAL_MS = 3000;
 const THREAD_POLL_INTERVAL_MS = 2000;
 
+const conversationsCache = new Map<number, MessageConversation[]>();
+const threadCache = new Map<string, { messages: ChatMessage[]; readReceipts: ReadReceiptState }>();
+
 const formatListTime = (iso: string) => {
   const date = new Date(iso);
   return isToday(date) ? format(date, "HH:mm") : format(date, "dd MMM");
@@ -60,10 +63,18 @@ const AdminConversationThread = ({
   customerEmail,
   onBack,
 }: AdminConversationThreadProps) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [receipts, setReceipts] = useState<ReadReceiptState | null>(null);
+  const cacheKey = `${adminId}:${customerId}`;
+  const cached = threadCache.get(cacheKey);
+  const [messages, setMessages] = useState<ChatMessage[]>(cached?.messages ?? []);
+  const [isLoading, setIsLoading] = useState(!cached);
+  const [receipts, setReceipts] = useState<ReadReceiptState | null>(cached?.readReceipts ?? null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (receipts) {
+      threadCache.set(cacheKey, { messages, readReceipts: receipts });
+    }
+  }, [cacheKey, messages, receipts]);
 
   usePolling(async () => {
     const { messages: latest, readReceipts } = await getAdminThread(adminId, customerId);
@@ -140,8 +151,10 @@ const AdminConversationThread = ({
 };
 
 export const AdminMessagesView = ({ adminId }: { adminId: number }) => {
-  const [conversations, setConversations] = useState<MessageConversation[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [conversations, setConversations] = useState<MessageConversation[]>(
+    () => conversationsCache.get(adminId) ?? []
+  );
+  const [isLoading, setIsLoading] = useState(() => !conversationsCache.has(adminId));
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [globalReadReceipts, setGlobalReadReceipts] = useState<boolean | null>(null);
@@ -156,6 +169,7 @@ export const AdminMessagesView = ({ adminId }: { adminId: number }) => {
 
   usePolling(async () => {
     const { conversations: latest } = await getMessageConversations(adminId);
+    conversationsCache.set(adminId, latest);
     setConversations(latest);
     setIsLoading(false);
   }, LIST_POLL_INTERVAL_MS);
