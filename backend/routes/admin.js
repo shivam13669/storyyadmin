@@ -351,8 +351,10 @@ router.get('/messages/:customerId', isAdmin, async (req, res) => {
     }
 
     const db = getDB();
-    const messages = await db.getMessagesByCustomerId(customerId, THREAD_LIMIT);
-    const readReceipts = await getReadReceiptState(db, customerId);
+    const [messages, readReceipts] = await Promise.all([
+      db.getMessagesByCustomerId(customerId, THREAD_LIMIT),
+      getReadReceiptState(db, customerId),
+    ]);
     res.json({ messages, readReceipts });
   } catch (error) {
     console.error('Get admin messages error:', error);

@@ -66,10 +66,15 @@ const AdminConversationThread = ({
   const { toast } = useToast();
 
   usePolling(async () => {
-    const { messages: latest, readReceipts } = await getAdminThread(adminId, customerId);
-    setMessages(latest);
-    setReceipts(readReceipts);
-    setIsLoading(false);
+    let latest: ChatMessage[];
+    try {
+      const response = await getAdminThread(adminId, customerId);
+      latest = response.messages;
+      setMessages(latest);
+      setReceipts(response.readReceipts);
+    } finally {
+      setIsLoading(false);
+    }
 
     const hasUnseenFromCustomer = latest.some((message) => message.senderRole === "user" && !message.seenAt);
     if (hasUnseenFromCustomer && document.visibilityState === "visible") {

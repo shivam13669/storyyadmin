@@ -23,8 +23,10 @@ export const READ_RECEIPTS_GLOBAL_KEY = 'readReceipts:global';
 const readReceiptsCustomerKey = (customerId) => `readReceipts:customer:${customerId}`;
 
 export async function getReadReceiptState(db, customerId) {
-  const override = await db.getMessageSetting(readReceiptsCustomerKey(customerId));
-  const globalValue = await db.getMessageSetting(READ_RECEIPTS_GLOBAL_KEY);
+  const [override, globalValue] = await Promise.all([
+    db.getMessageSetting(readReceiptsCustomerKey(customerId)),
+    db.getMessageSetting(READ_RECEIPTS_GLOBAL_KEY),
+  ]);
 
   if (override !== null) {
     return { enabled: override === 'on', override };
