@@ -27,12 +27,10 @@ import {
   updateCustomerReadReceipts,
   updateMessageSettings,
 } from "@/lib/api";
+import { conversationsCache, prefetchAdminThread, threadCache, threadKey } from "@/lib/adminMessagesCache";
 
 const LIST_POLL_INTERVAL_MS = 3000;
 const THREAD_POLL_INTERVAL_MS = 2000;
-
-const conversationsCache = new Map<number, MessageConversation[]>();
-const threadCache = new Map<string, { messages: ChatMessage[]; readReceipts: ReadReceiptState }>();
 
 const formatListTime = (iso: string) => {
   const date = new Date(iso);
@@ -63,7 +61,7 @@ const AdminConversationThread = ({
   customerEmail,
   onBack,
 }: AdminConversationThreadProps) => {
-  const cacheKey = `${adminId}:${customerId}`;
+  const cacheKey = threadKey(adminId, customerId);
   const cached = threadCache.get(cacheKey);
   const [messages, setMessages] = useState<ChatMessage[]>(cached?.messages ?? []);
   const [isLoading, setIsLoading] = useState(!cached);
@@ -222,6 +220,7 @@ export const AdminMessagesView = ({ adminId }: { adminId: number }) => {
             conversations.map((conversation) => (
               <button
                 key={conversation.customerId}
+                onPointerDown={() => prefetchAdminThread(adminId, conversation.customerId)}
                 onClick={() => setSelectedId(conversation.customerId)}
                 className={`w-full flex items-center gap-3 text-left px-4 py-3 border-b hover:bg-gray-50 ${
                   conversation.customerId === selectedId ? "bg-emerald-50" : ""

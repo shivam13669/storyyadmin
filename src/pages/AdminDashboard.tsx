@@ -47,6 +47,7 @@ import { CustomerManagementView } from "@/components/dashboardViews/CustomerMana
 import { UserManagementSystemView } from "@/components/dashboardViews/UserManagementSystemView";
 import { AdminOTPManagementView } from "@/components/dashboardViews/AdminOTPManagementView";
 import { AdminMessagesView } from "@/components/dashboardViews/AdminMessagesView";
+import { prefetchAdminConversations } from "@/lib/adminMessagesCache";
 import { usePresence } from "@/hooks/usePresence";
 import { ChangePasswordModal } from "@/components/ChangePasswordModal";
 import { changeUserPassword } from "@/lib/api";
@@ -110,6 +111,13 @@ const AdminDashboard = () => {
       loadData();
     }
   }, [isAdmin]);
+
+  const adminId = user?.id;
+  useEffect(() => {
+    if (isAdmin && adminId) {
+      prefetchAdminConversations(adminId);
+    }
+  }, [isAdmin, adminId]);
 
   const handleLogout = () => {
     logout();
