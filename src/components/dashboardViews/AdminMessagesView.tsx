@@ -27,6 +27,7 @@ import {
   updateCustomerReadReceipts,
   updateMessageSettings,
 } from "@/lib/api";
+import { conversationsCache, prefetchAdminThread, threadCache, threadKey } from "@/lib/adminMessagesCache";
 
 const LIST_POLL_INTERVAL_MS = 3000;
 const THREAD_POLL_INTERVAL_MS = 2000;
@@ -60,10 +61,18 @@ const AdminConversationThread = ({
   customerEmail,
   onBack,
 }: AdminConversationThreadProps) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [receipts, setReceipts] = useState<ReadReceiptState | null>(null);
+  const cacheKey = threadKey(adminId, customerId);
+  const cached = threadCache.get(cacheKey);
+  const [messages, setMessages] = useState<ChatMessage[]>(cached?.messages ?? []);
+  const [isLoading, setIsLoading] = useState(!cached);
+  const [receipts, setReceipts] = useState<ReadReceiptState | null>(cached?.readReceipts ?? null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (receipts) {
+      threadCache.set(cacheKey, { messages, readReceipts: receipts });
+    }
+  }, [cacheKey, messages, receipts]);
 
   usePolling(async () => {
     let latest: ChatMessage[];
@@ -145,8 +154,10 @@ const AdminConversationThread = ({
 };
 
 export const AdminMessagesView = ({ adminId }: { adminId: number }) => {
-  const [conversations, setConversations] = useState<MessageConversation[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [conversations, setConversations] = useState<MessageConversation[]>(
+    () => conversationsCache.get(adminId) ?? []
+  );
+  const [isLoading, setIsLoading] = useState(() => !conversationsCache.has(adminId));
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [globalReadReceipts, setGlobalReadReceipts] = useState<boolean | null>(null);
@@ -161,6 +172,7 @@ export const AdminMessagesView = ({ adminId }: { adminId: number }) => {
 
   usePolling(async () => {
     const { conversations: latest } = await getMessageConversations(adminId);
+    conversationsCache.set(adminId, latest);
     setConversations(latest);
     setIsLoading(false);
   }, LIST_POLL_INTERVAL_MS);
@@ -213,6 +225,7 @@ export const AdminMessagesView = ({ adminId }: { adminId: number }) => {
             conversations.map((conversation) => (
               <button
                 key={conversation.customerId}
+                onPointerDown={() => prefetchAdminThread(adminId, conversation.customerId)}
                 onClick={() => setSelectedId(conversation.customerId)}
                 className={`w-full flex items-center gap-3 text-left px-4 py-3 border-b hover:bg-gray-50 ${
                   conversation.customerId === selectedId ? "bg-emerald-50" : ""
