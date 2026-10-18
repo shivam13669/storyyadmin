@@ -119,6 +119,13 @@ const AdminDashboard = () => {
     }
   }, [isAdmin, adminId]);
 
+  const openView = (id: string) => {
+    setActiveNav(id);
+    if (id === "customers" || id === "coupons") {
+      loadData();
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -288,7 +295,7 @@ const AdminDashboard = () => {
               <button
                 key={item.id}
                 onClick={() => {
-                  setActiveNav(item.id);
+                  openView(item.id);
                   setSidebarOpen(false);
                 }}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium text-sm ${
@@ -431,7 +438,7 @@ const AdminDashboard = () => {
                       key={index}
                       className="border-0 shadow-md hover:shadow-lg transition-shadow cursor-pointer rounded-2xl"
                       onClick={() => {
-                        setActiveNav(getNavigationSection(stat.label));
+                        openView(getNavigationSection(stat.label));
                         setSidebarOpen(false);
                       }}
                     >
@@ -486,7 +493,7 @@ const AdminDashboard = () => {
                       size="sm"
                       className="w-full mt-4 text-primary"
                       onClick={() => {
-                        setActiveNav("customers");
+                        openView("customers");
                         setSidebarOpen(false);
                       }}
                     >
