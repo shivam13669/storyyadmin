@@ -125,9 +125,11 @@ export const ChatThread = ({ messages, currentRole, onSend, isLoading, emptyText
       >
         {messages.length === 0 ? (
           <div className="h-full flex items-center justify-center">
-            <p className="max-w-xs text-center text-sm text-gray-600 bg-white/80 rounded-lg px-4 py-3 shadow-sm">
-              {isLoading ? "Loading messages..." : emptyText}
-            </p>
+            {!isLoading && (
+              <p className="max-w-xs text-center text-sm text-gray-600 bg-white/80 rounded-lg px-4 py-3 shadow-sm">
+                {emptyText}
+              </p>
+            )}
           </div>
         ) : (
           renderItems()
