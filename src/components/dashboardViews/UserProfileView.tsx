@@ -137,7 +137,7 @@ export function UserProfileView({ user, onUserUpdate, onChangePassword }: UserPr
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Enter your full name"
-                  className="mt-2"
+                  className="mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
                   disabled={loading}
                 />
               ) : (

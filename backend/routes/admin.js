@@ -57,6 +57,68 @@ async function isAdmin(req, res, next) {
 }
 
 /**
+ * POST /api/admin/create-admin
+ * Create a new admin user
+ */
+router.post('/create-admin', async (req, res) => {
+  try {
+    const {
+      full_name,
+      email,
+      mobile_number,
+      password,
+      admin_type,
+      state,
+      district
+    } = req.body;
+
+    if (!full_name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email and password are required' });
+    }
+
+    const db = getDB();
+    const existing = await db.getUserByEmail(email.toLowerCase());
+    if (existing) {
+      return res.status(400).json({ error: 'An account with this email already exists' });
+    }
+
+    const newUser = await db.createUser({
+      fullName: full_name,
+      email: email.toLowerCase(),
+      password,
+      mobileNumber: mobile_number || '0000000000',
+      countryCode: '91',
+      role: 'admin',
+      testimonialAllowed: 1,
+      isSuspended: 0
+    });
+
+    if (state || district) {
+      try {
+        await db.updateUserProfile(newUser.id, { state, district });
+      } catch (e) {
+        console.warn('Could not update admin state/district:', e);
+      }
+    }
+
+    console.log(`👤 New admin user created: ${newUser.email}`);
+
+    res.status(201).json({
+      message: 'Admin user created successfully',
+      user: {
+        id: newUser.id,
+        full_name: newUser.fullName,
+        email: newUser.email,
+        role: newUser.role
+      }
+    });
+  } catch (error) {
+    console.error('❌ Create admin error:', error);
+    res.status(500).json({ error: error.message || 'Failed to create admin user' });
+  }
+});
+
+/**
  * GET /api/admin/otp/customer/:email
  * Get OTP statistics for a specific customer
  */

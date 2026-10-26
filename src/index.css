@@ -135,6 +135,15 @@
     @apply bg-background text-foreground font-sans overflow-x-hidden;
   }
 
+  /* Admin Dashboard inputs, textareas, and selects blue focus */
+  .admin-dashboard input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
+  .admin-dashboard textarea:focus,
+  .admin-dashboard select:focus {
+    outline: none !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5) !important;
+  }
+
   /* Custom utility classes */
   .gradient-hero {
     background: var(--gradient-hero);
@@ -242,3 +251,4 @@
     display: none;
   }
 }
+

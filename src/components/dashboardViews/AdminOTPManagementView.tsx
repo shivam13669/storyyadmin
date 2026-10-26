@@ -235,7 +235,7 @@ export const AdminOTPManagementView = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && fetchOTPStats()}
-                className="pl-10"
+                className="pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
               />
             </div>
             <Button

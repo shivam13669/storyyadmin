@@ -338,7 +338,7 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
                 placeholder="Search by name, email, phone..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10"
+                className="pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
               />
             </div>
             <Button variant="outline" className="flex items-center gap-2">

@@ -174,6 +174,7 @@ export function ChangePasswordModal({
                   }
                 }}
                 disabled={loading}
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
               />
               <button
                 type="button"
@@ -222,6 +223,7 @@ export function ChangePasswordModal({
                   }
                 }}
                 disabled={loading}
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
               />
               <button
                 type="button"
@@ -308,6 +310,7 @@ export function ChangePasswordModal({
                   }
                 }}
                 disabled={loading}
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
               />
               <button
                 type="button"

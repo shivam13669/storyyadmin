@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   LogOut,
   BarChart3,
@@ -16,10 +18,7 @@ import {
   Menu,
   X,
   Activity,
-  TrendingUp,
-  MapPin,
   Calendar,
-  DollarSign,
   Star,
   RefreshCw,
   Home,
@@ -29,6 +28,16 @@ import {
   UserCheck,
   Search,
   Filter,
+  Bell,
+  Shield,
+  User as UserIcon,
+  Lock,
+  Palette,
+  Database,
+  KeyRound,
+  CheckCircle2,
+  Plus,
+  LayoutList,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -36,18 +45,16 @@ import { getAllUsers as getAllUsersFromAPI, getAllBookings, getAllTestimonials, 
 import type { User } from "@/lib/db";
 import { Coupon } from "@/utils/couponUtils";
 import { format } from "date-fns";
-import { AdminUsersView } from "@/components/dashboardViews/AdminUsersView";
 import { AdminBookingsView } from "@/components/dashboardViews/AdminBookingsView";
 import { AdminTestimonialsView } from "@/components/dashboardViews/AdminTestimonialsView";
 import { AdminCouponsView } from "@/components/dashboardViews/AdminCouponsView";
-import { AdminTestimonialForm } from "@/components/AdminTestimonialForm";
 import { AdminReportsView } from "@/components/dashboardViews/AdminReportsView";
 import { CustomerManagementView } from "@/components/dashboardViews/CustomerManagementView";
 import { UserManagementSystemView } from "@/components/dashboardViews/UserManagementSystemView";
 import { AdminOTPManagementView } from "@/components/dashboardViews/AdminOTPManagementView";
+import { CreateAdminUser } from "@/components/CreateAdminUser";
 import { ChangePasswordModal } from "@/components/ChangePasswordModal";
 import { changeUserPassword } from "@/lib/api";
-import { Shield } from "lucide-react";
 
 const AdminDashboard = () => {
   const { user, isAuthenticated, isAdmin, logout, isLoading: authLoading } = useAuth();
@@ -63,8 +70,21 @@ const AdminDashboard = () => {
   const [customerTab, setCustomerTab] = useState("customer");
   const [adminTab, setAdminTab] = useState("management");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [adminSearch, setAdminSearch] = useState("");
+  const [adminStatusFilter, setAdminStatusFilter] = useState<"all" | "active" | "suspended">("all");
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [settingsTab, setSettingsTab] = useState("security");
+  const [emailNotifs, setEmailNotifs] = useState(true);
+  const [bookingNotifs, setBookingNotifs] = useState(true);
+  const [reviewNotifs, setReviewNotifs] = useState(true);
+  const [securityNotifs, setSecurityNotifs] = useState(true);
+
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const notifMenuRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   // Redirect if not admin
   useEffect(() => {
@@ -87,7 +107,7 @@ const AdminDashboard = () => {
         getAllUsersFromAPI(),
         getAllBookings(),
         getAllTestimonials(),
-        fetch('/api/coupons').then(res => res.json()),
+        fetch('/api/coupons').then(res => res.json()).catch(() => ({ coupons: [] })),
       ]);
       setUsers(usersResponse.users || []);
       setBookings(bookingsResponse.bookings || []);
@@ -126,27 +146,78 @@ const AdminDashboard = () => {
     await changeUserPassword(user.id, oldPassword, newPassword);
   };
 
-  // Close user menu when clicking outside
+  // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setUserMenuOpen(false);
       }
+      if (notifMenuRef.current && !notifMenuRef.current.contains(event.target as Node)) {
+        setNotificationsOpen(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setSearchFocused(false);
+      }
     };
 
-    if (userMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [userMenuOpen]);
+  }, []);
 
   // Calculate stats
   const confirmedBookings = bookings.filter((b) => b.status === "confirmed").length;
   const pendingBookings = bookings.filter((b) => b.status === "pending").length;
   const visibleTestimonials = testimonials.filter((t) => t.isVisible).length;
+  const pendingTestimonialsCount = testimonials.filter((t) => !t.isVisible).length;
+  const suspendedAdminsCount = users.filter((u) => u.role === "admin" && u.isSuspended).length;
+  const unreadNotifsCount = pendingBookings + pendingTestimonialsCount + suspendedAdminsCount;
+
+  // Header quick search matches across dashboard
+  const searchResults = searchQuery.trim()
+    ? [
+        ...users
+          .filter(
+            (u) =>
+              u.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              u.email?.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .slice(0, 3)
+          .map((u) => ({
+            title: u.fullName || "User",
+            subtitle: u.email,
+            type: u.role === "admin" ? "Admin" : "Customer",
+            section: u.role === "admin" ? "admin" : "customers",
+          })),
+        ...bookings
+          .filter(
+            (b) =>
+              b.tripName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              b.id.toString().includes(searchQuery)
+          )
+          .slice(0, 3)
+          .map((b) => ({
+            title: b.tripName,
+            subtitle: `Booking #${b.id} • ${b.status}`,
+            type: "Booking",
+            section: "bookings",
+          })),
+        ...testimonials
+          .filter(
+            (t) =>
+              t.userName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              t.quote?.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .slice(0, 2)
+          .map((t) => ({
+            title: t.userName,
+            subtitle: `${t.rating}★ Review`,
+            type: "Review",
+            section: "reviews",
+          })),
+      ]
+    : [];
 
   const stats = [
     {
@@ -218,6 +289,21 @@ const AdminDashboard = () => {
     }
   };
 
+  // Filtered admins list
+  const filteredAdmins = users
+    .filter((u) => u.role === "admin")
+    .filter((admin) => {
+      if (adminStatusFilter === "active" && admin.isSuspended) return false;
+      if (adminStatusFilter === "suspended" && !admin.isSuspended) return false;
+      if (!adminSearch.trim()) return true;
+      const query = adminSearch.toLowerCase();
+      return (
+        (admin.fullName && admin.fullName.toLowerCase().includes(query)) ||
+        (admin.email && admin.email.toLowerCase().includes(query)) ||
+        (admin.mobileNumber && admin.mobileNumber.toLowerCase().includes(query))
+      );
+    });
+
   // Don't render content until auth is verified
   // Show NotFound if not authenticated, loading while auth is loading or not admin
   if (!authLoading && !isAuthenticated) {
@@ -233,7 +319,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 admin-dashboard">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-950 border-r border-slate-800 transition-transform duration-300 ${
@@ -263,7 +349,7 @@ const AdminDashboard = () => {
             { id: "admin", label: "Admin", icon: Users },
             { id: "customers", label: "Customers", icon: Users },
             { id: "bookings", label: "Bookings", icon: Briefcase },
-            { id: "reviews", label: "Testimonials", icon: FileText },
+            { id: "reviews", label: "Customer Feedback", icon: FileText },
             { id: "coupons", label: "Coupons", icon: Briefcase },
             { id: "otp", label: "OTP Management", icon: Shield },
             { id: "reports", label: "Reports & Analytics", icon: LineChart },
@@ -305,7 +391,7 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        {/* Top Bar */}
+        {/* Top Bar with Search & Notifications (CRM Features integrated smoothly) */}
         <div className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0 flex-1">
             <button
@@ -314,12 +400,55 @@ const AdminDashboard = () => {
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-            <div className="min-w-0">
+            <div className="min-w-0 hidden md:block">
               <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">Admin Dashboard</h2>
               <p className="text-xs sm:text-sm text-gray-600">Complete overview of your travel operations</p>
             </div>
+
+            {/* Header Search Bar (CRM Style) */}
+            <div className="relative hidden sm:block ml-0 md:ml-4" ref={searchRef}>
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search customers, bookings, reviews..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setSearchFocused(true)}
+                className="pl-10 pr-4 py-2 w-60 lg:w-80 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-xs"
+              />
+              {/* Quick Search Results Dropdown */}
+              {searchFocused && searchQuery.trim().length > 0 && (
+                <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden divide-y divide-gray-100">
+                  {searchResults.length > 0 ? (
+                    searchResults.map((item, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          setActiveNav(item.section);
+                          setSearchQuery("");
+                          setSearchFocused(false);
+                        }}
+                        className="p-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm transition-colors"
+                      >
+                        <div>
+                          <p className="font-medium text-gray-900">{item.title}</p>
+                          <p className="text-xs text-gray-500">{item.subtitle}</p>
+                        </div>
+                        <Badge variant="outline" className="text-xs uppercase">{item.type}</Badge>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-4 text-center text-xs text-gray-500">
+                      No results found for "{searchQuery}"
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
+
+          <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+            {/* Refresh Data Button */}
             <Button
               onClick={loadData}
               disabled={loading}
@@ -340,6 +469,101 @@ const AdminDashboard = () => {
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             </Button>
+
+            {/* Notification Bell Button & Dropdown (CRM Feature) */}
+            <div className="relative" ref={notifMenuRef}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+                onClick={() => setNotificationsOpen(!notificationsOpen)}
+                title="Notifications"
+              >
+                <Bell className="w-5 h-5" />
+                {unreadNotifsCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-medium rounded-full flex items-center justify-center">
+                    {unreadNotifsCount > 9 ? "9+" : unreadNotifsCount}
+                  </span>
+                )}
+              </Button>
+
+              {notificationsOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+                    <h4 className="font-semibold text-gray-900 text-sm">Notifications</h4>
+                    <span className="text-xs text-blue-600 font-medium">
+                      {unreadNotifsCount} new
+                    </span>
+                  </div>
+                  <div className="max-h-72 overflow-y-auto divide-y divide-gray-100">
+                    {pendingBookings > 0 && (
+                      <div
+                        onClick={() => {
+                          setActiveNav("bookings");
+                          setNotificationsOpen(false);
+                        }}
+                        className="p-3 hover:bg-gray-50 cursor-pointer transition-colors"
+                      >
+                        <div className="flex items-start gap-2.5">
+                          <Calendar className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="text-xs font-semibold text-gray-900">
+                              {pendingBookings} Pending Bookings
+                            </p>
+                            <p className="text-xs text-gray-500">Trip reservations awaiting confirmation</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {pendingTestimonialsCount > 0 && (
+                      <div
+                        onClick={() => {
+                          setActiveNav("reviews");
+                          setNotificationsOpen(false);
+                        }}
+                        className="p-3 hover:bg-gray-50 cursor-pointer transition-colors"
+                      >
+                        <div className="flex items-start gap-2.5">
+                          <Star className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="text-xs font-semibold text-gray-900">
+                              {pendingTestimonialsCount} Pending Reviews
+                            </p>
+                            <p className="text-xs text-gray-500">New customer reviews awaiting approval</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {suspendedAdminsCount > 0 && (
+                      <div
+                        onClick={() => {
+                          setActiveNav("admin");
+                          setNotificationsOpen(false);
+                        }}
+                        className="p-3 hover:bg-gray-50 cursor-pointer transition-colors"
+                      >
+                        <div className="flex items-start gap-2.5">
+                          <Shield className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="text-xs font-semibold text-gray-900">
+                              {suspendedAdminsCount} Suspended Admin(s)
+                            </p>
+                            <p className="text-xs text-gray-500">Accounts requiring administrative review</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {unreadNotifsCount === 0 && (
+                      <div className="p-6 text-center text-xs text-gray-500">
+                        All notifications cleared! System is up to date.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Profile Menu */}
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
@@ -369,6 +593,16 @@ const AdminDashboard = () => {
                   </button>
                   <button
                     onClick={() => {
+                      setIsPasswordModalOpen(true);
+                      setUserMenuOpen(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100 font-medium text-sm"
+                  >
+                    <Settings className="w-4 h-4" />
+                    Change Password
+                  </button>
+                  <button
+                    onClick={() => {
                       handleLogout();
                       setUserMenuOpen(false);
                     }}
@@ -391,7 +625,7 @@ const AdminDashboard = () => {
             </div>
           ) : activeNav === "overview" ? (
             <>
-              {/* Statistics Cards Grid */}
+              {/* Statistics Cards Grid (Exact Original Layout & Font Sizes) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
                 {stats.map((stat, index) => {
                   const Icon = stat.icon;
@@ -618,19 +852,36 @@ const AdminDashboard = () => {
                 </p>
               </div>
 
+              {/* Tab Navigation (CRM Style) */}
+              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+                <button
+                  type="button"
+                  onClick={() => setCustomerTab("customer")}
+                  className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
+                    customerTab === "customer"
+                      ? "bg-white text-[#1e88e5] shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  <Users className="w-4 h-4" />
+                  Customers
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCustomerTab("users")}
+                  className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
+                    customerTab === "users"
+                      ? "bg-white text-[#1e88e5] shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  <UserCheck className="w-4 h-4" />
+                  User Management
+                </button>
+              </div>
+
               {/* Tabs Section */}
               <Tabs value={customerTab} onValueChange={setCustomerTab} className="space-y-6">
-                <TabsList className="w-fit h-auto bg-gray-100 p-1 rounded-lg">
-                  <TabsTrigger value="customer" className="px-5 py-2.5 flex items-center gap-2 rounded-md bg-transparent text-gray-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
-                    <Users2 className="w-4 h-4" />
-                    Customer
-                  </TabsTrigger>
-                  <TabsTrigger value="users" className="px-5 py-2.5 flex items-center gap-2 rounded-md bg-transparent text-gray-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
-                    <UserCheck className="w-4 h-4" />
-                    User Management
-                  </TabsTrigger>
-                </TabsList>
-
                 {/* CUSTOMER TAB */}
                 <TabsContent value="customer">
                   <CustomerManagementView users={users} onDataChange={loadData} />
@@ -652,18 +903,35 @@ const AdminDashboard = () => {
                 </p>
               </div>
 
-              {/* Tabs Section */}
+              {/* Tab Navigation (CRM Style) */}
+              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+                <button
+                  type="button"
+                  onClick={() => setAdminTab("management")}
+                  className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
+                    adminTab === "management"
+                      ? "bg-white text-[#1e88e5] shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  <LayoutList className="w-4 h-4" />
+                  Manage Admins
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAdminTab("create")}
+                  className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
+                    adminTab === "create"
+                      ? "bg-white text-[#1e88e5] shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  <Plus className="w-4 h-4" />
+                  Create Admin
+                </button>
+              </div>
+
               <Tabs value={adminTab} onValueChange={setAdminTab} className="space-y-6">
-                <TabsList className="w-fit h-auto bg-gray-100 p-1 rounded-lg">
-                  <TabsTrigger value="management" className="px-5 py-2.5 flex items-center gap-2 rounded-md bg-transparent text-gray-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
-                    <Users className="w-4 h-4" />
-                    Admin Management
-                  </TabsTrigger>
-                  <TabsTrigger value="create" className="px-5 py-2.5 flex items-center gap-2 rounded-md bg-transparent text-gray-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
-                    <Users2 className="w-4 h-4" />
-                    Create Admin
-                  </TabsTrigger>
-                </TabsList>
 
                 {/* ADMIN MANAGEMENT TAB */}
                 <TabsContent value="management" className="space-y-6">
@@ -712,22 +980,51 @@ const AdminDashboard = () => {
                     </Card>
                   </div>
 
-                  {/* Search and Filter */}
-                  <Card className="border border-gray-200 shadow-lg rounded-2xl bg-white">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-3">
-                        <div className="flex-1 relative">
-                          <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                  {/* Search and Filter (CRM Style Popover Filter) */}
+                  <Card className="border border-gray-200 shadow-md rounded-2xl bg-white">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row items-center gap-4">
+                        <div className="flex-1 w-full relative">
+                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
                           <Input
-                            placeholder="Search by name, email, phone..."
-                            className="pl-10"
-                            onChange={(e) => {}}
+                            placeholder="Search by name, email, or username..."
+                            value={adminSearch}
+                            onChange={(e) => setAdminSearch(e.target.value)}
+                            className="pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
                           />
                         </div>
-                        <Button variant="outline" className="flex items-center gap-2">
-                          <Filter className="w-4 h-4" />
-                          Filter
-                        </Button>
+
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button variant="outline" className="w-full sm:w-auto flex items-center gap-2">
+                              <Filter className="w-4 h-4" />
+                              Filter
+                              {adminStatusFilter !== "all" && (
+                                <span className="ml-1 px-1.5 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full font-semibold">
+                                  1
+                                </span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-48 bg-white p-4 shadow-lg border border-gray-200 rounded-xl z-50" align="end">
+                            <div className="space-y-3">
+                              <label className="text-sm font-medium text-gray-700">Status</label>
+                              <Select
+                                value={adminStatusFilter}
+                                onValueChange={(val: "all" | "active" | "suspended") => setAdminStatusFilter(val)}
+                              >
+                                <SelectTrigger className="w-full bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-white z-50">
+                                  <SelectItem value="all">All</SelectItem>
+                                  <SelectItem value="active">Active</SelectItem>
+                                  <SelectItem value="suspended">Suspended</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
                       </div>
                     </CardContent>
                   </Card>
@@ -739,7 +1036,7 @@ const AdminDashboard = () => {
                       <CardDescription>All admin accounts in the system</CardDescription>
                     </CardHeader>
                     <CardContent className="p-0">
-                      {users.filter(u => u.role === "admin").length > 0 ? (
+                      {filteredAdmins.length > 0 ? (
                         <div className="overflow-x-auto">
                           <table className="w-full text-sm">
                             <thead>
@@ -752,7 +1049,7 @@ const AdminDashboard = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {users.filter(u => u.role === "admin").map((admin) => (
+                              {filteredAdmins.map((admin) => (
                                 <tr
                                   key={admin.id}
                                   className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
@@ -790,7 +1087,7 @@ const AdminDashboard = () => {
                         </div>
                       ) : (
                         <div className="text-center py-12 text-gray-600">
-                          <p>No admin users found</p>
+                          <p>No admin users found matching your criteria</p>
                         </div>
                       )}
                     </CardContent>
@@ -799,17 +1096,7 @@ const AdminDashboard = () => {
 
                 {/* CREATE ADMIN TAB */}
                 <TabsContent value="create">
-                  <Card className="border-0 shadow-md rounded-2xl">
-                    <CardHeader>
-                      <CardTitle>Create New Admin</CardTitle>
-                      <CardDescription>Add a new admin user to the system</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-center py-12 text-gray-600">
-                        <p>Create admin form coming soon...</p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <CreateAdminUser onSuccess={() => { loadData(); setAdminTab("management"); }} />
                 </TabsContent>
               </Tabs>
             </div>
@@ -824,59 +1111,291 @@ const AdminDashboard = () => {
           ) : activeNav === "settings" ? (
             <div className="space-y-6">
               {/* Header */}
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900">Settings</h3>
-                <p className="text-sm text-gray-600 mt-1">Manage your admin account settings</p>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                    <Settings className="h-6 w-6 text-gray-700" />
+                    Settings
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">Manage your account settings and system preferences</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-xs uppercase font-semibold">
+                    {user?.role || "ADMIN"}
+                  </Badge>
+                  <Badge variant="secondary" className="text-xs font-medium">
+                    {user?.fullName || "Admin"}
+                  </Badge>
+                </div>
               </div>
 
-              {/* Account Information Card */}
-              <Card className="border-0 shadow-md rounded-2xl">
-                <CardHeader>
-                  <CardTitle>Account Information</CardTitle>
-                  <CardDescription>Your admin account details</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium mb-2">Full Name</p>
-                      <p className="text-lg font-semibold text-gray-900">{user?.fullName || "—"}</p>
-                    </div>
-                    <div className="border-t pt-6">
-                      <p className="text-sm text-gray-600 font-medium mb-2">Email Address</p>
-                      <p className="text-lg font-semibold text-gray-900">{user?.email || "—"}</p>
-                    </div>
-                    <div className="border-t pt-6">
-                      <p className="text-sm text-gray-600 font-medium mb-2">Phone Number</p>
-                      <p className="text-lg font-semibold text-gray-900">
-                        +{user?.countryCode || ""} {user?.mobileNumber || "—"}
-                      </p>
-                    </div>
-                    <div className="border-t pt-6">
-                      <p className="text-sm text-gray-600 font-medium mb-2">Member Since</p>
-                      <p className="text-lg font-semibold text-gray-900">
-                        {user?.signupDate && !isNaN(new Date(user.signupDate).getTime())
-                          ? format(new Date(user.signupDate), "MMMM dd, yyyy")
-                          : "—"}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Settings Tabs (Full-width strip like before with blue active selection) */}
+              <div className="grid w-full grid-cols-2 sm:grid-cols-5 bg-gray-100 p-1 rounded-xl h-auto gap-1">
+                {[
+                  { id: "account", label: "Account", icon: UserIcon },
+                  { id: "security", label: "Security", icon: Lock },
+                  { id: "notifications", label: "Notifications", icon: Bell },
+                  { id: "appearance", label: "Appearance", icon: Palette },
+                  { id: "system", label: "System", icon: Database },
+                ].map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = settingsTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setSettingsTab(tab.id)}
+                      className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-white text-blue-600 shadow-sm"
+                          : "text-gray-600 hover:text-gray-900"
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      <span>{tab.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
 
-              {/* Account Security Card */}
-              <Card className="border-0 shadow-md rounded-2xl">
-                <CardHeader>
-                  <CardTitle>Account Security</CardTitle>
-                  <CardDescription>Manage your password and security settings</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-700 mb-4">Your account security is important to us. You can change your password at any time.</p>
-                  <Button onClick={() => setIsPasswordModalOpen(true)} className="w-full">Change Password</Button>
-                </CardContent>
-              </Card>
+              <Tabs value={settingsTab} onValueChange={setSettingsTab} className="space-y-6">
+
+                {/* Account Tab */}
+                <TabsContent value="account" className="space-y-6">
+                  <Card className="border-0 shadow-md rounded-2xl bg-white">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-lg">
+                        <UserIcon className="h-5 w-5 text-blue-600" />
+                        Account Information
+                      </CardTitle>
+                      <CardDescription>View and manage your administrator account details</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">Full Name</p>
+                          <p className="text-base font-semibold text-gray-900 mt-1">{user?.fullName || "—"}</p>
+                        </div>
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">Email Address</p>
+                          <p className="text-base font-semibold text-gray-900 mt-1">{user?.email || "—"}</p>
+                        </div>
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">Phone Number</p>
+                          <p className="text-base font-semibold text-gray-900 mt-1">
+                            +{user?.countryCode || "91"} {user?.mobileNumber || "—"}
+                          </p>
+                        </div>
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">Role & Permissions</p>
+                          <div className="mt-1 flex items-center gap-2">
+                            <Badge className="bg-blue-600 text-white">Administrator</Badge>
+                            <Badge variant="outline">Full Access</Badge>
+                          </div>
+                        </div>
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">Member Since</p>
+                          <p className="text-base font-semibold text-gray-900 mt-1">
+                            {user?.signupDate && !isNaN(new Date(user.signupDate).getTime())
+                              ? format(new Date(user.signupDate), "MMMM dd, yyyy")
+                              : "—"}
+                          </p>
+                        </div>
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">Account Status</p>
+                          <div className="mt-1 flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+                            <span className="text-sm font-semibold text-green-700">Active</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Security Tab */}
+                <TabsContent value="security" className="space-y-6">
+                  <Card className="border-0 shadow-md rounded-2xl bg-white">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-lg">
+                        <Lock className="h-5 w-5 text-blue-600" />
+                        Password & Security
+                      </CardTitle>
+                      <CardDescription>Manage your password and security settings</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border border-gray-200 rounded-xl bg-gray-50/50">
+                        <div className="flex items-center gap-3">
+                          <div className="bg-blue-100 p-2.5 rounded-xl">
+                            <KeyRound className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-gray-900 text-sm">Account Password</div>
+                            <div className="text-xs text-gray-500">Regularly updating your password keeps your account secure</div>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => setIsPasswordModalOpen(true)}
+                          className="sm:w-auto"
+                        >
+                          Change Password
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Notifications Tab */}
+                <TabsContent value="notifications" className="space-y-6">
+                  <Card className="border-0 shadow-md rounded-2xl bg-white">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-lg">
+                        <Bell className="h-5 w-5 text-blue-600" />
+                        Notification Preferences
+                      </CardTitle>
+                      <CardDescription>Configure how and when you receive system alerts</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">Email Notifications</p>
+                          <p className="text-xs text-gray-500">Receive email summaries for critical updates and booking events</p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={emailNotifs}
+                          onChange={(e) => setEmailNotifs(e.target.checked)}
+                          className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">Booking Alerts</p>
+                          <p className="text-xs text-gray-500">Get notified immediately when new trip reservations are created</p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={bookingNotifs}
+                          onChange={(e) => setBookingNotifs(e.target.checked)}
+                          className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">Customer Feedback & Reviews</p>
+                          <p className="text-xs text-gray-500">Instant notification when a customer submits feedback or a review</p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={reviewNotifs}
+                          onChange={(e) => setReviewNotifs(e.target.checked)}
+                          className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">Security & Admin Alerts</p>
+                          <p className="text-xs text-gray-500">Alerts regarding admin login activities and permission updates</p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={securityNotifs}
+                          onChange={(e) => setSecurityNotifs(e.target.checked)}
+                          className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                        />
+                      </div>
+
+                      <div className="pt-4 flex justify-end">
+                        <Button
+                          onClick={() => toast({ title: "Success", description: "Notification preferences saved" })}
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          Save Preferences
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Appearance Tab */}
+                <TabsContent value="appearance" className="space-y-6">
+                  <Card className="border-0 shadow-md rounded-2xl bg-white">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-lg">
+                        <Palette className="h-5 w-5 text-blue-600" />
+                        Theme & Appearance
+                      </CardTitle>
+                      <CardDescription>Customize the look and feel of your admin dashboard</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="p-4 border-2 border-blue-600 rounded-xl bg-blue-50/30 cursor-pointer">
+                          <div className="w-full h-20 bg-gray-100 rounded-lg mb-3 border border-gray-200 flex items-center justify-center">
+                            <span className="text-xs font-semibold text-gray-700">Light Mode</span>
+                          </div>
+                          <p className="text-sm font-semibold text-gray-900">Light (Default)</p>
+                          <p className="text-xs text-gray-500 mt-1">Clean and crisp daylight contrast</p>
+                        </div>
+                        <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 opacity-75 cursor-pointer hover:border-gray-300 transition-colors">
+                          <div className="w-full h-20 bg-slate-900 rounded-lg mb-3 border border-slate-800 flex items-center justify-center">
+                            <span className="text-xs font-semibold text-white">Dark Mode</span>
+                          </div>
+                          <p className="text-sm font-semibold text-gray-900">Dark</p>
+                          <p className="text-xs text-gray-500 mt-1">High-contrast dark theme</p>
+                        </div>
+                        <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 opacity-75 cursor-pointer hover:border-gray-300 transition-colors">
+                          <div className="w-full h-20 bg-gradient-to-r from-gray-100 to-slate-900 rounded-lg mb-3 border border-gray-200 flex items-center justify-center">
+                            <span className="text-xs font-semibold text-gray-800">System</span>
+                          </div>
+                          <p className="text-sm font-semibold text-gray-900">System Sync</p>
+                          <p className="text-xs text-gray-500 mt-1">Match device operating system</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* System Tab */}
+                <TabsContent value="system" className="space-y-6">
+                  <Card className="border-0 shadow-md rounded-2xl bg-white">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-lg">
+                        <Database className="h-5 w-5 text-blue-600" />
+                        System Configuration
+                      </CardTitle>
+                      <CardDescription>System-wide metrics and database configuration</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">System Status</p>
+                          <div className="mt-1 flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
+                            <span className="text-sm font-semibold text-green-700">Online & Healthy</span>
+                          </div>
+                        </div>
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">Database</p>
+                          <p className="text-sm font-semibold text-gray-900 mt-1">SQLite (Local Storage)</p>
+                        </div>
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">API Version</p>
+                          <p className="text-sm font-semibold text-gray-900 mt-1">v1.0.0 (Express)</p>
+                        </div>
+                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
+                          <p className="text-xs text-gray-500 font-medium">Server Port</p>
+                          <p className="text-sm font-semibold text-gray-900 mt-1">5000 (Backend) / 5000 (Vite)</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
-          ) : null
-          }
+          ) : null}
         </div>
       </div>
 
