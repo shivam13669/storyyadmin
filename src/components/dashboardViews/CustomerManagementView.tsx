@@ -184,9 +184,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
   };
 
   const isValidMobileNumber = (mobileNumber: string | null) => {
-    if (!mobileNumber) return false;
-    const cleaned = mobileNumber.replace(/\D/g, "");
-    return cleaned.length >= 10 && cleaned !== "0000000000";
+    return !!mobileNumber && !mobileNumber.startsWith("GOOGLE_");
   };
 
   const handleExportList = () => {
