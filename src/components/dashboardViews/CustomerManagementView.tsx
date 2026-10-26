@@ -2,21 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Eye, Download, Filter, Search, Mail, Phone, RotateCcw } from "lucide-react";
+import { Eye, Download, Filter, Search, Mail, Phone } from "lucide-react";
 import { format } from "date-fns";
 import { UserDetailsModal } from "@/components/UserDetailsModal";
 
@@ -39,120 +25,54 @@ interface CustomerManagementViewProps {
 
 export function CustomerManagementView({ users, onDataChange }: CustomerManagementViewProps) {
   // Filter out admins - only show customers
-  const customersOnly = users.filter((u) => u.role !== "admin");
+  const customersOnly = users.filter(u => u.role !== "admin");
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [genderFilter, setGenderFilter] = useState("all");
-  const [periodFilter, setPeriodFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
   const [filteredUsers, setFilteredUsers] = useState(customersOnly);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Active filter count
-  const activeFiltersCount =
-    (genderFilter !== "all" ? 1 : 0) +
-    (periodFilter !== "all" ? 1 : 0) +
-    (statusFilter !== "all" ? 1 : 0);
-
-  // Real-time filtering
-  const applyFilters = (
-    query = searchQuery,
-    gender = genderFilter,
-    period = periodFilter,
-    status = statusFilter
-  ) => {
-    let list = customersOnly;
-
-    if (query.trim()) {
-      const q = query.toLowerCase();
-      list = list.filter(
-        (user) =>
-          (user.fullName && user.fullName.toLowerCase().includes(q)) ||
-          (user.email && user.email.toLowerCase().includes(q)) ||
-          (user.mobileNumber && user.mobileNumber.includes(q))
-      );
-    }
-
-    if (gender !== "all") {
-      if (gender === "Not Specified") {
-        list = list.filter((u) => !u.gender || u.gender === "");
-      } else {
-        list = list.filter(
-          (u) => u.gender && u.gender.toLowerCase() === gender.toLowerCase()
-        );
-      }
-    }
-
-    if (period !== "all") {
-      const now = new Date();
-      list = list.filter((u) => {
-        const signup = new Date(u.signupDate);
-        if (isNaN(signup.getTime())) return true;
-        const diffDays = Math.ceil(
-          Math.abs(now.getTime() - signup.getTime()) / (1000 * 60 * 60 * 24)
-        );
-        switch (period) {
-          case "7days":
-            return diffDays <= 7;
-          case "30days":
-            return diffDays <= 30;
-          case "90days":
-            return diffDays <= 90;
-          case "thisMonth":
-            return (
-              signup.getMonth() === now.getMonth() &&
-              signup.getFullYear() === now.getFullYear()
-            );
-          default:
-            return true;
-        }
-      });
-    }
-
-    if (status !== "all") {
-      if (status === "active") {
-        list = list.filter((u) => !u.isSuspended);
-      } else if (status === "suspended") {
-        list = list.filter((u) => u.isSuspended);
-      }
-    }
-
-    setFilteredUsers(list);
-  };
-
-  const handleResetFilters = () => {
-    setGenderFilter("all");
-    setPeriodFilter("all");
-    setStatusFilter("all");
-    applyFilters(searchQuery, "all", "all", "all");
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    const filtered = customersOnly.filter(
+      (user) =>
+        user.fullName.toLowerCase().includes(query.toLowerCase()) ||
+        user.email.toLowerCase().includes(query.toLowerCase()) ||
+        (user.mobileNumber && user.mobileNumber.includes(query))
+    );
+    setFilteredUsers(filtered);
   };
 
   // Update filteredUsers when users list changes
   useEffect(() => {
-    applyFilters(searchQuery, genderFilter, periodFilter, statusFilter);
+    if (searchQuery) {
+      handleSearch(searchQuery);
+    } else {
+      setFilteredUsers(customersOnly);
+    }
   }, [users]);
 
-  // Calculate metrics based on real customer data
+  // Calculate metrics based on real gender data
   const totalCustomers = customersOnly.length;
-  const maleCustomers = customersOnly.filter((u) => u.gender?.toLowerCase() === "male").length;
-  const femaleCustomers = customersOnly.filter((u) => u.gender?.toLowerCase() === "female").length;
-  const othersCustomers = customersOnly.filter((u) => u.gender?.toLowerCase() === "other").length;
+  const maleCustomers = customersOnly.filter((u) => u.gender === "Male").length;
+  const femaleCustomers = customersOnly.filter((u) => u.gender === "Female").length;
+  const othersCustomers = customersOnly.filter((u) => u.gender === "Other").length;
   const notSpecifiedCustomers = customersOnly.filter((u) => !u.gender || u.gender === "").length;
   const thisMonth = customersOnly.filter(
-    (u) => {
-      const d = new Date(u.signupDate);
-      return !isNaN(d.getTime()) && d.getMonth() === new Date().getMonth();
-    }
+    (u) => new Date(u.signupDate).getMonth() === new Date().getMonth()
   ).length;
 
   const getInitials = (name: string) => {
-    const parts = name.trim().split(" ");
+    const parts = name.split(" ");
     if (parts.length === 1) {
+      // Single name: take first 2 letters
       return name.substring(0, 2).toUpperCase();
     }
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    // Multiple names: take first letter of each
+    return parts
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
   };
 
   const getAvatarColor = (id: number) => {
@@ -161,7 +81,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
       "bg-green-500",
       "bg-purple-500",
       "bg-pink-500",
-      "bg-amber-500",
+      "bg-yellow-500",
       "bg-red-500",
       "bg-indigo-500",
       "bg-cyan-500",
@@ -171,38 +91,39 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
 
   const getNumericCountryCode = (code: string) => {
     const countryCodeMap: { [key: string]: string } = {
-      IN: "91",
-      US: "1",
-      UK: "44",
-      CA: "1",
-      AU: "61",
-      DE: "49",
-      FR: "33",
-      JP: "81",
+      "IN": "91",
+      "US": "1",
+      "UK": "44",
+      "CA": "1",
+      "AU": "61",
+      "DE": "49",
+      "FR": "33",
+      "JP": "81",
+      "CN": "86",
+      "BR": "55",
     };
     return countryCodeMap[code] || code;
   };
 
-  const isValidMobileNumber = (mobileNumber: string | null) => {
-    return !!mobileNumber && !mobileNumber.startsWith("GOOGLE_");
+  const isValidMobileNumber = (number: string | null) => {
+    // Check if mobileNumber exists and doesn't start with GOOGLE_
+    return number && !number.startsWith("GOOGLE_");
   };
 
   const handleExportList = () => {
     const csvContent = [
       ["Name", "Email", "Phone", "Joined Date"],
       ...filteredUsers.map((user) => {
-        const dateObj = new Date(user.signupDate);
-        const day = String(dateObj.getDate()).padStart(2, "0");
-        const month = String(dateObj.getMonth() + 1).padStart(2, "0");
-        const year = dateObj.getFullYear();
-        const formattedDate = `${day}/${month}/${year}`;
+        const date = new Date(user.signupDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const formattedDate = `${day}/${month}/${year}`; // DD/MM/YYYY format: 09/02/2026
 
         return [
           user.fullName,
           user.email,
-          isValidMobileNumber(user.mobileNumber)
-            ? `+${getNumericCountryCode(user.countryCode)} ${user.mobileNumber}`
-            : "",
+          isValidMobileNumber(user.mobileNumber) ? `+${getNumericCountryCode(user.countryCode)} ${user.mobileNumber}` : "",
           formattedDate,
         ];
       }),
@@ -321,137 +242,23 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
         </Card>
       </div>
 
-      {/* Search and Filter (CRM Popover Filter UI) */}
-      <Card className="border border-gray-200 shadow-md rounded-2xl bg-white">
+      {/* Search and Filter */}
+      <Card className="border border-gray-200 shadow-lg rounded-2xl bg-white">
         <CardContent className="p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <div className="flex-1 relative">
+              <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
               <Input
                 placeholder="Search by name, email, phone, or blood group..."
                 value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  applyFilters(e.target.value, genderFilter, periodFilter, statusFilter);
-                }}
-                className="pl-10 h-10 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
+                onChange={(e) => handleSearch(e.target.value)}
+                className="pl-10"
               />
             </div>
-
-            {/* CRM Style Filter Popover */}
-            <Popover open={filterOpen} onOpenChange={setFilterOpen}>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2 h-10 border-gray-300">
-                  <Filter className="w-4 h-4 text-gray-500" />
-                  <span>Filter</span>
-                  {activeFiltersCount > 0 && (
-                    <span className="px-1.5 py-0.5 text-xs bg-blue-600 text-white font-semibold rounded-full">
-                      {activeFiltersCount}
-                    </span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 p-5 space-y-4 shadow-xl border-gray-200 bg-white z-50" align="end">
-                <div className="flex items-center justify-between border-b pb-2">
-                  <h4 className="font-semibold text-gray-900 text-sm">Filter Customers</h4>
-                  {activeFiltersCount > 0 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-xs text-blue-600 hover:text-blue-700 h-auto p-0 flex items-center gap-1"
-                      onClick={handleResetFilters}
-                    >
-                      <RotateCcw className="w-3 h-3" />
-                      Reset All
-                    </Button>
-                  )}
-                </div>
-
-                <div>
-                  <Label className="text-xs font-medium text-gray-700">Gender</Label>
-                  <Select
-                    value={genderFilter}
-                    onValueChange={(val) => {
-                      setGenderFilter(val);
-                      applyFilters(searchQuery, val, periodFilter, statusFilter);
-                    }}
-                  >
-                    <SelectTrigger className="mt-1 h-9 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all">
-                      <SelectValue placeholder="All Genders" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white z-50">
-                      <SelectItem value="all">All Genders</SelectItem>
-                      <SelectItem value="Male">Male</SelectItem>
-                      <SelectItem value="Female">Female</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
-                      <SelectItem value="Not Specified">Not Specified</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label className="text-xs font-medium text-gray-700">Registration Period</Label>
-                  <Select
-                    value={periodFilter}
-                    onValueChange={(val) => {
-                      setPeriodFilter(val);
-                      applyFilters(searchQuery, genderFilter, val, statusFilter);
-                    }}
-                  >
-                    <SelectTrigger className="mt-1 h-9 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all">
-                      <SelectValue placeholder="All Time" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white z-50">
-                      <SelectItem value="all">All Time</SelectItem>
-                      <SelectItem value="7days">Last 7 Days</SelectItem>
-                      <SelectItem value="30days">Last 30 Days</SelectItem>
-                      <SelectItem value="90days">Last 90 Days</SelectItem>
-                      <SelectItem value="thisMonth">This Month</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label className="text-xs font-medium text-gray-700">Account Status</Label>
-                  <Select
-                    value={statusFilter}
-                    onValueChange={(val) => {
-                      setStatusFilter(val);
-                      applyFilters(searchQuery, genderFilter, periodFilter, val);
-                    }}
-                  >
-                    <SelectTrigger className="mt-1 h-9 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all">
-                      <SelectValue placeholder="All Accounts" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white z-50">
-                      <SelectItem value="all">All Accounts</SelectItem>
-                      <SelectItem value="active">Active Only</SelectItem>
-                      <SelectItem value="suspended">Suspended Only</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="pt-2 flex justify-end gap-2 border-t">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      handleResetFilters();
-                      setFilterOpen(false);
-                    }}
-                  >
-                    Clear
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
-                    onClick={() => setFilterOpen(false)}
-                  >
-                    Done
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
+            <Button variant="outline" className="flex items-center gap-2">
+              <Filter className="w-4 h-4" />
+              Filter
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -472,9 +279,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                 >
                   <div className="flex items-start gap-4 flex-1 min-w-0">
                     <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm uppercase ${getAvatarColor(
-                        user.id
-                      )}`}
+                      className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm uppercase ${getAvatarColor(user.id)}`}
                     >
                       {getInitials(user.fullName)}
                     </div>
@@ -486,8 +291,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                         </span>
                         {isValidMobileNumber(user.mobileNumber) ? (
                           <span className="flex items-center gap-1">
-                            <Phone className="w-4 h-4" /> +{getNumericCountryCode(user.countryCode)}{" "}
-                            {user.mobileNumber}
+                            <Phone className="w-4 h-4" /> +{getNumericCountryCode(user.countryCode)} {user.mobileNumber}
                           </span>
                         ) : (
                           <span className="flex items-center gap-1 text-gray-400">
@@ -505,7 +309,6 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                       variant="ghost"
                       size="sm"
                       className="mt-2"
-                      aria-label="View customer"
                       onClick={() => {
                         setSelectedUser(user);
                         setIsModalOpen(true);
@@ -518,36 +321,24 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
               ))
             ) : (
               <div className="text-center py-12 text-gray-600">
-                <p className="text-base font-medium">No customers found matching your criteria</p>
-                {activeFiltersCount > 0 && (
-                  <Button
-                    variant="link"
-                    size="sm"
-                    className="mt-2 text-blue-600"
-                    onClick={handleResetFilters}
-                  >
-                    Reset all filters
-                  </Button>
-                )}
+                <p>No customers found matching your search</p>
               </div>
             )}
           </div>
         </CardContent>
       </Card>
 
-      {/* User Details Modal */}
-      {selectedUser && (
-        <UserDetailsModal
-          user={selectedUser}
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedUser(null);
-          }}
-          onDataChange={onDataChange}
-          showActions={false}
-        />
-      )}
+      {/* User Details Modal - Read-only for Customer view */}
+      <UserDetailsModal
+        isOpen={isModalOpen}
+        user={selectedUser}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedUser(null);
+        }}
+        onDataChange={onDataChange}
+        showActions={false}
+      />
     </div>
   );
 }
