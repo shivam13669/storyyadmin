@@ -24,7 +24,7 @@ interface User {
   id: number;
   fullName: string;
   email: string;
-  mobileNumber: string;
+  mobileNumber: string | null;
   countryCode: string;
   signupDate: string;
   isSuspended: boolean;
@@ -183,7 +183,8 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
     return countryCodeMap[code] || code;
   };
 
-  const isValidMobileNumber = (mobileNumber: string) => {
+  const isValidMobileNumber = (mobileNumber: string | null) => {
+    if (!mobileNumber) return false;
     const cleaned = mobileNumber.replace(/\D/g, "");
     return cleaned.length >= 10 && cleaned !== "0000000000";
   };
@@ -462,9 +463,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
       <Card className="border-0 shadow-md rounded-2xl">
         <CardHeader>
           <CardTitle>Customers List</CardTitle>
-          <CardDescription>
-            Showing {filteredUsers.length} of {customersOnly.length} registered customers
-          </CardDescription>
+          <CardDescription>Complete list of registered customers</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -488,39 +487,34 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                         <span className="flex items-center gap-1">
                           <Mail className="w-4 h-4" /> {user.email}
                         </span>
-                        {isValidMobileNumber(user.mobileNumber) && (
+                        {isValidMobileNumber(user.mobileNumber) ? (
                           <span className="flex items-center gap-1">
                             <Phone className="w-4 h-4" /> +{getNumericCountryCode(user.countryCode)}{" "}
                             {user.mobileNumber}
                           </span>
+                        ) : (
+                          <span className="flex items-center gap-1 text-gray-400">
+                            <Phone className="w-4 h-4" />
+                          </span>
                         )}
-                        <span className="text-gray-500">
-                          Joined: {format(new Date(user.signupDate), "dd/MM/yyyy")}
-                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                        user.isSuspended
-                          ? "bg-red-100 text-red-800"
-                          : "bg-green-100 text-green-800"
-                      }`}
-                    >
-                      {user.isSuspended ? "Suspended" : "Active"}
-                    </span>
+                  <div className="text-left sm:text-right">
+                    <p className="text-sm text-gray-600">
+                      Joined: {format(new Date(user.signupDate), "dd/MM/yyyy")}
+                    </p>
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
-                      className="flex items-center gap-1"
+                      className="mt-2"
+                      aria-label="View customer"
                       onClick={() => {
                         setSelectedUser(user);
                         setIsModalOpen(true);
                       }}
                     >
-                      <Eye className="w-4 h-4" />
-                      View
+                      <Eye className="w-4 h-4 text-gray-600" />
                     </Button>
                   </div>
                 </div>
@@ -554,6 +548,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
             setSelectedUser(null);
           }}
           onDataChange={onDataChange}
+          showActions={false}
         />
       )}
     </div>
