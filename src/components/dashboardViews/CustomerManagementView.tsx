@@ -548,6 +548,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
             setSelectedUser(null);
           }}
           onDataChange={onDataChange}
+          showActions={false}
         />
       )}
     </div>
