@@ -188,9 +188,8 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
   };
 
   const handleExportList = () => {
-    const headers = ["Full Name", "Email", "Phone", "Registration Date"];
     const csvContent = [
-      headers.join(","),
+      ["Name", "Email", "Phone", "Joined Date"],
       ...filteredUsers.map((user) => {
         const dateObj = new Date(user.signupDate);
         const day = String(dateObj.getDate()).padStart(2, "0");
