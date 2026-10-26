@@ -852,36 +852,19 @@ const AdminDashboard = () => {
                 </p>
               </div>
 
-              {/* Tab Navigation (CRM Style) */}
-              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
-                <button
-                  type="button"
-                  onClick={() => setCustomerTab("customer")}
-                  className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
-                    customerTab === "customer"
-                      ? "bg-white text-[#1e88e5] shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  <Users className="w-4 h-4" />
-                  Customers
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setCustomerTab("users")}
-                  className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
-                    customerTab === "users"
-                      ? "bg-white text-[#1e88e5] shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  <UserCheck className="w-4 h-4" />
-                  User Management
-                </button>
-              </div>
-
               {/* Tabs Section */}
               <Tabs value={customerTab} onValueChange={setCustomerTab} className="space-y-6">
+                <TabsList className="w-fit h-auto bg-gray-100 p-1 rounded-lg">
+                  <TabsTrigger value="customer" className="px-5 py-2.5 flex items-center gap-2 rounded-md bg-transparent text-gray-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                    <Users2 className="w-4 h-4" />
+                    Customer
+                  </TabsTrigger>
+                  <TabsTrigger value="users" className="px-5 py-2.5 flex items-center gap-2 rounded-md bg-transparent text-gray-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                    <UserCheck className="w-4 h-4" />
+                    User Management
+                  </TabsTrigger>
+                </TabsList>
+
                 {/* CUSTOMER TAB */}
                 <TabsContent value="customer">
                   <CustomerManagementView users={users} onDataChange={loadData} />
