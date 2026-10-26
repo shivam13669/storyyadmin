@@ -24,7 +24,7 @@ interface User {
   id: number;
   fullName: string;
   email: string;
-  mobileNumber: string;
+  mobileNumber: string | null;
   countryCode: string;
   signupDate: string;
   isSuspended: boolean;
@@ -183,7 +183,8 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
     return countryCodeMap[code] || code;
   };
 
-  const isValidMobileNumber = (mobileNumber: string) => {
+  const isValidMobileNumber = (mobileNumber: string | null) => {
+    if (!mobileNumber) return false;
     const cleaned = mobileNumber.replace(/\D/g, "");
     return cleaned.length >= 10 && cleaned !== "0000000000";
   };

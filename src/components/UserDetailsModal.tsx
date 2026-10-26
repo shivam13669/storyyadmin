@@ -27,7 +27,7 @@ interface User {
   id: number;
   fullName: string;
   email: string;
-  mobileNumber: string;
+  mobileNumber: string | null;
   countryCode: string;
   role: string;
   signupDate: string;
@@ -144,7 +144,7 @@ export function UserDetailsModal({
     return dialCodes[countryCode] || countryCode;
   };
 
-  const isValidMobileNumber = (number: string) => {
+  const isValidMobileNumber = (number: string | null) => {
     // Check if mobileNumber exists and doesn't start with GOOGLE_
     return number && !number.startsWith("GOOGLE_");
   };
