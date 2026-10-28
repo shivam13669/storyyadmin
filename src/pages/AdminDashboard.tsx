@@ -85,6 +85,26 @@ const AdminDashboard = () => {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const notifMenuRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const mainContentRef = useRef<HTMLDivElement>(null);
+
+  // Lock window/body scrolling while AdminDashboard is mounted to prevent double scrollbars
+  useEffect(() => {
+    const origBodyOverflow = document.body.style.overflow;
+    const origHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = origBodyOverflow;
+      document.documentElement.style.overflow = origHtmlOverflow;
+    };
+  }, []);
+
+  // Reset main content scroll position when changing tabs or views
+  useEffect(() => {
+    if (mainContentRef.current) {
+      mainContentRef.current.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }, [activeNav, adminTab, customerTab]);
 
   // Redirect if not admin
   useEffect(() => {
@@ -319,7 +339,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 admin-dashboard">
+    <div className="flex h-screen bg-gray-50 admin-dashboard overflow-hidden">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-950 border-r border-slate-800 transition-transform duration-300 ${
@@ -390,7 +410,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
+      <div ref={mainContentRef} className="flex-1 overflow-y-auto overflow-x-hidden">
         {/* Top Bar with Search & Notifications (CRM Features integrated smoothly) */}
         <div className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0 flex-1">

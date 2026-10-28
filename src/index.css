@@ -135,6 +135,20 @@
     @apply bg-background text-foreground font-sans overflow-x-hidden;
   }
 
+  /* Admin Dashboard double scrollbar prevention */
+  html:has(.admin-dashboard),
+  body:has(.admin-dashboard) {
+    overflow: hidden !important;
+    height: 100% !important;
+    max-height: 100vh !important;
+  }
+
+  .admin-dashboard {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+  }
+
   /* Admin Dashboard inputs, textareas, and selects blue focus */
   .admin-dashboard input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus,
   .admin-dashboard textarea:focus,

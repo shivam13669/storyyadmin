@@ -64,8 +64,8 @@ const AppContent = () => {
   }, [isHome]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-grow">
+    <div className={`flex flex-col ${isDashboard ? "h-screen overflow-hidden" : "min-h-screen"}`}>
+      <div className={`flex-grow ${isDashboard ? "h-full overflow-hidden" : ""}`}>
         <ScrollToTop />
         {/* SEO/performance: the heavy homepage iframe is only mounted on "/" (it used to load,
             hidden, on every page and slowed them all down). */}
