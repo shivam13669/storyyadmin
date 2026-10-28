@@ -254,24 +254,24 @@ const DestinationsPage = () => {
 
       <main className="pb-20">
         {/* Mobile Filter and Sort Buttons - Sticky Unified Container */}
-        <div className="sticky top-16 z-30 bg-white border-b border-gray-200 lg:hidden">
+        <div className="sticky top-16 z-30 bg-white border-b border-border lg:hidden">
           <div className="flex h-12">
             {/* Sort Button */}
             <button
               onClick={() => setShowMobileSort(true)}
-              className="flex-1 flex items-center justify-center gap-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
             >
               <SortAsc className="h-4 w-4" />
               <span>Sort</span>
             </button>
 
             {/* Divider */}
-            <div className="w-px bg-gray-100"></div>
+            <div className="w-px bg-border"></div>
 
             {/* Filter Button */}
             <button
               onClick={() => setShowMobileFilter(true)}
-              className="flex-1 flex items-center justify-center gap-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
             >
               <Filter className="h-4 w-4" />
               <span>Filter</span>
@@ -356,7 +356,7 @@ const DestinationsPage = () => {
                         handleOpenPackage(pkg.slug, pkg.destinationSlug);
                       }
                     }}
-                    className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                    className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl bg-white shadow-md card-interactive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   >
                 {pkg.image && (
                   <div className="relative h-80 w-full overflow-hidden">
@@ -396,7 +396,7 @@ const DestinationsPage = () => {
 
                   <div className="mt-3 flex flex-wrap gap-1">
                     {['3D', '4D', '5D'].slice(0, 3).map((day, idx) => (
-                      <span key={idx} className="text-[10px] px-2 py-1 rounded bg-gray-100 text-gray-700">
+                      <span key={idx} className="text-[10px] px-2 py-1 rounded bg-muted text-foreground">
                         {day} {pkg.destinationRegion?.split(' ')[0]}
                       </span>
                     ))}

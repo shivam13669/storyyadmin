@@ -58,7 +58,7 @@ const Navigation = () => {
 
   return (
     <nav 
-      className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-lg border-b border-white/10 text-white shadow-lg"
+      className="fixed top-0 left-0 right-0 z-50 bg-primary border-b border-white/10 text-white shadow-md"
       style={{ paddingRight: location.pathname === "/" ? `${scrollbarWidth}px` : "0px" }}
     >
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
@@ -80,7 +80,7 @@ const Navigation = () => {
                 return (
                   <Link key={item.name} to={item.to} className={classes}>
                     {item.name}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-200 group-hover:w-full"></span>
                   </Link>
                 );
               }
@@ -88,7 +88,7 @@ const Navigation = () => {
               return (
                 <a key={item.name} href={item.to} className={classes}>
                   {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-200 group-hover:w-full"></span>
                 </a>
               );
             })}
@@ -109,7 +109,7 @@ const Navigation = () => {
 
                 {/* Dropdown Menu */}
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-slate-800 border border-white/20 rounded-lg shadow-xl py-2 z-[100]">
+                  <div className="absolute right-0 mt-2 w-48 bg-primary-hover border border-white/10 rounded-lg shadow-xl py-2 z-[100]">
                     <Link
                       to={isAdmin ? "/admin/dashboard" : "/dashboard"}
                       className="block px-4 py-2 text-white/90 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-2"
@@ -166,7 +166,7 @@ const Navigation = () => {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="lg:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-slate-900/95 border border-white/10 backdrop-blur-lg rounded-lg mt-2 shadow-lg">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-primary border border-white/10 rounded-lg mt-2 shadow-md">
               {navItems.map((item) => {
                 const classes = "block px-3 py-2 text-base font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors";
 

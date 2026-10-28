@@ -59,8 +59,8 @@ export function AdminBookingsView({ bookings, users }: AdminBookingsViewProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-xl font-semibold text-gray-900">Bookings Management</h3>
-        <p className="text-sm text-gray-600 mt-1">
+        <h3 className="text-xl font-semibold text-foreground">Bookings Management</h3>
+        <p className="text-sm text-muted-foreground mt-1">
           View all trip bookings and their statuses
         </p>
       </div>
@@ -70,8 +70,8 @@ export function AdminBookingsView({ bookings, users }: AdminBookingsViewProps) {
         <Card className="border-0 shadow-md rounded-2xl">
           <CardContent className="p-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">{bookings.length}</div>
-              <div className="text-sm text-gray-600 mt-1">Total Bookings</div>
+              <div className="text-3xl font-bold text-foreground">{bookings.length}</div>
+              <div className="text-sm text-muted-foreground mt-1">Total Bookings</div>
             </div>
           </CardContent>
         </Card>
@@ -79,7 +79,7 @@ export function AdminBookingsView({ bookings, users }: AdminBookingsViewProps) {
           <CardContent className="p-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-green-600">{confirmedCount}</div>
-              <div className="text-sm text-gray-600 mt-1">Confirmed</div>
+              <div className="text-sm text-muted-foreground mt-1">Confirmed</div>
             </div>
           </CardContent>
         </Card>
@@ -87,15 +87,15 @@ export function AdminBookingsView({ bookings, users }: AdminBookingsViewProps) {
           <CardContent className="p-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-yellow-600">{pendingCount}</div>
-              <div className="text-sm text-gray-600 mt-1">Pending</div>
+              <div className="text-sm text-muted-foreground mt-1">Pending</div>
             </div>
           </CardContent>
         </Card>
         <Card className="border-0 shadow-md rounded-2xl">
           <CardContent className="p-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600">{completedCount}</div>
-              <div className="text-sm text-gray-600 mt-1">Completed</div>
+              <div className="text-3xl font-bold text-primary">{completedCount}</div>
+              <div className="text-sm text-muted-foreground mt-1">Completed</div>
             </div>
           </CardContent>
         </Card>
@@ -126,14 +126,14 @@ export function AdminBookingsView({ bookings, users }: AdminBookingsViewProps) {
                 {bookings.length > 0 ? (
                   bookings.map((booking) => (
                     <TableRow key={booking.id}>
-                      <TableCell className="font-medium text-gray-900">
+                      <TableCell className="font-medium text-foreground">
                         {getUserName(booking.userId)}
                       </TableCell>
-                      <TableCell className="text-gray-600">{booking.tripName}</TableCell>
-                      <TableCell className="text-gray-600">
+                      <TableCell className="text-muted-foreground">{booking.tripName}</TableCell>
+                      <TableCell className="text-muted-foreground">
                         {format(new Date(booking.tripDate), "MMM dd, yyyy")}
                       </TableCell>
-                      <TableCell className="text-gray-600">
+                      <TableCell className="text-muted-foreground">
                         {format(new Date(booking.bookingDate), "MMM dd, yyyy")}
                       </TableCell>
                       <TableCell>
@@ -145,7 +145,7 @@ export function AdminBookingsView({ bookings, users }: AdminBookingsViewProps) {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center py-8 text-gray-600">
+                    <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
                       No bookings yet
                     </TableCell>
                   </TableRow>

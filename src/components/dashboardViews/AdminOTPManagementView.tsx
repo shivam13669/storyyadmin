@@ -214,8 +214,8 @@ export const AdminOTPManagementView = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h3 className="text-2xl font-bold text-gray-900">OTP Management</h3>
-        <p className="text-sm text-gray-600 mt-1">
+        <h3 className="text-2xl font-bold text-foreground">OTP Management</h3>
+        <p className="text-sm text-muted-foreground mt-1">
           Monitor and manage OTP usage, blocks, and customer verification
         </p>
       </div>
@@ -229,13 +229,13 @@ export const AdminOTPManagementView = () => {
         <CardContent>
           <div className="flex gap-2">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
               <Input
                 placeholder="Enter email address..."
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && fetchOTPStats()}
-                className="pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
+                className="pl-10 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent transition-all"
               />
             </div>
             <Button
@@ -277,25 +277,25 @@ export const AdminOTPManagementView = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <p className="text-sm text-gray-600 font-medium">Signup OTP (24h)</p>
-                  <p className="text-3xl font-bold text-blue-600 mt-1">{otpStats.signup.sentToday}</p>
-                  <p className="text-xs text-gray-500 mt-1">out of 3 limit</p>
+                <div className="p-4 bg-muted rounded-lg border border-accent">
+                  <p className="text-sm text-muted-foreground font-medium">Signup OTP (24h)</p>
+                  <p className="text-3xl font-bold text-primary mt-1">{otpStats.signup.sentToday}</p>
+                  <p className="text-xs text-muted-foreground mt-1">out of 3 limit</p>
                 </div>
                 <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                  <p className="text-sm text-gray-600 font-medium">Password Reset (24h)</p>
+                  <p className="text-sm text-muted-foreground font-medium">Password Reset (24h)</p>
                   <p className="text-3xl font-bold text-green-600 mt-1">{otpStats.passwordReset.sentToday}</p>
-                  <p className="text-xs text-gray-500 mt-1">out of 3 limit</p>
+                  <p className="text-xs text-muted-foreground mt-1">out of 3 limit</p>
                 </div>
                 <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                  <p className="text-sm text-gray-600 font-medium">Week Activity</p>
+                  <p className="text-sm text-muted-foreground font-medium">Week Activity</p>
                   <p className="text-3xl font-bold text-purple-600 mt-1">{otpStats.signup.sentThisWeek + otpStats.passwordReset.sentThisWeek}</p>
-                  <p className="text-xs text-gray-500 mt-1">total OTPs sent</p>
+                  <p className="text-xs text-muted-foreground mt-1">total OTPs sent</p>
                 </div>
                 <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-                  <p className="text-sm text-gray-600 font-medium">Failed Blocks (24h)</p>
+                  <p className="text-sm text-muted-foreground font-medium">Failed Blocks (24h)</p>
                   <p className="text-3xl font-bold text-red-600 mt-1">{otpStats.failedAttemptsBlocksInDay}</p>
-                  <p className="text-xs text-gray-500 mt-1">wrong attempts blocks</p>
+                  <p className="text-xs text-muted-foreground mt-1">wrong attempts blocks</p>
                 </div>
               </div>
             </CardContent>
@@ -357,11 +357,11 @@ export const AdminOTPManagementView = () => {
               {otpStats.signup.history24h.length > 0 ? (
                 <div className="space-y-3">
                   {otpStats.signup.history24h.map((entry, idx) => (
-                    <div key={idx} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                    <div key={idx} className="p-4 border border-border rounded-lg hover:bg-muted">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium text-gray-900">OTP Sent</p>
-                          <p className="text-sm text-gray-600">
+                          <p className="font-medium text-foreground">OTP Sent</p>
+                          <p className="text-sm text-muted-foreground">
                             {new Date(entry.sentAt).toLocaleString()}
                           </p>
                         </div>
@@ -371,7 +371,7 @@ export const AdminOTPManagementView = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500 text-center py-6">No signup OTPs sent in the last 24 hours</p>
+                <p className="text-sm text-muted-foreground text-center py-6">No signup OTPs sent in the last 24 hours</p>
               )}
             </CardContent>
           </Card>
@@ -400,11 +400,11 @@ export const AdminOTPManagementView = () => {
               {otpStats.passwordReset.history24h.length > 0 ? (
                 <div className="space-y-3">
                   {otpStats.passwordReset.history24h.map((entry, idx) => (
-                    <div key={idx} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                    <div key={idx} className="p-4 border border-border rounded-lg hover:bg-muted">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium text-gray-900">OTP Sent</p>
-                          <p className="text-sm text-gray-600">
+                          <p className="font-medium text-foreground">OTP Sent</p>
+                          <p className="text-sm text-muted-foreground">
                             {new Date(entry.sentAt).toLocaleString()}
                           </p>
                         </div>
@@ -414,7 +414,7 @@ export const AdminOTPManagementView = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500 text-center py-6">No password reset OTPs sent in the last 24 hours</p>
+                <p className="text-sm text-muted-foreground text-center py-6">No password reset OTPs sent in the last 24 hours</p>
               )}
             </CardContent>
           </Card>
@@ -434,9 +434,9 @@ export const AdminOTPManagementView = () => {
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-gray-900">{typeof otpStats.email === 'string' ? otpStats.email : String(otpStats.email)}</p>
+                        <p className="font-medium text-foreground">{typeof otpStats.email === 'string' ? otpStats.email : String(otpStats.email)}</p>
                         <p className="text-sm text-red-600">{otpStats.activeBlock.blockReason}</p>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-muted-foreground mt-1">
                           Unblock at: {new Date(otpStats.activeBlock.unblockAt).toLocaleString()}
                         </p>
                       </div>
@@ -449,9 +449,9 @@ export const AdminOTPManagementView = () => {
           )}
 
           {/* Help Information */}
-          <Card className="border border-blue-200 bg-blue-50 rounded-2xl">
+          <Card className="border border-accent bg-muted rounded-2xl">
             <CardContent className="p-6">
-              <h4 className="font-semibold text-blue-900 mb-3">OTP Management Information</h4>
+              <h4 className="font-semibold text-primary mb-3">OTP Management Information</h4>
               <ul className="space-y-2 text-sm text-blue-800">
                 <li className="flex gap-2">
                   <span>•</span>

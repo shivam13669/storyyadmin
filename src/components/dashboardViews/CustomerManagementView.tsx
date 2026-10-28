@@ -226,8 +226,8 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
       {/* Header */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h3 className="text-2xl font-bold text-gray-900">Customer Management</h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <h3 className="text-2xl font-bold text-foreground">Customer Management</h3>
+          <p className="text-sm text-muted-foreground mt-1">
             Manage and view all registered customers in your healthcare system
           </p>
         </div>
@@ -243,11 +243,11 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
           <CardContent className="p-6">
             <div className="flex items-center gap-3">
               <div className="bg-blue-100 p-3 rounded-xl">
-                <span className="text-2xl font-bold text-blue-600">👥</span>
+                <span className="text-2xl font-bold text-primary">👥</span>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Total Customer</p>
-                <p className="text-2xl font-bold text-gray-900">{totalCustomers}</p>
+                <p className="text-sm text-muted-foreground">Total Customer</p>
+                <p className="text-2xl font-bold text-foreground">{totalCustomers}</p>
               </div>
             </div>
           </CardContent>
@@ -257,11 +257,11 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
           <CardContent className="p-6">
             <div className="flex items-center gap-3">
               <div className="bg-blue-100 p-3 rounded-xl">
-                <span className="text-2xl font-bold text-blue-600">👨</span>
+                <span className="text-2xl font-bold text-primary">👨</span>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Male Customer</p>
-                <p className="text-2xl font-bold text-gray-900">{maleCustomers}</p>
+                <p className="text-sm text-muted-foreground">Male Customer</p>
+                <p className="text-2xl font-bold text-foreground">{maleCustomers}</p>
               </div>
             </div>
           </CardContent>
@@ -274,8 +274,8 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                 <span className="text-2xl font-bold text-pink-600">👩</span>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Female Customer</p>
-                <p className="text-2xl font-bold text-gray-900">{femaleCustomers}</p>
+                <p className="text-sm text-muted-foreground">Female Customer</p>
+                <p className="text-2xl font-bold text-foreground">{femaleCustomers}</p>
               </div>
             </div>
           </CardContent>
@@ -288,8 +288,8 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                 <span className="text-2xl font-bold text-purple-600">👤</span>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Others Customers</p>
-                <p className="text-2xl font-bold text-gray-900">{othersCustomers}</p>
+                <p className="text-sm text-muted-foreground">Others Customers</p>
+                <p className="text-2xl font-bold text-foreground">{othersCustomers}</p>
               </div>
             </div>
           </CardContent>
@@ -298,12 +298,12 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
         <Card className="border-0 shadow-md rounded-2xl">
           <CardContent className="p-6">
             <div className="flex items-center gap-3">
-              <div className="bg-gray-100 p-3 rounded-xl">
-                <span className="text-2xl font-bold text-gray-600">🤷</span>
+              <div className="bg-muted p-3 rounded-xl">
+                <span className="text-2xl font-bold text-muted-foreground">🤷</span>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Not Specified</p>
-                <p className="text-2xl font-bold text-gray-900">{notSpecifiedCustomers}</p>
+                <p className="text-sm text-muted-foreground">Not Specified</p>
+                <p className="text-2xl font-bold text-foreground">{notSpecifiedCustomers}</p>
               </div>
             </div>
           </CardContent>
@@ -316,8 +316,8 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                 <span className="text-2xl font-bold text-orange-600">📅</span>
               </div>
               <div>
-                <p className="text-sm text-gray-600">This Month</p>
-                <p className="text-2xl font-bold text-gray-900">{thisMonth}</p>
+                <p className="text-sm text-muted-foreground">This Month</p>
+                <p className="text-2xl font-bold text-foreground">{thisMonth}</p>
               </div>
             </div>
           </CardContent>
@@ -325,11 +325,11 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
       </div>
 
       {/* Search and Filter (CRM Popover Filter UI) */}
-      <Card className="border border-gray-200 shadow-md rounded-2xl bg-white">
+      <Card className="border border-border shadow-md rounded-2xl bg-white">
         <CardContent className="p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 placeholder="Search by name, email, phone, or blood group..."
                 value={searchQuery}
@@ -337,15 +337,15 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                   setSearchQuery(e.target.value);
                   applyFilters(e.target.value, genderFilter, periodFilter, statusFilter);
                 }}
-                className="pl-10 h-10 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
+                className="pl-10 h-10 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent transition-all"
               />
             </div>
 
             {/* CRM Style Filter Popover */}
             <Popover open={filterOpen} onOpenChange={setFilterOpen}>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2 h-10 border-gray-300">
-                  <Filter className="w-4 h-4 text-gray-500" />
+                <Button variant="outline" className="flex items-center gap-2 h-10 border-input">
+                  <Filter className="w-4 h-4 text-muted-foreground" />
                   <span>Filter</span>
                   {activeFiltersCount > 0 && (
                     <span className="px-1.5 py-0.5 text-xs bg-blue-600 text-white font-semibold rounded-full">
@@ -354,14 +354,14 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 p-5 space-y-4 shadow-xl border-gray-200 bg-white z-50" align="end">
+              <PopoverContent className="w-80 p-5 space-y-4 shadow-xl border-border bg-white z-50" align="end">
                 <div className="flex items-center justify-between border-b pb-2">
-                  <h4 className="font-semibold text-gray-900 text-sm">Filter Customers</h4>
+                  <h4 className="font-semibold text-foreground text-sm">Filter Customers</h4>
                   {activeFiltersCount > 0 && (
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-xs text-blue-600 hover:text-blue-700 h-auto p-0 flex items-center gap-1"
+                      className="text-xs text-primary hover:text-primary-hover h-auto p-0 flex items-center gap-1"
                       onClick={handleResetFilters}
                     >
                       <RotateCcw className="w-3 h-3" />
@@ -371,7 +371,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                 </div>
 
                 <div>
-                  <Label className="text-xs font-medium text-gray-700">Gender</Label>
+                  <Label className="text-xs font-medium text-foreground">Gender</Label>
                   <Select
                     value={genderFilter}
                     onValueChange={(val) => {
@@ -379,7 +379,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                       applyFilters(searchQuery, val, periodFilter, statusFilter);
                     }}
                   >
-                    <SelectTrigger className="mt-1 h-9 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all">
+                    <SelectTrigger className="mt-1 h-9 bg-white focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent transition-all">
                       <SelectValue placeholder="All Genders" />
                     </SelectTrigger>
                     <SelectContent className="bg-white z-50">
@@ -393,7 +393,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                 </div>
 
                 <div>
-                  <Label className="text-xs font-medium text-gray-700">Registration Period</Label>
+                  <Label className="text-xs font-medium text-foreground">Registration Period</Label>
                   <Select
                     value={periodFilter}
                     onValueChange={(val) => {
@@ -401,7 +401,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                       applyFilters(searchQuery, genderFilter, val, statusFilter);
                     }}
                   >
-                    <SelectTrigger className="mt-1 h-9 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all">
+                    <SelectTrigger className="mt-1 h-9 bg-white focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent transition-all">
                       <SelectValue placeholder="All Time" />
                     </SelectTrigger>
                     <SelectContent className="bg-white z-50">
@@ -415,7 +415,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                 </div>
 
                 <div>
-                  <Label className="text-xs font-medium text-gray-700">Account Status</Label>
+                  <Label className="text-xs font-medium text-foreground">Account Status</Label>
                   <Select
                     value={statusFilter}
                     onValueChange={(val) => {
@@ -423,7 +423,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                       applyFilters(searchQuery, genderFilter, periodFilter, val);
                     }}
                   >
-                    <SelectTrigger className="mt-1 h-9 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all">
+                    <SelectTrigger className="mt-1 h-9 bg-white focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent transition-all">
                       <SelectValue placeholder="All Accounts" />
                     </SelectTrigger>
                     <SelectContent className="bg-white z-50">
@@ -447,7 +447,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                   </Button>
                   <Button
                     size="sm"
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className="bg-primary hover:bg-primary-hover text-white"
                     onClick={() => setFilterOpen(false)}
                   >
                     Done
@@ -471,7 +471,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
               filteredUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="flex flex-col gap-4 p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-4 p-4 border border-border rounded-lg hover:shadow-md transition-shadow sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="flex items-start gap-4 flex-1 min-w-0">
                     <div
@@ -482,8 +482,8 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                       {getInitials(user.fullName)}
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900">{user.fullName}</h4>
-                      <div className="flex flex-col gap-1 text-sm text-gray-600 mt-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+                      <h4 className="font-semibold text-foreground">{user.fullName}</h4>
+                      <div className="flex flex-col gap-1 text-sm text-muted-foreground mt-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
                         <span className="flex items-center gap-1">
                           <Mail className="w-4 h-4" /> {user.email}
                         </span>
@@ -493,7 +493,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                             {user.mobileNumber}
                           </span>
                         ) : (
-                          <span className="flex items-center gap-1 text-gray-400">
+                          <span className="flex items-center gap-1 text-muted-foreground">
                             <Phone className="w-4 h-4" />
                           </span>
                         )}
@@ -501,7 +501,7 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                     </div>
                   </div>
                   <div className="text-left sm:text-right">
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Joined: {format(new Date(user.signupDate), "dd/MM/yyyy")}
                     </p>
                     <Button
@@ -514,19 +514,19 @@ export function CustomerManagementView({ users, onDataChange }: CustomerManageme
                         setIsModalOpen(true);
                       }}
                     >
-                      <Eye className="w-4 h-4 text-gray-600" />
+                      <Eye className="w-4 h-4 text-muted-foreground" />
                     </Button>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="text-center py-12 text-gray-600">
+              <div className="text-center py-12 text-muted-foreground">
                 <p className="text-base font-medium">No customers found matching your criteria</p>
                 {activeFiltersCount > 0 && (
                   <Button
                     variant="link"
                     size="sm"
-                    className="mt-2 text-blue-600"
+                    className="mt-2 text-primary"
                     onClick={handleResetFilters}
                   >
                     Reset all filters

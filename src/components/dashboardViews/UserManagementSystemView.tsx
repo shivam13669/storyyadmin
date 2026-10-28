@@ -272,8 +272,8 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
       {/* Header */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h3 className="text-2xl font-bold text-gray-900">User Management</h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <h3 className="text-2xl font-bold text-foreground">User Management</h3>
+          <p className="text-sm text-muted-foreground mt-1">
             Manage and view all registered users in your system
           </p>
         </div>
@@ -289,11 +289,11 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
           <CardContent className="p-6">
             <div className="flex items-center gap-3">
               <div className="bg-blue-100 p-3 rounded-xl">
-                <span className="text-2xl font-bold text-blue-600">👥</span>
+                <span className="text-2xl font-bold text-primary">👥</span>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900">{users.filter(u => u.role !== "admin").length}</p>
+                <p className="text-sm text-muted-foreground">Total Users</p>
+                <p className="text-2xl font-bold text-foreground">{users.filter(u => u.role !== "admin").length}</p>
               </div>
             </div>
           </CardContent>
@@ -306,8 +306,8 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
                 <span className="text-2xl font-bold text-green-600">✅</span>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Active Users</p>
-                <p className="text-2xl font-bold text-gray-900">{users.filter(u => u.role !== "admin" && !u.isSuspended).length}</p>
+                <p className="text-sm text-muted-foreground">Active Users</p>
+                <p className="text-2xl font-bold text-foreground">{users.filter(u => u.role !== "admin" && !u.isSuspended).length}</p>
               </div>
             </div>
           </CardContent>
@@ -320,8 +320,8 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
                 <span className="text-2xl font-bold text-orange-600">⛔</span>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Suspended</p>
-                <p className="text-2xl font-bold text-gray-900">{users.filter(u => u.role !== "admin" && u.isSuspended).length}</p>
+                <p className="text-sm text-muted-foreground">Suspended</p>
+                <p className="text-2xl font-bold text-foreground">{users.filter(u => u.role !== "admin" && u.isSuspended).length}</p>
               </div>
             </div>
           </CardContent>
@@ -329,16 +329,16 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
       </div>
 
       {/* Search and Filter */}
-      <Card className="border border-gray-200 shadow-lg rounded-2xl bg-white">
+      <Card className="border border-border shadow-lg rounded-2xl bg-white">
         <CardContent className="p-6">
           <div className="flex items-center gap-3">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
               <Input
                 placeholder="Search by name, email, phone..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
+                className="pl-10 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent transition-all"
               />
             </div>
             <Button variant="outline" className="flex items-center gap-2">
@@ -360,28 +360,28 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">User</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Role</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Status</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Gender</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Date of Birth</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Age</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Nationality</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Marital Status</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Anniversary</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">State</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">District</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Document</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Joined</th>
-                    <th className="px-6 py-4 text-right font-semibold text-gray-900">Actions</th>
+                  <tr className="border-b border-border bg-background">
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">User</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Role</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Status</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Gender</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Date of Birth</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Age</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Nationality</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Marital Status</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Anniversary</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">State</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">District</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Document</th>
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Joined</th>
+                    <th className="px-6 py-4 text-right font-semibold text-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredUsers.map((user) => (
                     <tr
                       key={user.id}
-                      className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                      className="border-b border-border hover:bg-muted transition-colors"
                     >
                       {/* User Column */}
                       <td className="px-6 py-4">
@@ -392,12 +392,12 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
                             {getInitials(user.fullName)}
                           </div>
                           <div>
-                            <p className="font-medium text-gray-900">{user.fullName}</p>
-                            <p className="text-xs text-gray-600">{user.email}</p>
+                            <p className="font-medium text-foreground">{user.fullName}</p>
+                            <p className="text-xs text-muted-foreground">{user.email}</p>
                             {isValidMobileNumber(user.mobileNumber) ? (
-                              <p className="text-xs text-gray-600">+{getNumericCountryCode(user.countryCode)} {user.mobileNumber}</p>
+                              <p className="text-xs text-muted-foreground">+{getNumericCountryCode(user.countryCode)} {user.mobileNumber}</p>
                             ) : (
-                              <p className="text-xs text-gray-400">—</p>
+                              <p className="text-xs text-muted-foreground">—</p>
                             )}
                           </div>
                         </div>
@@ -405,7 +405,7 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
 
                       {/* Role Column */}
                       <td className="px-6 py-4">
-                        <span className="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-foreground">
                           {user.role === "admin" ? "Admin" : "Customer"}
                         </span>
                       </td>
@@ -425,56 +425,56 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
 
                       {/* Gender Column */}
                       <td className="px-6 py-4">
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-foreground">
                           {user.gender || "-"}
                         </span>
                       </td>
 
                       {/* Date of Birth Column */}
                       <td className="px-6 py-4">
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-foreground">
                           {user.dateOfBirth ? format(new Date(user.dateOfBirth), "dd/MM/yyyy") : "-"}
                         </span>
                       </td>
 
                       {/* Age Column */}
                       <td className="px-6 py-4">
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-foreground">
                           {calculateAge(user.dateOfBirth) || "-"}
                         </span>
                       </td>
 
                       {/* Nationality Column */}
                       <td className="px-6 py-4">
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-foreground">
                           {user.nationality || "-"}
                         </span>
                       </td>
 
                       {/* Marital Status Column */}
                       <td className="px-6 py-4">
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-foreground">
                           {user.maritalStatus || "-"}
                         </span>
                       </td>
 
                       {/* Anniversary Column */}
                       <td className="px-6 py-4">
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-foreground">
                           {user.anniversary ? format(new Date(user.anniversary), "dd/MM/yyyy") : "-"}
                         </span>
                       </td>
 
                       {/* State Column */}
                       <td className="px-6 py-4">
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-foreground">
                           {user.state || "-"}
                         </span>
                       </td>
 
                       {/* District Column */}
                       <td className="px-6 py-4">
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-foreground">
                           {user.district || "-"}
                         </span>
                       </td>
@@ -487,15 +487,15 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
                           className="h-8 w-8 p-0"
                           onClick={() => handleViewDocuments(user)}
                         >
-                          <Eye className="w-4 h-4 text-blue-600" />
+                          <Eye className="w-4 h-4 text-primary" />
                         </Button>
                       </td>
 
                       {/* Joined Column */}
                       <td className="px-6 py-4">
-                        <div className="text-sm text-gray-700">
+                        <div className="text-sm text-foreground">
                           <p className="font-medium">{format(new Date(user.signupDate), "dd/MM/yyyy")}</p>
-                          <p className="text-xs text-gray-600">{format(new Date(user.signupDate), "h:mm a")}</p>
+                          <p className="text-xs text-muted-foreground">{format(new Date(user.signupDate), "h:mm a")}</p>
                         </div>
                       </td>
 
@@ -504,7 +504,7 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                              <MoreVertical className="w-4 h-4 text-gray-600" />
+                              <MoreVertical className="w-4 h-4 text-muted-foreground" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
@@ -545,7 +545,7 @@ export function UserManagementSystemView({ users, onDataChange }: UserManagement
               </table>
             </div>
           ) : (
-            <div className="text-center py-12 text-gray-600">
+            <div className="text-center py-12 text-muted-foreground">
               <p>No users found matching your search</p>
             </div>
           )}

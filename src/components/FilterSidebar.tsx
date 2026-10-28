@@ -75,13 +75,13 @@ export const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) 
             Search
           </label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search..."
               value={filters.search}
               onChange={handleSearchChange}
-              className="w-full h-10 pl-9 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
+              className="w-full h-10 pl-9 pr-4 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
             />
           </div>
         </div>
@@ -125,7 +125,7 @@ export const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) 
                   className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 border-2 ${
                     isSelected
                       ? "bg-primary text-primary-foreground border-primary shadow-md"
-                      : "bg-white text-foreground border-gray-200 hover:border-primary/30 hover:bg-gray-50"
+                      : "bg-white text-foreground border-border hover:border-primary/30 hover:bg-muted"
                   }`}
                 >
                   <span className="text-base">{icon}</span>
@@ -144,7 +144,7 @@ export const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) 
           <select
             value={filters.priceRange}
             onChange={handlePriceRangeChange}
-            className="w-full h-10 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm mb-4"
+            className="w-full h-10 px-3 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm mb-4"
           >
             {PRICE_RANGES.map((price) => (
               <option key={price} value={price}>
@@ -176,7 +176,7 @@ export const FilterSidebar = ({ filters, onFiltersChange }: FilterSidebarProps) 
           <select
             value={filters.rating}
             onChange={handleRatingChange}
-            className="w-full h-10 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
+            className="w-full h-10 px-3 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
           >
             {RATINGS.map((rating) => (
               <option key={rating} value={rating}>
