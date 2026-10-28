@@ -8,8 +8,8 @@
 @layer base {
   :root {
     /* Core theme colors */
-    --background: 0 0% 100%;
-    --foreground: 216 15% 12%;
+    --background: 210 40% 98%;
+    --foreground: 215 35% 14%;
 
     --card: 0 0% 100%;
     --card-foreground: 216 15% 12%;
@@ -17,47 +17,47 @@
     --popover: 0 0% 100%;
     --popover-foreground: 216 15% 12%;
 
-    /* Adventure primary - Deep forest green */
-    --primary: 158 45% 25%;
+    /* Winter primary - Deep winter navy */
+    --primary: 212 55% 28%;
     --primary-foreground: 0 0% 98%;
-    --primary-hover: 158 45% 20%;
+    --primary-hover: 212 55% 22%;
 
-    /* Adventure secondary - Warm orange */
-    --secondary: 25 85% 55%;
+    /* Winter secondary - Glacier blue */
+    --secondary: 200 70% 45%;
     --secondary-foreground: 0 0% 98%;
-    --secondary-hover: 25 85% 45%;
+    --secondary-hover: 200 70% 37%;
 
-    /* Mountain muted - Cool gray-blue */
-    --muted: 215 25% 96%;
-    --muted-foreground: 215 15% 45%;
+    /* Frosted muted - Cool snow gray */
+    --muted: 210 30% 95%;
+    --muted-foreground: 215 16% 45%;
 
-    /* Nature accent - Mountain blue */
-    --accent: 200 80% 45%;
+    /* Frost accent - Icy blue */
+    --accent: 200 75% 40%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 215 20% 88%;
-    --input: 215 20% 88%;
-    --ring: 158 45% 25%;
+    --border: 210 25% 87%;
+    --input: 210 25% 87%;
+    --ring: 212 55% 28%;
 
-    /* Adventure-specific colors */
+    /* Winter-specific colors */
     --adventure-gold: 45 100% 65%;
-    --adventure-forest: 158 60% 15%;
-    --adventure-sky: 200 100% 70%;
-    --adventure-earth: 30 40% 55%;
+    --adventure-forest: 215 50% 20%;
+    --adventure-sky: 200 100% 85%;
+    --adventure-earth: 210 20% 60%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(158 45% 25%), hsl(200 80% 35%));
-    --gradient-adventure: linear-gradient(90deg, hsl(25 85% 55%), hsl(45 100% 65%));
-    --gradient-nature: linear-gradient(180deg, hsl(158 60% 15%), hsl(158 45% 25%));
+    --gradient-hero: linear-gradient(135deg, hsl(212 55% 28%), hsl(200 70% 45%));
+    --gradient-adventure: linear-gradient(90deg, hsl(212 60% 35%), hsl(200 80% 55%));
+    --gradient-nature: linear-gradient(180deg, hsl(215 50% 14%), hsl(212 55% 28%));
     --gradient-sunset: linear-gradient(45deg, hsl(25 85% 55%), hsl(10 80% 60%));
 
     /* Shadows */
-    --shadow-adventure: 0 10px 30px -5px hsl(158 45% 25% / 0.3);
-    --shadow-card: 0 4px 20px -2px hsl(216 15% 12% / 0.1);
-    --shadow-glow: 0 0 40px hsl(25 85% 55% / 0.4);
+    --shadow-adventure: 0 10px 30px -5px hsl(212 55% 28% / 0.3);
+    --shadow-card: 0 4px 20px -2px hsl(215 35% 14% / 0.1);
+    --shadow-glow: 0 0 40px hsl(200 70% 45% / 0.4);
 
     --radius: 0.5rem;
 
@@ -251,4 +251,3 @@
     display: none;
   }
 }
-

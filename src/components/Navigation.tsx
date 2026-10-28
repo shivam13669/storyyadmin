@@ -58,7 +58,7 @@ const Navigation = () => {
 
   return (
     <nav 
-      className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-lg border-b border-white/10 text-white shadow-lg"
+      className="fixed top-0 left-0 right-0 z-50 bg-[#0b1f35]/92 backdrop-blur-lg border-b border-sky-200/20 text-white shadow-lg"
       style={{ paddingRight: location.pathname === "/" ? `${scrollbarWidth}px` : "0px" }}
     >
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
@@ -166,7 +166,7 @@ const Navigation = () => {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="lg:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-slate-900/95 border border-white/10 backdrop-blur-lg rounded-lg mt-2 shadow-lg">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-[#0b1f35]/95 border border-sky-200/20 backdrop-blur-lg rounded-lg mt-2 shadow-lg">
               {navItems.map((item) => {
                 const classes = "block px-3 py-2 text-base font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors";
 

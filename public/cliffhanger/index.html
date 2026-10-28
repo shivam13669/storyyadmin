@@ -62,7 +62,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
+        background: linear-gradient(90deg, rgba(7,25,44,0.8) 0%, rgba(7,25,44,0.35) 50%, rgba(7,25,44,0) 100%);
         z-index: 0;
         pointer-events: none;
       }
@@ -142,6 +142,30 @@
         margin: 0;
         font-size: 14px;
         color: rgba(255,255,255,0.85);
+      }
+      .snow-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 5;
+      }
+      .snowflake {
+        position: absolute;
+        top: -12px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 0 4px rgba(255,255,255,0.8);
+        animation-name: snow-fall;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+      @keyframes snow-fall {
+        from { transform: translate3d(0, 0, 0); }
+        to { transform: translate3d(var(--drift), 110vh, 0); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .snow-layer { display: none; }
       }
     </style>
   </head>
@@ -620,7 +644,7 @@
             <div style="position: relative; z-index: 2; max-width: 650px;">
               <div style="display: block; width: 100%;">
                 <h2 style="color: white; font-weight: 700; line-height: 1.1; font-size: 56px; margin-bottom: 0; margin-top: 0; font-family: 'Montserrat', sans-serif; text-align: left;">Nature Reimagined</h2>
-                <h2 style="color: #ffc107; font-weight: 700; line-height: 1.1; font-size: 56px; margin-bottom: 24px; margin-top: 0; font-family: 'Montserrat', sans-serif; text-align: left;">Visit us.</h2>
+                <h2 style="color: #9fd8ff; font-weight: 700; line-height: 1.1; font-size: 56px; margin-bottom: 24px; margin-top: 0; font-family: 'Montserrat', sans-serif; text-align: left;">Visit us.</h2>
               </div>
               
               <p style="color: #f0f0f0; font-size: 18px; margin-bottom: 40px; font-weight: 400; line-height: 1.6; font-family: 'Poppins', sans-serif; text-align: left;">
@@ -721,5 +745,25 @@
     <!-- Javascript-->
     <script src="js/core.min.js"></script>
     <script src="js/script.js"></script>
+    <script>
+      (function () {
+        var layer = document.createElement('div');
+        layer.className = 'snow-layer';
+        for (var i = 0; i < 90; i++) {
+          var flake = document.createElement('span');
+          flake.className = 'snowflake';
+          var size = 3 + Math.random() * 5;
+          flake.style.width = size + 'px';
+          flake.style.height = size + 'px';
+          flake.style.left = (Math.random() * 100) + '%';
+          flake.style.opacity = (0.4 + Math.random() * 0.5).toFixed(2);
+          flake.style.setProperty('--drift', ((Math.random() - 0.5) * 80) + 'px');
+          flake.style.animationDuration = (8 + Math.random() * 12) + 's';
+          flake.style.animationDelay = (-Math.random() * 20) + 's';
+          layer.appendChild(flake);
+        }
+        document.body.appendChild(layer);
+      })();
+    </script>
   </body>
 </html>
