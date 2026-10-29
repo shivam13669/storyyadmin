@@ -39,7 +39,6 @@ const AppContent = () => {
   // Hide footer on dashboard pages
   const isDashboard = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
   const isHome = location.pathname === "/";
-  const isLehLadakhPage = location.pathname === "/india-trips/leh-ladakh-tour-packages";
   const [iframeHeight, setIframeHeight] = useState("100vh");
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -116,7 +115,7 @@ const AppContent = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      {!isDashboard && !isLehLadakhPage && <Footer />}
+      {!isDashboard && <Footer />}
     </div>
   );
 };

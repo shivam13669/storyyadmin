@@ -5,13 +5,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Navigation from "@/components/Navigation";
 import {
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Compass,
   Film,
-  Instagram,
   Menu,
   Search,
   Star,
@@ -24,22 +23,10 @@ const S3 = "https://deshvideshstrapi.s3.ap-south-1.amazonaws.com/";
 const img = (name: string) => `${S3}${name}`;
 const href = (path: string) => (path === "#" ? "#" : `${SITE}${path}`);
 
-const LOGO_LIGHT = "https://deshvideshprod.s3.ap-south-1.amazonaws.com/website-static/logo-light-theme.webp";
-const LOGO = "https://deshvideshprod.s3.ap-south-1.amazonaws.com/website-static/logo.webp";
 const HERO_VIDEO = "https://video.gumlet.io/6898677fc34d4aa0c864379a/69609523195f98d9e15ada21/main.mp4";
 const HERO_POSTER = "https://video.gumlet.io/6898677fc34d4aa0c864379a/69609523195f98d9e15ada21/thumbnail-1-0.png?v=1767937342425";
 
 const PRIMARY = "#5bc1d5";
-
-const navItems = [
-  { label: "home", path: "/", dropdown: false },
-  { label: "explore", path: "/explore", dropdown: false },
-  { label: "best sellers", path: "#", dropdown: true },
-  { label: "Domestic", path: "#", dropdown: true },
-  { label: "International", path: "#", dropdown: true },
-  { label: "upcoming trips", path: "/upcoming-trips", dropdown: false },
-  { label: "more", path: "#", dropdown: true },
-];
 
 const popularPackages = [
   { title: "Ladakh Bike Trip Srinagar to Manali", text: "Explore rugged roads and scenic passes on two wheels." },
@@ -445,43 +432,6 @@ const blogs = [
   },
 ];
 
-const footerExplore = [
-  ["Upcoming Trips", "/upcoming-trips"],
-  ["Christmas & New Year Sale", "/christmas-new-year-tour-packages"],
-  ["Weekend Trips", "/category/weekend-tour-packages"],
-  ["Long Weekend", "/category/long-weekend-tour-packages"],
-  ["Experiential Trips", "/experiential-tour-packages"],
-  ["Events & Festivals", "/events-and-festivals"],
-  ["Travel Blogs", "/travel-blogs"],
-  ["Corporate Tours", "/corporate-tours"],
-  ["Gift Cards", "/gift-cards"],
-  ["Write for Us", "/write-for-us"],
-];
-const footerAbout = [
-  ["Our Story", "/about-us"],
-  ["Testimonials", "/testimonials"],
-  ["Careers", "/careers"],
-  ["Who Travel With Us", "/who-travel-with-us"],
-  ["What We Offer", "/what-we-offer"],
-];
-const footerSupport = [
-  ["Contact Us", "/contact-us"],
-  ["Book Now", "/book-now"],
-  ["Payment", "/payment"],
-  ["No COST EMI", "/no-cost-emi"],
-  ["Feedback Form", "#"],
-  ["Visa Assistance", "#"],
-];
-const footerTerms = [
-  ["Disclaimer", "/disclaimer"],
-  ["Terms & Conditions", "/terms-condition"],
-  ["Customer Success & Support", "/customer-success-&-support"],
-  ["Privacy", "/privacy-policy"],
-  ["Cancellation", "/cancellation-policy"],
-];
-
-const socials = ["youtube", "instagram", "linkedin", "whatsapp", "Phone"];
-
 const Stars = ({ rating }: { rating: string }) => {
   const value = Math.round(Number(rating));
   return (
@@ -624,38 +574,9 @@ const LehLadakhTourPackagesPage = () => {
           .lh-ticker { animation: lh-ticker 30s linear infinite; }`}
       </style>
 
-      <header className="sticky top-0 z-40 bg-white shadow-sm">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-3">
-          <a href={href("/")} className="shrink-0">
-            <img src={LOGO_LIGHT} alt="Desh Videsh Logo" className="h-12 w-auto" />
-          </a>
-          <nav className="hidden items-center gap-6 lg:flex">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={href(item.path)}
-                className="flex items-center gap-1 text-sm lowercase text-gray-700 hover:text-[#5bc1d5]"
-              >
-                {item.label}
-                {item.dropdown && <ChevronDown size={14} />}
-              </a>
-            ))}
-          </nav>
-          <div className="flex items-center gap-3">
-            <a href={href("#")} aria-label="Instagram" className="rounded-full p-2 text-gray-700 hover:bg-gray-100 md:hidden">
-              <Instagram size={18} />
-            </a>
-            <button type="button" aria-label="Search" className="rounded-full p-2 text-gray-700 hover:bg-gray-100">
-              <Search size={18} />
-            </button>
-            <button type="button" aria-label="Open Menu" className="rounded-full p-2 text-gray-700 hover:bg-gray-100 lg:hidden">
-              <Menu size={18} />
-            </button>
-          </div>
-        </div>
-      </header>
+      <Navigation />
 
-      <main className="pb-24 md:pb-16">
+      <main className="pt-16 pb-24 md:pb-16">
         <section className="px-4">
           <div className="relative overflow-hidden rounded-3xl">
             <video
@@ -1049,97 +970,6 @@ const LehLadakhTourPackagesPage = () => {
           </div>
         </section>
       </main>
-
-      <footer className="bg-neutral-900 text-gray-300">
-        <div className="mx-auto max-w-[1400px] px-6 py-14">
-          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-            <h2 className="text-3xl font-bold text-white md:text-4xl">
-              Memories are Waiting,
-              <br />
-              let&apos;s make them together!
-            </h2>
-            <a
-              href={href("/upcoming-trips")}
-              className="rounded-full px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
-              style={{ backgroundColor: PRIMARY }}
-            >
-              Upcoming Trips
-            </a>
-          </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            {socials.map((name) => (
-              <a
-                key={name}
-                href={href("#")}
-                className="rounded-full border border-gray-600 px-4 py-1.5 text-sm capitalize hover:border-[#5bc1d5] hover:text-white"
-              >
-                {name}
-              </a>
-            ))}
-          </div>
-
-          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { title: "Explore", links: footerExplore },
-              { title: "About Us", links: footerAbout },
-              { title: "Support", links: footerSupport },
-              { title: "Terms & Info", links: footerTerms },
-            ].map((column) => (
-              <div key={column.title}>
-                <h3 className="text-base font-semibold text-white">{column.title}</h3>
-                <ul className="mt-4 space-y-2 text-sm">
-                  {column.links.map(([label, path]) => (
-                    <li key={label}>
-                      <a href={href(path)} className="hover:text-white">
-                        {label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 grid gap-8 border-t border-gray-700 pt-10 md:grid-cols-2">
-            <div className="space-y-4 text-sm">
-              <h3 className="text-base font-semibold text-white">Contact Info</h3>
-              <div>
-                <p className="font-medium text-white">Registered Office:</p>
-                <p>H. No. 288 Yadav Colony,</p>
-                <p>Near Guru Dental Clinic</p>
-                <p>Rajiv Gandhi Marg,</p>
-                <p>Ballabgarh, Faridabad,</p>
-                <p>Haryana - 121004</p>
-              </div>
-              <div>
-                <p className="font-medium text-white">Corporate Office:</p>
-                <p>Office A-13, Innov8 Graphix 2,</p>
-                <p>Sector 62 Noida,</p>
-                <p>Uttar Pradesh - 201301</p>
-              </div>
-              <div>
-                <p className="font-medium text-white">Business Hours:</p>
-                <p>Mon - Sat: 11:00 AM - 7:00 PM</p>
-                <p>Sunday: Closed</p>
-              </div>
-            </div>
-            <div className="flex flex-col justify-between gap-6 text-sm">
-              <div className="flex items-center gap-3">
-                <img src={LOGO} alt="logo" className="h-10 w-auto" />
-              </div>
-              <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-gray-400">
-                <p>
-                  © 2026 RAAHGIR TRAVELS PRIVATE LIMITED All Rights Reserved.
-                </p>
-                <div className="flex items-center gap-4">
-                  <span>ENG · INR</span>
-                  <span>Loading...</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
 
       <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around bg-neutral-900 py-3 text-xs text-white md:hidden">
         <a href={href("#")} className="flex flex-col items-center gap-1">
