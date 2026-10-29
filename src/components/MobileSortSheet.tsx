@@ -57,25 +57,25 @@ export const MobileSortSheet = ({
       >
         <div className="w-full">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+          <div className="flex items-center justify-between p-4 border-b border-border">
             <h2 className="text-lg font-semibold">Sort By</h2>
             <button
               onClick={onClose}
-              className="flex items-center justify-center h-10 w-10 hover:bg-gray-100 rounded-lg transition"
+              className="flex items-center justify-center h-10 w-10 hover:bg-muted rounded-lg transition"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
 
           {/* Sort Options */}
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-border">
             {SORT_OPTIONS.map((option) => (
               <button
                 key={option.value}
                 onClick={() => handleSortChange(option.value)}
-                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition text-left"
+                className="w-full flex items-center justify-between p-4 hover:bg-muted transition text-left"
               >
-                <span className={`text-sm ${sortBy === option.value ? 'font-semibold text-primary' : 'text-gray-700'}`}>
+                <span className={`text-sm ${sortBy === option.value ? 'font-semibold text-primary' : 'text-foreground'}`}>
                   {option.label}
                 </span>
                 {sortBy === option.value && (

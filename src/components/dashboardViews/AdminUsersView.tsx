@@ -145,8 +145,8 @@ export function AdminUsersView({ users, onDataChange }: AdminUsersViewProps) {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-xl font-semibold text-gray-900">User Management</h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <h3 className="text-xl font-semibold text-foreground">User Management</h3>
+          <p className="text-sm text-muted-foreground mt-1">
             Manage all registered travelers and their accounts
           </p>
         </div>
@@ -180,11 +180,11 @@ export function AdminUsersView({ users, onDataChange }: AdminUsersViewProps) {
               <TableBody>
                 {users.map((user) => (
                   <TableRow key={user.id}>
-                    <TableCell className="font-medium text-gray-900">
+                    <TableCell className="font-medium text-foreground">
                       {user.fullName}
                     </TableCell>
-                    <TableCell className="text-gray-600">{user.email}</TableCell>
-                    <TableCell className="text-gray-600">
+                    <TableCell className="text-muted-foreground">{user.email}</TableCell>
+                    <TableCell className="text-muted-foreground">
                       {isValidMobileNumber(user.mobileNumber) ? `+${user.countryCode} ${user.mobileNumber}` : "—"}
                     </TableCell>
                     <TableCell>
@@ -195,7 +195,7 @@ export function AdminUsersView({ users, onDataChange }: AdminUsersViewProps) {
                         {user.isSuspended ? "Suspended" : "Active"}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-gray-600">
+                    <TableCell className="text-muted-foreground">
                       {format(new Date(user.signupDate), "MMM dd, yyyy")}
                     </TableCell>
                     <TableCell className="text-right">

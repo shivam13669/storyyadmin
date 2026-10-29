@@ -291,8 +291,8 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-xl font-semibold text-gray-900">Coupon Management</h3>
-          <p className="text-sm text-gray-600 mt-1">Create and manage discount coupons</p>
+          <h3 className="text-xl font-semibold text-foreground">Coupon Management</h3>
+          <p className="text-sm text-muted-foreground mt-1">Create and manage discount coupons</p>
         </div>
         <Button
           onClick={() => {
@@ -386,7 +386,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                     value={formData.discountType}
                     onChange={(e) => setFormData({ ...formData, discountType: e.target.value as "percentage" | "fixed" })}
                     disabled={loading}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="mt-1 w-full px-3 py-2 border border-input rounded-md"
                   >
                     <option value="percentage">Percentage (%)</option>
                     <option value="fixed">Fixed (₹)</option>
@@ -427,16 +427,16 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                     type="button"
                     onClick={() => setShowPackageDropdown(!showPackageDropdown)}
                     disabled={loading}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-left flex items-center justify-between hover:bg-gray-50 disabled:bg-gray-100"
+                    className="w-full px-3 py-2 border border-input rounded-md bg-white text-left flex items-center justify-between hover:bg-muted disabled:bg-muted"
                   >
-                    <span className="text-gray-700">{getSelectedPackagesDisplay()}</span>
-                    <ChevronDown className="w-4 h-4 text-gray-500" />
+                    <span className="text-foreground">{getSelectedPackagesDisplay()}</span>
+                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
                   </button>
 
                   {showPackageDropdown && (
-                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-xl z-10 max-h-64 overflow-hidden flex flex-col">
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-input rounded-lg shadow-xl z-10 max-h-64 overflow-hidden flex flex-col">
                       {/* Search input */}
-                      <div className="p-3 border-b border-gray-200 bg-gray-50">
+                      <div className="p-3 border-b border-border bg-background">
                         <Input
                           placeholder="Search packages..."
                           value={packageSearch}
@@ -457,15 +457,15 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                           }}
                           className={`w-full px-4 py-3 text-left text-sm flex items-center gap-3 transition-colors ${
                             formData.applicablePackages === "all"
-                              ? "bg-blue-600 text-white font-medium"
-                              : "text-gray-900 hover:bg-gray-100"
+                              ? "bg-primary text-white font-medium"
+                              : "text-foreground hover:bg-muted"
                           }`}
                         >
                           <input
                             type="checkbox"
                             checked={formData.applicablePackages === "all"}
                             readOnly
-                            className="w-4 h-4 rounded border-gray-300 cursor-pointer"
+                            className="w-4 h-4 rounded border-input cursor-pointer"
                           />
                           <span className="font-medium">All Packages</span>
                         </button>
@@ -477,7 +477,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                               (destination) => (
                                 <div key={destination}>
                                   {/* Destination header */}
-                                  <div className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-50 border-t border-gray-200">
+                                  <div className="px-4 py-2 text-xs font-semibold text-muted-foreground bg-background border-t border-border">
                                     {destination}
                                   </div>
                                   {/* Packages under destination */}
@@ -512,8 +512,8 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                                         className={`w-full px-4 py-3 text-left text-sm flex items-center gap-3 transition-colors ${
                                           Array.isArray(formData.applicablePackages) &&
                                           formData.applicablePackages.includes(pkg.slug)
-                                            ? "bg-blue-50 text-blue-700 font-medium"
-                                            : "text-gray-900 hover:bg-gray-50"
+                                            ? "bg-muted text-primary font-medium"
+                                            : "text-foreground hover:bg-muted"
                                         }`}
                                       >
                                         <input
@@ -523,7 +523,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                                             formData.applicablePackages.includes(pkg.slug)
                                           }
                                           readOnly
-                                          className="w-4 h-4 rounded border-gray-300 cursor-pointer"
+                                          className="w-4 h-4 rounded border-input cursor-pointer"
                                         />
                                         <span className="font-medium">{pkg.name}</span>
                                       </button>
@@ -533,7 +533,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                             )}
                           </div>
                         ) : (
-                          <div className="px-4 py-8 text-sm text-gray-500 text-center">
+                          <div className="px-4 py-8 text-sm text-muted-foreground text-center">
                             No packages found
                           </div>
                         )}
@@ -576,27 +576,27 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                 <TableBody>
                   {activeCoupons.map((coupon) => (
                     <TableRow key={coupon.id}>
-                      <TableCell className="font-mono font-bold text-gray-900">{coupon.code}</TableCell>
+                      <TableCell className="font-mono font-bold text-foreground">{coupon.code}</TableCell>
                       <TableCell>
                         <Badge>
                           {coupon.discount}
                           {coupon.discountType === "percentage" ? "%" : "₹"}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-gray-600 text-sm">
+                      <TableCell className="text-muted-foreground text-sm">
                         <Button
                           variant="ghost"
                           size="sm"
                           className="h-6 w-6 p-0"
                           onClick={() => handleViewPackages(coupon)}
                         >
-                          <Eye className="w-4 h-4 text-blue-600" />
+                          <Eye className="w-4 h-4 text-primary" />
                         </Button>
                       </TableCell>
-                      <TableCell className="text-gray-600">
+                      <TableCell className="text-muted-foreground">
                         {coupon.usedCount} / {coupon.maxUses}
                       </TableCell>
-                      <TableCell className="text-gray-600">
+                      <TableCell className="text-muted-foreground">
                         {format(new Date(coupon.expiryDate), "MMM dd, yyyy")}
                       </TableCell>
                       <TableCell className="text-right">
@@ -633,7 +633,7 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
               </Table>
             </div>
           ) : (
-            <p className="text-center py-8 text-gray-600">No active coupons yet</p>
+            <p className="text-center py-8 text-muted-foreground">No active coupons yet</p>
           )}
         </CardContent>
       </Card>
@@ -661,27 +661,27 @@ export function AdminCouponsView({ initialCoupons = [], onDataChange }: AdminCou
                 <TableBody>
                   {expiredCoupons.map((coupon) => (
                     <TableRow key={coupon.id} className="opacity-60">
-                      <TableCell className="font-mono font-bold text-gray-900">{coupon.code}</TableCell>
+                      <TableCell className="font-mono font-bold text-foreground">{coupon.code}</TableCell>
                       <TableCell>
                         <Badge variant="secondary">
                           {coupon.discount}
                           {coupon.discountType === "percentage" ? "%" : "₹"}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-gray-600 text-sm">
+                      <TableCell className="text-muted-foreground text-sm">
                         <Button
                           variant="ghost"
                           size="sm"
                           className="h-6 w-6 p-0"
                           onClick={() => handleViewPackages(coupon)}
                         >
-                          <Eye className="w-4 h-4 text-blue-600" />
+                          <Eye className="w-4 h-4 text-primary" />
                         </Button>
                       </TableCell>
-                      <TableCell className="text-gray-600">
+                      <TableCell className="text-muted-foreground">
                         {coupon.usedCount} / {coupon.maxUses}
                       </TableCell>
-                      <TableCell className="text-gray-600">
+                      <TableCell className="text-muted-foreground">
                         {format(new Date(coupon.expiryDate), "MMM dd, yyyy")}
                       </TableCell>
                       <TableCell className="text-right">

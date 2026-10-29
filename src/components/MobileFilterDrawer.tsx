@@ -92,10 +92,10 @@ export const MobileFilterDrawer = ({
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center gap-3">
+        <div className="sticky top-0 bg-white border-b border-border p-4 flex items-center gap-3">
           <button
             onClick={onClose}
-            className="flex items-center justify-center h-10 w-10 hover:bg-gray-100 rounded-lg transition"
+            className="flex items-center justify-center h-10 w-10 hover:bg-muted rounded-lg transition"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -138,7 +138,7 @@ export const MobileFilterDrawer = ({
                     className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 border-2 ${
                       isSelected
                         ? "bg-primary text-primary-foreground border-primary shadow-md"
-                        : "bg-white text-foreground border-gray-200 hover:border-primary/30 hover:bg-gray-50"
+                        : "bg-white text-foreground border-border hover:border-primary/30 hover:bg-muted"
                     }`}
                   >
                     <span className="text-base">{icon}</span>
@@ -155,7 +155,7 @@ export const MobileFilterDrawer = ({
             <select
               value={filters.priceRange}
               onChange={(e) => handlePriceRangeChange(e.target.value)}
-              className="w-full h-10 px-3 border border-gray-300 rounded-lg text-sm mb-4"
+              className="w-full h-10 px-3 border border-input rounded-lg text-sm mb-4"
             >
               {PRICE_RANGES.map((price) => (
                 <option key={price} value={price}>
@@ -185,7 +185,7 @@ export const MobileFilterDrawer = ({
             <select
               value={filters.rating}
               onChange={(e) => handleRatingChange(e.target.value)}
-              className="w-full h-10 px-3 border border-gray-300 rounded-lg text-sm"
+              className="w-full h-10 px-3 border border-input rounded-lg text-sm"
             >
               {RATINGS.map((rating) => (
                 <option key={rating} value={rating}>
@@ -197,7 +197,7 @@ export const MobileFilterDrawer = ({
         </div>
 
         {/* Footer with buttons */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 flex gap-3">
+        <div className="sticky bottom-0 bg-white border-t border-border p-4 flex gap-3">
           <Button
             variant="outline"
             className="flex-1"

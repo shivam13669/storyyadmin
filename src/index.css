@@ -8,39 +8,39 @@
 @layer base {
   :root {
     /* Core theme colors */
-    --background: 0 0% 100%;
-    --foreground: 216 15% 12%;
+    --background: 210 67% 98%;
+    --foreground: 211 26% 22%;
 
     --card: 0 0% 100%;
-    --card-foreground: 216 15% 12%;
+    --card-foreground: 211 26% 22%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 216 15% 12%;
+    --popover-foreground: 211 26% 22%;
 
-    /* Adventure primary - Deep forest green */
-    --primary: 158 45% 25%;
-    --primary-foreground: 0 0% 98%;
-    --primary-hover: 158 45% 20%;
+    /* Midnight navy - primary actions and navigation */
+    --primary: 212 35% 22%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 212 37% 17%;
 
     /* Adventure secondary - Warm orange */
     --secondary: 25 85% 55%;
     --secondary-foreground: 0 0% 98%;
     --secondary-hover: 25 85% 45%;
 
-    /* Mountain muted - Cool gray-blue */
-    --muted: 215 25% 96%;
-    --muted-foreground: 215 15% 45%;
+    /* Frost surfaces and steel secondary text */
+    --muted: 208 56% 95%;
+    --muted-foreground: 210 33% 41%;
 
-    /* Nature accent - Mountain blue */
-    --accent: 200 80% 45%;
-    --accent-foreground: 0 0% 98%;
+    /* Icy blue accent */
+    --accent: 204 75% 84%;
+    --accent-foreground: 212 35% 22%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 215 20% 88%;
-    --input: 215 20% 88%;
-    --ring: 158 45% 25%;
+    --border: 207 40% 90%;
+    --input: 209 31% 57%;
+    --ring: 209 32% 47%;
 
     /* Adventure-specific colors */
     --adventure-gold: 45 100% 65%;
@@ -49,33 +49,34 @@
     --adventure-earth: 30 40% 55%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(158 45% 25%), hsl(200 80% 35%));
+    --gradient-hero: linear-gradient(135deg, hsl(212 35% 22%), hsl(209 32% 47%));
     --gradient-adventure: linear-gradient(90deg, hsl(25 85% 55%), hsl(45 100% 65%));
-    --gradient-nature: linear-gradient(180deg, hsl(158 60% 15%), hsl(158 45% 25%));
+    --gradient-nature: linear-gradient(180deg, hsl(212 37% 17%), hsl(212 35% 22%));
     --gradient-sunset: linear-gradient(45deg, hsl(25 85% 55%), hsl(10 80% 60%));
 
     /* Shadows */
-    --shadow-adventure: 0 10px 30px -5px hsl(158 45% 25% / 0.3);
-    --shadow-card: 0 4px 20px -2px hsl(216 15% 12% / 0.1);
+    --shadow-adventure: 0 10px 30px -5px hsl(212 35% 22% / 0.18);
+    --shadow-card: 0 4px 20px -2px hsl(212 35% 22% / 0.08);
+    --shadow-elevated: 0 12px 28px -10px hsl(212 35% 22% / 0.22);
     --shadow-glow: 0 0 40px hsl(25 85% 55% / 0.4);
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 212 35% 22%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-foreground: 210 67% 98%;
 
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary: 204 75% 84%;
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-primary-foreground: 212 35% 22%;
 
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 212 30% 28%;
 
-    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
 
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 212 30% 30%;
 
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 204 75% 84%;
   }
 
   .dark {
@@ -140,8 +141,19 @@
   .admin-dashboard textarea:focus,
   .admin-dashboard select:focus {
     outline: none !important;
-    border-color: #3b82f6 !important;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5) !important;
+    border-color: hsl(var(--ring)) !important;
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.35) !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   /* Custom utility classes */
@@ -163,6 +175,15 @@
 
   .shadow-card {
     box-shadow: var(--shadow-card);
+  }
+
+  .card-interactive {
+    transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+  }
+
+  .card-interactive:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevated);
   }
 
   /* Adventure-specific animations */
@@ -251,4 +272,3 @@
     display: none;
   }
 }
-

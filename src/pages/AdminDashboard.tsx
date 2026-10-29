@@ -225,7 +225,7 @@ const AdminDashboard = () => {
       value: users.filter(u => u.role !== "admin").length,
       icon: Users,
       color: "bg-blue-50",
-      iconColor: "text-blue-600",
+      iconColor: "text-primary",
       description: "Registered users",
     },
     {
@@ -285,7 +285,7 @@ const AdminDashboard = () => {
       case "completed":
         return "bg-blue-100 text-blue-800";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-muted text-foreground";
     }
   };
 
@@ -312,33 +312,33 @@ const AdminDashboard = () => {
 
   if (authLoading || !isAdmin) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center h-screen bg-background">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 admin-dashboard">
+    <div className="flex h-screen bg-background admin-dashboard">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-950 border-r border-slate-800 transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-sidebar border-r border-sidebar-border transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 lg:static flex flex-col`}
       >
         {/* Logo */}
-        <div className="p-6 border-b border-slate-800">
+        <div className="p-6 border-b border-sidebar-border">
           <h1 className="text-2xl font-bold text-white">
             Stories by <span className="text-secondary">Foot</span>
           </h1>
-          <p className="text-sm text-slate-400 mt-1">Admin Panel</p>
+          <p className="text-sm text-sidebar-foreground/70 mt-1">Admin Panel</p>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto p-4 space-y-2">
           <button
             onClick={() => navigate("/")}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium text-sm text-slate-300 hover:text-white"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           >
             <Home className="w-5 h-5 flex-shrink-0" />
             <span>Go to Home</span>
@@ -366,8 +366,8 @@ const AdminDashboard = () => {
                 }}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium text-sm ${
                   isActive
-                    ? "bg-blue-600 text-white"
-                    : "text-slate-300 hover:text-white"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 }`}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
@@ -378,7 +378,7 @@ const AdminDashboard = () => {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-4 border-t border-sidebar-border">
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-3 text-orange-400 hover:text-orange-300 rounded-lg transition-colors font-medium text-sm"
@@ -392,33 +392,33 @@ const AdminDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         {/* Top Bar with Search & Notifications (CRM Features integrated smoothly) */}
-        <div className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between gap-3">
+        <div className="sticky top-0 z-30 bg-white border-b border-border px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0 flex-1">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg flex-shrink-0"
+              className="lg:hidden p-2 hover:bg-muted rounded-lg flex-shrink-0"
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             <div className="min-w-0 hidden md:block">
-              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">Admin Dashboard</h2>
-              <p className="text-xs sm:text-sm text-gray-600">Complete overview of your travel operations</p>
+              <h2 className="text-lg sm:text-2xl font-bold text-foreground truncate">Admin Dashboard</h2>
+              <p className="text-xs sm:text-sm text-muted-foreground">Complete overview of your travel operations</p>
             </div>
 
             {/* Header Search Bar (CRM Style) */}
             <div className="relative hidden sm:block ml-0 md:ml-4" ref={searchRef}>
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search customers, bookings, reviews..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setSearchFocused(true)}
-                className="pl-10 pr-4 py-2 w-60 lg:w-80 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-xs"
+                className="pl-10 pr-4 py-2 w-60 lg:w-80 bg-white border border-input rounded-lg text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all shadow-xs"
               />
               {/* Quick Search Results Dropdown */}
               {searchFocused && searchQuery.trim().length > 0 && (
-                <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden divide-y divide-gray-100">
+                <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-xl border border-border z-50 overflow-hidden divide-y divide-border">
                   {searchResults.length > 0 ? (
                     searchResults.map((item, idx) => (
                       <div
@@ -428,17 +428,17 @@ const AdminDashboard = () => {
                           setSearchQuery("");
                           setSearchFocused(false);
                         }}
-                        className="p-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm transition-colors"
+                        className="p-3 hover:bg-muted cursor-pointer flex items-center justify-between text-sm transition-colors"
                       >
                         <div>
-                          <p className="font-medium text-gray-900">{item.title}</p>
-                          <p className="text-xs text-gray-500">{item.subtitle}</p>
+                          <p className="font-medium text-foreground">{item.title}</p>
+                          <p className="text-xs text-muted-foreground">{item.subtitle}</p>
                         </div>
                         <Badge variant="outline" className="text-xs uppercase">{item.type}</Badge>
                       </div>
                     ))
                   ) : (
-                    <div className="p-4 text-center text-xs text-gray-500">
+                    <div className="p-4 text-center text-xs text-muted-foreground">
                       No results found for "{searchQuery}"
                     </div>
                   )}
@@ -475,7 +475,7 @@ const AdminDashboard = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+                className="relative p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg"
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
                 title="Notifications"
               >
@@ -488,29 +488,29 @@ const AdminDashboard = () => {
               </Button>
 
               {notificationsOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden">
-                  <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-                    <h4 className="font-semibold text-gray-900 text-sm">Notifications</h4>
-                    <span className="text-xs text-blue-600 font-medium">
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-border z-50 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-border flex items-center justify-between bg-background">
+                    <h4 className="font-semibold text-foreground text-sm">Notifications</h4>
+                    <span className="text-xs text-primary font-medium">
                       {unreadNotifsCount} new
                     </span>
                   </div>
-                  <div className="max-h-72 overflow-y-auto divide-y divide-gray-100">
+                  <div className="max-h-72 overflow-y-auto divide-y divide-border">
                     {pendingBookings > 0 && (
                       <div
                         onClick={() => {
                           setActiveNav("bookings");
                           setNotificationsOpen(false);
                         }}
-                        className="p-3 hover:bg-gray-50 cursor-pointer transition-colors"
+                        className="p-3 hover:bg-muted cursor-pointer transition-colors"
                       >
                         <div className="flex items-start gap-2.5">
                           <Calendar className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
                           <div>
-                            <p className="text-xs font-semibold text-gray-900">
+                            <p className="text-xs font-semibold text-foreground">
                               {pendingBookings} Pending Bookings
                             </p>
-                            <p className="text-xs text-gray-500">Trip reservations awaiting confirmation</p>
+                            <p className="text-xs text-muted-foreground">Trip reservations awaiting confirmation</p>
                           </div>
                         </div>
                       </div>
@@ -521,15 +521,15 @@ const AdminDashboard = () => {
                           setActiveNav("reviews");
                           setNotificationsOpen(false);
                         }}
-                        className="p-3 hover:bg-gray-50 cursor-pointer transition-colors"
+                        className="p-3 hover:bg-muted cursor-pointer transition-colors"
                       >
                         <div className="flex items-start gap-2.5">
                           <Star className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
                           <div>
-                            <p className="text-xs font-semibold text-gray-900">
+                            <p className="text-xs font-semibold text-foreground">
                               {pendingTestimonialsCount} Pending Reviews
                             </p>
-                            <p className="text-xs text-gray-500">New customer reviews awaiting approval</p>
+                            <p className="text-xs text-muted-foreground">New customer reviews awaiting approval</p>
                           </div>
                         </div>
                       </div>
@@ -540,21 +540,21 @@ const AdminDashboard = () => {
                           setActiveNav("admin");
                           setNotificationsOpen(false);
                         }}
-                        className="p-3 hover:bg-gray-50 cursor-pointer transition-colors"
+                        className="p-3 hover:bg-muted cursor-pointer transition-colors"
                       >
                         <div className="flex items-start gap-2.5">
                           <Shield className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
                           <div>
-                            <p className="text-xs font-semibold text-gray-900">
+                            <p className="text-xs font-semibold text-foreground">
                               {suspendedAdminsCount} Suspended Admin(s)
                             </p>
-                            <p className="text-xs text-gray-500">Accounts requiring administrative review</p>
+                            <p className="text-xs text-muted-foreground">Accounts requiring administrative review</p>
                           </div>
                         </div>
                       </div>
                     )}
                     {unreadNotifsCount === 0 && (
-                      <div className="p-6 text-center text-xs text-gray-500">
+                      <div className="p-6 text-center text-xs text-muted-foreground">
                         All notifications cleared! System is up to date.
                       </div>
                     )}
@@ -567,26 +567,26 @@ const AdminDashboard = () => {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
+                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 rounded-lg hover:bg-muted transition-colors flex-shrink-0"
               >
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold flex-shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold flex-shrink-0">
                   A
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-900 hidden sm:block">
+                <span className="text-xs sm:text-sm font-medium text-foreground hidden sm:block">
                   Admin
                 </span>
-                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 flex-shrink-0" />
+                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground flex-shrink-0" />
               </button>
 
               {/* Dropdown Menu */}
               {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-border rounded-lg shadow-lg z-50">
                   <button
                     onClick={() => {
                       navigate("/");
                       setUserMenuOpen(false);
                     }}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100 font-medium text-sm"
+                    className="w-full flex items-center gap-3 px-4 py-3 text-foreground hover:bg-muted transition-colors border-b border-border font-medium text-sm"
                   >
                     <Home className="w-4 h-4" />
                     Go to Home
@@ -596,7 +596,7 @@ const AdminDashboard = () => {
                       setIsPasswordModalOpen(true);
                       setUserMenuOpen(false);
                     }}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100 font-medium text-sm"
+                    className="w-full flex items-center gap-3 px-4 py-3 text-foreground hover:bg-muted transition-colors border-b border-border font-medium text-sm"
                   >
                     <Settings className="w-4 h-4" />
                     Change Password
@@ -621,7 +621,7 @@ const AdminDashboard = () => {
         <div className="p-4 space-y-6 sm:p-6">
           {loading ? (
             <div className="flex items-center justify-center h-96">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
             </div>
           ) : activeNav === "overview" ? (
             <>
@@ -659,9 +659,9 @@ const AdminDashboard = () => {
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm text-gray-600 font-medium">{stat.label}</p>
-                            <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
-                            <p className="text-xs text-gray-500 mt-2">{stat.description}</p>
+                            <p className="text-sm text-muted-foreground font-medium">{stat.label}</p>
+                            <p className="text-3xl font-bold text-foreground mt-2">{stat.value}</p>
+                            <p className="text-xs text-muted-foreground mt-2">{stat.description}</p>
                           </div>
                           <div className={`${stat.color} p-3 rounded-xl`}>
                             <Icon className={`w-6 h-6 ${stat.iconColor}`} />
@@ -688,10 +688,10 @@ const AdminDashboard = () => {
                     <div className="space-y-3">
                       {recentUsers.length > 0 ? (
                         recentUsers.map((u) => (
-                          <div key={u.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                          <div key={u.id} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted">
                             <div>
-                              <p className="text-sm font-medium text-gray-900">{u.fullName}</p>
-                              <p className="text-xs text-gray-500">{u.email}</p>
+                              <p className="text-sm font-medium text-foreground">{u.fullName}</p>
+                              <p className="text-xs text-muted-foreground">{u.email}</p>
                             </div>
                             <Badge variant={u.role === "admin" ? "default" : "secondary"}>
                               {u.role === "admin" ? "Admin" : "User"}
@@ -699,7 +699,7 @@ const AdminDashboard = () => {
                           </div>
                         ))
                       ) : (
-                        <p className="text-sm text-gray-500 text-center py-4">No travelers yet</p>
+                        <p className="text-sm text-muted-foreground text-center py-4">No travelers yet</p>
                       )}
                     </div>
                     <Button
@@ -729,10 +729,10 @@ const AdminDashboard = () => {
                     <div className="space-y-3">
                       {recentBookings.length > 0 ? (
                         recentBookings.map((b) => (
-                          <div key={b.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                          <div key={b.id} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted">
                             <div>
-                              <p className="text-sm font-medium text-gray-900">{b.tripName}</p>
-                              <p className="text-xs text-gray-500">
+                              <p className="text-sm font-medium text-foreground">{b.tripName}</p>
+                              <p className="text-xs text-muted-foreground">
                                 {format(new Date(b.tripDate), "MMM dd, yyyy")}
                               </p>
                             </div>
@@ -742,7 +742,7 @@ const AdminDashboard = () => {
                           </div>
                         ))
                       ) : (
-                        <p className="text-sm text-gray-500 text-center py-4">No bookings yet</p>
+                        <p className="text-sm text-muted-foreground text-center py-4">No bookings yet</p>
                       )}
                     </div>
                     <Button
@@ -772,10 +772,10 @@ const AdminDashboard = () => {
                     <div className="space-y-3">
                       {recentTestimonials.length > 0 ? (
                         recentTestimonials.map((t) => (
-                          <div key={t.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                          <div key={t.id} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted">
                             <div>
-                              <p className="text-sm font-medium text-gray-900">{t.userName}</p>
-                              <p className="text-xs text-gray-500">⭐ {t.rating} rating</p>
+                              <p className="text-sm font-medium text-foreground">{t.userName}</p>
+                              <p className="text-xs text-muted-foreground">⭐ {t.rating} rating</p>
                             </div>
                             <Badge variant={t.isVisible ? "default" : "secondary"}>
                               {t.isVisible ? "Public" : "Hidden"}
@@ -783,7 +783,7 @@ const AdminDashboard = () => {
                           </div>
                         ))
                       ) : (
-                        <p className="text-sm text-gray-500 text-center py-4">No reviews yet</p>
+                        <p className="text-sm text-muted-foreground text-center py-4">No reviews yet</p>
                       )}
                     </div>
                     <Button
@@ -812,29 +812,29 @@ const AdminDashboard = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 text-center">
-                    <div className="p-4 border border-gray-200 rounded-lg">
-                      <div className="text-3xl font-bold text-blue-600">{users.filter(u => u.role !== "admin").length}</div>
-                      <div className="text-sm text-gray-600 mt-1">Total Customers</div>
+                    <div className="p-4 border border-border rounded-lg">
+                      <div className="text-3xl font-bold text-primary">{users.filter(u => u.role !== "admin").length}</div>
+                      <div className="text-sm text-muted-foreground mt-1">Total Customers</div>
                     </div>
-                    <div className="p-4 border border-gray-200 rounded-lg">
+                    <div className="p-4 border border-border rounded-lg">
                       <div className="text-3xl font-bold text-green-600">{bookings.length}</div>
-                      <div className="text-sm text-gray-600 mt-1">Total Bookings</div>
+                      <div className="text-sm text-muted-foreground mt-1">Total Bookings</div>
                     </div>
-                    <div className="p-4 border border-gray-200 rounded-lg">
+                    <div className="p-4 border border-border rounded-lg">
                       <div className="text-3xl font-bold text-emerald-600">{confirmedBookings}</div>
-                      <div className="text-sm text-gray-600 mt-1">Confirmed</div>
+                      <div className="text-sm text-muted-foreground mt-1">Confirmed</div>
                     </div>
-                    <div className="p-4 border border-gray-200 rounded-lg">
+                    <div className="p-4 border border-border rounded-lg">
                       <div className="text-3xl font-bold text-amber-600">{pendingBookings}</div>
-                      <div className="text-sm text-gray-600 mt-1">Pending</div>
+                      <div className="text-sm text-muted-foreground mt-1">Pending</div>
                     </div>
-                    <div className="p-4 border border-gray-200 rounded-lg">
+                    <div className="p-4 border border-border rounded-lg">
                       <div className="text-3xl font-bold text-purple-600">{testimonials.length}</div>
-                      <div className="text-sm text-gray-600 mt-1">Total Reviews</div>
+                      <div className="text-sm text-muted-foreground mt-1">Total Reviews</div>
                     </div>
-                    <div className="p-4 border border-gray-200 rounded-lg">
+                    <div className="p-4 border border-border rounded-lg">
                       <div className="text-3xl font-bold text-pink-600">{visibleTestimonials}</div>
-                      <div className="text-sm text-gray-600 mt-1">Published</div>
+                      <div className="text-sm text-muted-foreground mt-1">Published</div>
                     </div>
                   </div>
                 </CardContent>
@@ -846,21 +846,21 @@ const AdminDashboard = () => {
             <div className="space-y-6">
               {/* Header */}
               <div>
-                <h3 className="text-2xl font-bold text-gray-900">Customers</h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <h3 className="text-2xl font-bold text-foreground">Customers</h3>
+                <p className="text-sm text-muted-foreground mt-1">
                   Manage customers and user accounts
                 </p>
               </div>
 
               {/* Tab Navigation (CRM Style) */}
-              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+              <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
                 <button
                   type="button"
                   onClick={() => setCustomerTab("customer")}
                   className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
                     customerTab === "customer"
-                      ? "bg-white text-[#1e88e5] shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "bg-white text-primary shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <Users className="w-4 h-4" />
@@ -871,8 +871,8 @@ const AdminDashboard = () => {
                   onClick={() => setCustomerTab("users")}
                   className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
                     customerTab === "users"
-                      ? "bg-white text-[#1e88e5] shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "bg-white text-primary shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <UserCheck className="w-4 h-4" />
@@ -897,21 +897,21 @@ const AdminDashboard = () => {
             <div className="space-y-6">
               {/* Header */}
               <div>
-                <h3 className="text-2xl font-bold text-gray-900">Admin</h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <h3 className="text-2xl font-bold text-foreground">Admin</h3>
+                <p className="text-sm text-muted-foreground mt-1">
                   Manage admin users and permissions
                 </p>
               </div>
 
               {/* Tab Navigation (CRM Style) */}
-              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+              <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
                 <button
                   type="button"
                   onClick={() => setAdminTab("management")}
                   className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
                     adminTab === "management"
-                      ? "bg-white text-[#1e88e5] shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "bg-white text-primary shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <LayoutList className="w-4 h-4" />
@@ -922,8 +922,8 @@ const AdminDashboard = () => {
                   onClick={() => setAdminTab("create")}
                   className={`flex items-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-colors ${
                     adminTab === "create"
-                      ? "bg-white text-[#1e88e5] shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? "bg-white text-primary shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <Plus className="w-4 h-4" />
@@ -941,11 +941,11 @@ const AdminDashboard = () => {
                       <CardContent className="p-6">
                         <div className="flex items-center gap-3">
                           <div className="bg-blue-100 p-3 rounded-xl">
-                            <span className="text-2xl font-bold text-blue-600">👥</span>
+                            <span className="text-2xl font-bold text-primary">👥</span>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">Total Admins</p>
-                            <p className="text-2xl font-bold text-gray-900">{users.filter(u => u.role === "admin").length}</p>
+                            <p className="text-sm text-muted-foreground">Total Admins</p>
+                            <p className="text-2xl font-bold text-foreground">{users.filter(u => u.role === "admin").length}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -958,8 +958,8 @@ const AdminDashboard = () => {
                             <span className="text-2xl font-bold text-green-600">✅</span>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">Active Admins</p>
-                            <p className="text-2xl font-bold text-gray-900">{users.filter(u => u.role === "admin" && !u.isSuspended).length}</p>
+                            <p className="text-sm text-muted-foreground">Active Admins</p>
+                            <p className="text-2xl font-bold text-foreground">{users.filter(u => u.role === "admin" && !u.isSuspended).length}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -972,8 +972,8 @@ const AdminDashboard = () => {
                             <span className="text-2xl font-bold text-orange-600">⛔</span>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">Suspended</p>
-                            <p className="text-2xl font-bold text-gray-900">{users.filter(u => u.role === "admin" && u.isSuspended).length}</p>
+                            <p className="text-sm text-muted-foreground">Suspended</p>
+                            <p className="text-2xl font-bold text-foreground">{users.filter(u => u.role === "admin" && u.isSuspended).length}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -981,16 +981,16 @@ const AdminDashboard = () => {
                   </div>
 
                   {/* Search and Filter (CRM Style Popover Filter) */}
-                  <Card className="border border-gray-200 shadow-md rounded-2xl bg-white">
+                  <Card className="border border-border shadow-md rounded-2xl bg-white">
                     <CardContent className="p-4 sm:p-6">
                       <div className="flex flex-col sm:flex-row items-center gap-4">
                         <div className="flex-1 w-full relative">
-                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 pointer-events-none" />
+                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4 pointer-events-none" />
                           <Input
                             placeholder="Search by name, email, or username..."
                             value={adminSearch}
                             onChange={(e) => setAdminSearch(e.target.value)}
-                            className="pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all"
+                            className="pl-10 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent transition-all"
                           />
                         </div>
 
@@ -1006,14 +1006,14 @@ const AdminDashboard = () => {
                               )}
                             </Button>
                           </PopoverTrigger>
-                          <PopoverContent className="w-48 bg-white p-4 shadow-lg border border-gray-200 rounded-xl z-50" align="end">
+                          <PopoverContent className="w-48 bg-white p-4 shadow-lg border border-border rounded-xl z-50" align="end">
                             <div className="space-y-3">
-                              <label className="text-sm font-medium text-gray-700">Status</label>
+                              <label className="text-sm font-medium text-foreground">Status</label>
                               <Select
                                 value={adminStatusFilter}
                                 onValueChange={(val: "all" | "active" | "suspended") => setAdminStatusFilter(val)}
                               >
-                                <SelectTrigger className="w-full bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-transparent transition-all">
+                                <SelectTrigger className="w-full bg-white focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-transparent transition-all">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white z-50">
@@ -1040,28 +1040,28 @@ const AdminDashboard = () => {
                         <div className="overflow-x-auto">
                           <table className="w-full text-sm">
                             <thead>
-                              <tr className="border-b border-gray-200 bg-gray-50">
-                                <th className="px-6 py-4 text-left font-semibold text-gray-900">Name</th>
-                                <th className="px-6 py-4 text-left font-semibold text-gray-900">Email</th>
-                                <th className="px-6 py-4 text-left font-semibold text-gray-900">Phone</th>
-                                <th className="px-6 py-4 text-left font-semibold text-gray-900">Status</th>
-                                <th className="px-6 py-4 text-left font-semibold text-gray-900">Joined</th>
+                              <tr className="border-b border-border bg-background">
+                                <th className="px-6 py-4 text-left font-semibold text-foreground">Name</th>
+                                <th className="px-6 py-4 text-left font-semibold text-foreground">Email</th>
+                                <th className="px-6 py-4 text-left font-semibold text-foreground">Phone</th>
+                                <th className="px-6 py-4 text-left font-semibold text-foreground">Status</th>
+                                <th className="px-6 py-4 text-left font-semibold text-foreground">Joined</th>
                               </tr>
                             </thead>
                             <tbody>
                               {filteredAdmins.map((admin) => (
                                 <tr
                                   key={admin.id}
-                                  className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+                                  className="border-b border-border hover:bg-muted transition-colors"
                                 >
                                   <td className="px-6 py-4">
-                                    <p className="font-medium text-gray-900">{admin.fullName}</p>
+                                    <p className="font-medium text-foreground">{admin.fullName}</p>
                                   </td>
                                   <td className="px-6 py-4">
-                                    <p className="text-sm text-gray-700">{admin.email}</p>
+                                    <p className="text-sm text-foreground">{admin.email}</p>
                                   </td>
                                   <td className="px-6 py-4">
-                                    <p className="text-sm text-gray-700">+{admin.countryCode} {admin.mobileNumber}</p>
+                                    <p className="text-sm text-foreground">+{admin.countryCode} {admin.mobileNumber}</p>
                                   </td>
                                   <td className="px-6 py-4">
                                     <span
@@ -1075,9 +1075,9 @@ const AdminDashboard = () => {
                                     </span>
                                   </td>
                                   <td className="px-6 py-4">
-                                    <div className="text-sm text-gray-700">
+                                    <div className="text-sm text-foreground">
                                       <p className="font-medium">{format(new Date(admin.signupDate), "dd/MM/yyyy")}</p>
-                                      <p className="text-xs text-gray-600">{format(new Date(admin.signupDate), "h:mm a")}</p>
+                                      <p className="text-xs text-muted-foreground">{format(new Date(admin.signupDate), "h:mm a")}</p>
                                     </div>
                                   </td>
                                 </tr>
@@ -1086,7 +1086,7 @@ const AdminDashboard = () => {
                           </table>
                         </div>
                       ) : (
-                        <div className="text-center py-12 text-gray-600">
+                        <div className="text-center py-12 text-muted-foreground">
                           <p>No admin users found matching your criteria</p>
                         </div>
                       )}
@@ -1113,11 +1113,11 @@ const AdminDashboard = () => {
               {/* Header */}
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                    <Settings className="h-6 w-6 text-gray-700" />
+                  <h3 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                    <Settings className="h-6 w-6 text-foreground" />
                     Settings
                   </h3>
-                  <p className="text-sm text-gray-600 mt-1">Manage your account settings and system preferences</p>
+                  <p className="text-sm text-muted-foreground mt-1">Manage your account settings and system preferences</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline" className="text-xs uppercase font-semibold">
@@ -1130,7 +1130,7 @@ const AdminDashboard = () => {
               </div>
 
               {/* Settings Tabs (Full-width strip like before with blue active selection) */}
-              <div className="grid w-full grid-cols-2 sm:grid-cols-5 bg-gray-100 p-1 rounded-xl h-auto gap-1">
+              <div className="grid w-full grid-cols-2 sm:grid-cols-5 bg-muted p-1 rounded-xl h-auto gap-1">
                 {[
                   { id: "account", label: "Account", icon: UserIcon },
                   { id: "security", label: "Security", icon: Lock },
@@ -1147,8 +1147,8 @@ const AdminDashboard = () => {
                       onClick={() => setSettingsTab(tab.id)}
                       className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                         isActive
-                          ? "bg-white text-blue-600 shadow-sm"
-                          : "text-gray-600 hover:text-gray-900"
+                          ? "bg-white text-primary shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
                       }`}
                     >
                       <Icon className="w-4 h-4" />
@@ -1165,44 +1165,44 @@ const AdminDashboard = () => {
                   <Card className="border-0 shadow-md rounded-2xl bg-white">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-lg">
-                        <UserIcon className="h-5 w-5 text-blue-600" />
+                        <UserIcon className="h-5 w-5 text-primary" />
                         Account Information
                       </CardTitle>
                       <CardDescription>View and manage your administrator account details</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">Full Name</p>
-                          <p className="text-base font-semibold text-gray-900 mt-1">{user?.fullName || "—"}</p>
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">Full Name</p>
+                          <p className="text-base font-semibold text-foreground mt-1">{user?.fullName || "—"}</p>
                         </div>
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">Email Address</p>
-                          <p className="text-base font-semibold text-gray-900 mt-1">{user?.email || "—"}</p>
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">Email Address</p>
+                          <p className="text-base font-semibold text-foreground mt-1">{user?.email || "—"}</p>
                         </div>
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">Phone Number</p>
-                          <p className="text-base font-semibold text-gray-900 mt-1">
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">Phone Number</p>
+                          <p className="text-base font-semibold text-foreground mt-1">
                             +{user?.countryCode || "91"} {user?.mobileNumber || "—"}
                           </p>
                         </div>
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">Role & Permissions</p>
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">Role & Permissions</p>
                           <div className="mt-1 flex items-center gap-2">
-                            <Badge className="bg-blue-600 text-white">Administrator</Badge>
+                            <Badge className="bg-primary text-white">Administrator</Badge>
                             <Badge variant="outline">Full Access</Badge>
                           </div>
                         </div>
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">Member Since</p>
-                          <p className="text-base font-semibold text-gray-900 mt-1">
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">Member Since</p>
+                          <p className="text-base font-semibold text-foreground mt-1">
                             {user?.signupDate && !isNaN(new Date(user.signupDate).getTime())
                               ? format(new Date(user.signupDate), "MMMM dd, yyyy")
                               : "—"}
                           </p>
                         </div>
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">Account Status</p>
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">Account Status</p>
                           <div className="mt-1 flex items-center gap-2">
                             <span className="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
                             <span className="text-sm font-semibold text-green-700">Active</span>
@@ -1218,20 +1218,20 @@ const AdminDashboard = () => {
                   <Card className="border-0 shadow-md rounded-2xl bg-white">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-lg">
-                        <Lock className="h-5 w-5 text-blue-600" />
+                        <Lock className="h-5 w-5 text-primary" />
                         Password & Security
                       </CardTitle>
                       <CardDescription>Manage your password and security settings</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border border-gray-200 rounded-xl bg-gray-50/50">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border border-border rounded-xl bg-background/50">
                         <div className="flex items-center gap-3">
                           <div className="bg-blue-100 p-2.5 rounded-xl">
-                            <KeyRound className="h-5 w-5 text-blue-600" />
+                            <KeyRound className="h-5 w-5 text-primary" />
                           </div>
                           <div>
-                            <div className="font-semibold text-gray-900 text-sm">Account Password</div>
-                            <div className="text-xs text-gray-500">Regularly updating your password keeps your account secure</div>
+                            <div className="font-semibold text-foreground text-sm">Account Password</div>
+                            <div className="text-xs text-muted-foreground">Regularly updating your password keeps your account secure</div>
                           </div>
                         </div>
                         <Button
@@ -1250,68 +1250,68 @@ const AdminDashboard = () => {
                   <Card className="border-0 shadow-md rounded-2xl bg-white">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-lg">
-                        <Bell className="h-5 w-5 text-blue-600" />
+                        <Bell className="h-5 w-5 text-primary" />
                         Notification Preferences
                       </CardTitle>
                       <CardDescription>Configure how and when you receive system alerts</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center justify-between p-4 border border-border rounded-xl hover:bg-muted transition-colors">
                         <div>
-                          <p className="text-sm font-medium text-gray-900">Email Notifications</p>
-                          <p className="text-xs text-gray-500">Receive email summaries for critical updates and booking events</p>
+                          <p className="text-sm font-medium text-foreground">Email Notifications</p>
+                          <p className="text-xs text-muted-foreground">Receive email summaries for critical updates and booking events</p>
                         </div>
                         <input
                           type="checkbox"
                           checked={emailNotifs}
                           onChange={(e) => setEmailNotifs(e.target.checked)}
-                          className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                          className="w-4 h-4 text-primary rounded cursor-pointer"
                         />
                       </div>
 
-                      <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center justify-between p-4 border border-border rounded-xl hover:bg-muted transition-colors">
                         <div>
-                          <p className="text-sm font-medium text-gray-900">Booking Alerts</p>
-                          <p className="text-xs text-gray-500">Get notified immediately when new trip reservations are created</p>
+                          <p className="text-sm font-medium text-foreground">Booking Alerts</p>
+                          <p className="text-xs text-muted-foreground">Get notified immediately when new trip reservations are created</p>
                         </div>
                         <input
                           type="checkbox"
                           checked={bookingNotifs}
                           onChange={(e) => setBookingNotifs(e.target.checked)}
-                          className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                          className="w-4 h-4 text-primary rounded cursor-pointer"
                         />
                       </div>
 
-                      <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center justify-between p-4 border border-border rounded-xl hover:bg-muted transition-colors">
                         <div>
-                          <p className="text-sm font-medium text-gray-900">Customer Feedback & Reviews</p>
-                          <p className="text-xs text-gray-500">Instant notification when a customer submits feedback or a review</p>
+                          <p className="text-sm font-medium text-foreground">Customer Feedback & Reviews</p>
+                          <p className="text-xs text-muted-foreground">Instant notification when a customer submits feedback or a review</p>
                         </div>
                         <input
                           type="checkbox"
                           checked={reviewNotifs}
                           onChange={(e) => setReviewNotifs(e.target.checked)}
-                          className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                          className="w-4 h-4 text-primary rounded cursor-pointer"
                         />
                       </div>
 
-                      <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center justify-between p-4 border border-border rounded-xl hover:bg-muted transition-colors">
                         <div>
-                          <p className="text-sm font-medium text-gray-900">Security & Admin Alerts</p>
-                          <p className="text-xs text-gray-500">Alerts regarding admin login activities and permission updates</p>
+                          <p className="text-sm font-medium text-foreground">Security & Admin Alerts</p>
+                          <p className="text-xs text-muted-foreground">Alerts regarding admin login activities and permission updates</p>
                         </div>
                         <input
                           type="checkbox"
                           checked={securityNotifs}
                           onChange={(e) => setSecurityNotifs(e.target.checked)}
-                          className="w-4 h-4 text-blue-600 rounded cursor-pointer"
+                          className="w-4 h-4 text-primary rounded cursor-pointer"
                         />
                       </div>
 
                       <div className="pt-4 flex justify-end">
                         <Button
                           onClick={() => toast({ title: "Success", description: "Notification preferences saved" })}
-                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                          className="bg-primary hover:bg-primary-hover text-white"
                         >
                           Save Preferences
                         </Button>
@@ -1325,33 +1325,33 @@ const AdminDashboard = () => {
                   <Card className="border-0 shadow-md rounded-2xl bg-white">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-lg">
-                        <Palette className="h-5 w-5 text-blue-600" />
+                        <Palette className="h-5 w-5 text-primary" />
                         Theme & Appearance
                       </CardTitle>
                       <CardDescription>Customize the look and feel of your admin dashboard</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div className="p-4 border-2 border-blue-600 rounded-xl bg-blue-50/30 cursor-pointer">
-                          <div className="w-full h-20 bg-gray-100 rounded-lg mb-3 border border-gray-200 flex items-center justify-center">
-                            <span className="text-xs font-semibold text-gray-700">Light Mode</span>
+                        <div className="p-4 border-2 border-primary rounded-xl bg-blue-50/30 cursor-pointer">
+                          <div className="w-full h-20 bg-muted rounded-lg mb-3 border border-border flex items-center justify-center">
+                            <span className="text-xs font-semibold text-foreground">Light Mode</span>
                           </div>
-                          <p className="text-sm font-semibold text-gray-900">Light (Default)</p>
-                          <p className="text-xs text-gray-500 mt-1">Clean and crisp daylight contrast</p>
+                          <p className="text-sm font-semibold text-foreground">Light (Default)</p>
+                          <p className="text-xs text-muted-foreground mt-1">Clean and crisp daylight contrast</p>
                         </div>
-                        <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 opacity-75 cursor-pointer hover:border-gray-300 transition-colors">
+                        <div className="p-4 border border-border rounded-xl bg-background/50 opacity-75 cursor-pointer hover:border-input transition-colors">
                           <div className="w-full h-20 bg-slate-900 rounded-lg mb-3 border border-slate-800 flex items-center justify-center">
                             <span className="text-xs font-semibold text-white">Dark Mode</span>
                           </div>
-                          <p className="text-sm font-semibold text-gray-900">Dark</p>
-                          <p className="text-xs text-gray-500 mt-1">High-contrast dark theme</p>
+                          <p className="text-sm font-semibold text-foreground">Dark</p>
+                          <p className="text-xs text-muted-foreground mt-1">High-contrast dark theme</p>
                         </div>
-                        <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 opacity-75 cursor-pointer hover:border-gray-300 transition-colors">
-                          <div className="w-full h-20 bg-gradient-to-r from-gray-100 to-slate-900 rounded-lg mb-3 border border-gray-200 flex items-center justify-center">
-                            <span className="text-xs font-semibold text-gray-800">System</span>
+                        <div className="p-4 border border-border rounded-xl bg-background/50 opacity-75 cursor-pointer hover:border-input transition-colors">
+                          <div className="w-full h-20 bg-gradient-to-r from-gray-100 to-slate-900 rounded-lg mb-3 border border-border flex items-center justify-center">
+                            <span className="text-xs font-semibold text-foreground">System</span>
                           </div>
-                          <p className="text-sm font-semibold text-gray-900">System Sync</p>
-                          <p className="text-xs text-gray-500 mt-1">Match device operating system</p>
+                          <p className="text-sm font-semibold text-foreground">System Sync</p>
+                          <p className="text-xs text-muted-foreground mt-1">Match device operating system</p>
                         </div>
                       </div>
                     </CardContent>
@@ -1363,31 +1363,31 @@ const AdminDashboard = () => {
                   <Card className="border-0 shadow-md rounded-2xl bg-white">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-lg">
-                        <Database className="h-5 w-5 text-blue-600" />
+                        <Database className="h-5 w-5 text-primary" />
                         System Configuration
                       </CardTitle>
                       <CardDescription>System-wide metrics and database configuration</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">System Status</p>
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">System Status</p>
                           <div className="mt-1 flex items-center gap-2">
                             <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
                             <span className="text-sm font-semibold text-green-700">Online & Healthy</span>
                           </div>
                         </div>
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">Database</p>
-                          <p className="text-sm font-semibold text-gray-900 mt-1">SQLite (Local Storage)</p>
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">Database</p>
+                          <p className="text-sm font-semibold text-foreground mt-1">SQLite (Local Storage)</p>
                         </div>
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">API Version</p>
-                          <p className="text-sm font-semibold text-gray-900 mt-1">v1.0.0 (Express)</p>
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">API Version</p>
+                          <p className="text-sm font-semibold text-foreground mt-1">v1.0.0 (Express)</p>
                         </div>
-                        <div className="p-4 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <p className="text-xs text-gray-500 font-medium">Server Port</p>
-                          <p className="text-sm font-semibold text-gray-900 mt-1">5000 (Backend) / 5000 (Vite)</p>
+                        <div className="p-4 border border-border rounded-xl bg-background/50">
+                          <p className="text-xs text-muted-foreground font-medium">Server Port</p>
+                          <p className="text-sm font-semibold text-foreground mt-1">5000 (Backend) / 5000 (Vite)</p>
                         </div>
                       </div>
                     </CardContent>

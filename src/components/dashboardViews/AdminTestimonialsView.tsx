@@ -263,8 +263,8 @@ export function AdminTestimonialsView({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Feedback Management</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Feedback Management</h1>
+          <p className="text-muted-foreground mt-2">
             Review and respond to customer feedback and complaints
           </p>
         </div>
@@ -296,8 +296,8 @@ export function AdminTestimonialsView({
           onClick={() => setActiveTab("feedback")}
           className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === "feedback"
-              ? "bg-white text-blue-600 shadow-sm"
-              : "text-gray-600 hover:text-gray-900"
+              ? "bg-white text-primary shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <ThumbsUp className="w-4 h-4 inline mr-2" />
@@ -307,8 +307,8 @@ export function AdminTestimonialsView({
           onClick={() => setActiveTab("complaint")}
           className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === "complaint"
-              ? "bg-white text-blue-600 shadow-sm"
-              : "text-gray-600 hover:text-gray-900"
+              ? "bg-white text-primary shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <AlertCircle className="w-4 h-4 inline mr-2" />
@@ -318,8 +318,8 @@ export function AdminTestimonialsView({
           onClick={() => setActiveTab("ratings")}
           className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === "ratings"
-              ? "bg-white text-blue-600 shadow-sm"
-              : "text-gray-600 hover:text-gray-900"
+              ? "bg-white text-primary shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <Star className="w-4 h-4 inline mr-2" />
@@ -335,12 +335,12 @@ export function AdminTestimonialsView({
             <Card className="rounded-2xl shadow-md border-0 bg-white">
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white">
+                  <div className="w-12 h-12 bg-muted0 rounded-lg flex items-center justify-center text-white">
                     <ThumbsUp className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.totalFeedback}</div>
-                    <div className="text-sm text-gray-600">Total Feedback</div>
+                    <div className="text-2xl font-bold text-foreground">{stats.totalFeedback}</div>
+                    <div className="text-sm text-muted-foreground">Total Feedback</div>
                   </div>
                 </div>
               </CardContent>
@@ -353,8 +353,8 @@ export function AdminTestimonialsView({
                     <Clock className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.pending}</div>
-                    <div className="text-sm text-gray-600">Pending Review</div>
+                    <div className="text-2xl font-bold text-foreground">{stats.pending}</div>
+                    <div className="text-sm text-muted-foreground">Pending Review</div>
                   </div>
                 </div>
               </CardContent>
@@ -367,8 +367,8 @@ export function AdminTestimonialsView({
                     <CheckCircle className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.resolved}</div>
-                    <div className="text-sm text-gray-600">Resolved</div>
+                    <div className="text-2xl font-bold text-foreground">{stats.resolved}</div>
+                    <div className="text-sm text-muted-foreground">Resolved</div>
                   </div>
                 </div>
               </CardContent>
@@ -381,8 +381,8 @@ export function AdminTestimonialsView({
                     <CheckCircle className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.inReview}</div>
-                    <div className="text-sm text-gray-600">In Review</div>
+                    <div className="text-2xl font-bold text-foreground">{stats.inReview}</div>
+                    <div className="text-sm text-muted-foreground">In Review</div>
                   </div>
                 </div>
               </CardContent>
@@ -391,12 +391,12 @@ export function AdminTestimonialsView({
             <Card className="rounded-2xl shadow-md border-0 bg-white">
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center text-white">
+                  <div className="w-12 h-12 bg-background0 rounded-lg flex items-center justify-center text-white">
                     <XCircle className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.closed}</div>
-                    <div className="text-sm text-gray-600">Closed</div>
+                    <div className="text-2xl font-bold text-foreground">{stats.closed}</div>
+                    <div className="text-sm text-muted-foreground">Closed</div>
                   </div>
                 </div>
               </CardContent>
@@ -417,7 +417,7 @@ export function AdminTestimonialsView({
                   filteredItems.map((item) => (
                     <div
                       key={item.id}
-                      className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="p-4 border border-border rounded-lg hover:bg-muted transition-colors"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                         <div className="flex-1">
@@ -443,22 +443,22 @@ export function AdminTestimonialsView({
                                     }`}
                                   />
                                 ))}
-                                <span className="text-sm text-gray-600 ml-1">
+                                <span className="text-sm text-muted-foreground ml-1">
                                   ({item.rating}/5)
                                 </span>
                               </div>
                             )}
                           </div>
 
-                          <h3 className="font-semibold text-gray-900 mb-1">
+                          <h3 className="font-semibold text-foreground mb-1">
                             {item.tripName || "Tour Feedback"}
                           </h3>
 
-                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                             "{item.quote}"
                           </p>
 
-                          <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
+                          <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                             <div className="flex items-center gap-1">
                               <User className="w-3.5 h-3.5" />
                               <span>{item.userName}</span>
@@ -480,7 +480,7 @@ export function AdminTestimonialsView({
                           </div>
 
                           {item.adminResponse && (
-                            <div className="mt-3 p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs text-blue-900">
+                            <div className="mt-3 p-3 bg-muted border border-blue-100 rounded-lg text-xs text-blue-900">
                               <span className="font-semibold">Admin Response:</span> {item.adminResponse}
                             </div>
                           )}
@@ -495,7 +495,7 @@ export function AdminTestimonialsView({
                               onClick={() =>
                                 updateFeedbackStatus(item.id, "in_review", "Under review by admin.")
                               }
-                              className="text-blue-600 border-blue-300 hover:bg-blue-50 text-xs h-8"
+                              className="text-primary border-input hover:bg-muted text-xs h-8"
                             >
                               Start Review
                             </Button>
@@ -557,23 +557,23 @@ export function AdminTestimonialsView({
                                 </div>
 
                                 <div>
-                                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                                     Trip / Subject:
                                   </h4>
-                                  <p className="text-base font-medium text-gray-900">{item.tripName}</p>
+                                  <p className="text-base font-medium text-foreground">{item.tripName}</p>
                                 </div>
 
                                 <div>
-                                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                                     Customer Feedback:
                                   </h4>
-                                  <div className="p-3 bg-gray-50 rounded-lg text-sm text-gray-700 italic border border-gray-100">
+                                  <div className="p-3 bg-background rounded-lg text-sm text-foreground italic border border-border">
                                     "{item.quote}"
                                   </div>
                                 </div>
 
                                 <div>
-                                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                                  <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                                     Customer Rating:
                                   </h4>
                                   <div className="flex items-center gap-2 bg-yellow-50 p-2.5 rounded-lg border border-yellow-100">
@@ -604,25 +604,25 @@ export function AdminTestimonialsView({
                                   </div>
                                 </div>
 
-                                <div className="p-3 bg-gray-50 rounded-lg text-xs space-y-1 text-gray-600 border border-gray-100">
+                                <div className="p-3 bg-background rounded-lg text-xs space-y-1 text-muted-foreground border border-border">
                                   <p>
-                                    <strong className="text-gray-900">Name:</strong> {item.userName}
+                                    <strong className="text-foreground">Name:</strong> {item.userName}
                                   </p>
                                   <p>
-                                    <strong className="text-gray-900">Email:</strong> {item.email}
+                                    <strong className="text-foreground">Email:</strong> {item.email}
                                   </p>
                                   {item.location && (
                                     <p>
-                                      <strong className="text-gray-900">Location:</strong> {item.location}
+                                      <strong className="text-foreground">Location:</strong> {item.location}
                                     </p>
                                   )}
                                   <p>
-                                    <strong className="text-gray-900">Date:</strong> {formatDateTime(item.submittedDate)}
+                                    <strong className="text-foreground">Date:</strong> {formatDateTime(item.submittedDate)}
                                   </p>
                                 </div>
 
                                 <div>
-                                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                                  <label className="block text-xs font-semibold text-foreground mb-1">
                                     Update Status:
                                   </label>
                                   <Select
@@ -642,7 +642,7 @@ export function AdminTestimonialsView({
                                 </div>
 
                                 <div>
-                                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                                  <label className="block text-xs font-semibold text-foreground mb-1">
                                     Admin Response / Internal Notes:
                                   </label>
                                   <Textarea
@@ -655,7 +655,7 @@ export function AdminTestimonialsView({
 
                                 <div className="flex gap-2 pt-2">
                                   <Button
-                                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                                    className="flex-1 bg-primary hover:bg-primary-hover"
                                     onClick={() => {
                                       updateFeedbackStatus(item.id, newStatus, adminResponse);
                                     }}
@@ -682,9 +682,9 @@ export function AdminTestimonialsView({
                   ))
                 ) : (
                   <div className="text-center py-12">
-                    <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500 font-medium">No feedback found</p>
-                    <p className="text-xs text-gray-400 mt-1">Customer reviews and feedback will appear here</p>
+                    <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground font-medium">No feedback found</p>
+                    <p className="text-xs text-muted-foreground mt-1">Customer reviews and feedback will appear here</p>
                   </div>
                 )}
               </div>
@@ -705,10 +705,10 @@ export function AdminTestimonialsView({
                     <Clock className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-foreground">
                       {enrichedTestimonials.filter((t) => t.type === "complaint" && t.status === "pending").length}
                     </div>
-                    <div className="text-sm text-gray-600">Pending Complaints</div>
+                    <div className="text-sm text-muted-foreground">Pending Complaints</div>
                   </div>
                 </div>
               </CardContent>
@@ -721,8 +721,8 @@ export function AdminTestimonialsView({
                     <AlertCircle className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.totalComplaints}</div>
-                    <div className="text-sm text-gray-600">Total Complaints</div>
+                    <div className="text-2xl font-bold text-foreground">{stats.totalComplaints}</div>
+                    <div className="text-sm text-muted-foreground">Total Complaints</div>
                   </div>
                 </div>
               </CardContent>
@@ -735,10 +735,10 @@ export function AdminTestimonialsView({
                     <CheckCircle className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-foreground">
                       {enrichedTestimonials.filter((t) => t.type === "complaint" && t.status === "resolved").length}
                     </div>
-                    <div className="text-sm text-gray-600">Resolved</div>
+                    <div className="text-sm text-muted-foreground">Resolved</div>
                   </div>
                 </div>
               </CardContent>
@@ -747,14 +747,14 @@ export function AdminTestimonialsView({
             <Card className="rounded-2xl shadow-md border-0 bg-white">
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center text-white">
+                  <div className="w-12 h-12 bg-background0 rounded-lg flex items-center justify-center text-white">
                     <XCircle className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-foreground">
                       {enrichedTestimonials.filter((t) => t.type === "complaint" && t.status === "closed").length}
                     </div>
-                    <div className="text-sm text-gray-600">Closed</div>
+                    <div className="text-sm text-muted-foreground">Closed</div>
                   </div>
                 </div>
               </CardContent>
@@ -772,8 +772,8 @@ export function AdminTestimonialsView({
                 {enrichedTestimonials.filter((f) => f.type === "complaint").length === 0 ? (
                   <div className="text-center py-12">
                     <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">No complaints found</h3>
-                    <p className="text-sm text-gray-500">There are no customer complaints at the moment.</p>
+                    <h3 className="text-lg font-medium text-foreground mb-1">No complaints found</h3>
+                    <p className="text-sm text-muted-foreground">There are no customer complaints at the moment.</p>
                   </div>
                 ) : (
                   enrichedTestimonials
@@ -781,7 +781,7 @@ export function AdminTestimonialsView({
                     .map((item) => (
                       <div
                         key={item.id}
-                        className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                        className="border border-border rounded-lg p-4 hover:shadow-md transition-shadow"
                       >
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                           <div className="flex-1">
@@ -806,10 +806,10 @@ export function AdminTestimonialsView({
                               </div>
                             </div>
 
-                            <h3 className="font-semibold text-gray-900 mb-1">{item.tripName}</h3>
-                            <p className="text-sm text-gray-600 mb-3">{item.quote}</p>
+                            <h3 className="font-semibold text-foreground mb-1">{item.tripName}</h3>
+                            <p className="text-sm text-muted-foreground mb-3">{item.quote}</p>
 
-                            <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
+                            <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                               <div className="flex items-center gap-1">
                                 <User className="w-3.5 h-3.5" />
                                 <span>{item.userName}</span>
@@ -833,7 +833,7 @@ export function AdminTestimonialsView({
                                 onClick={() =>
                                   updateFeedbackStatus(item.id, "in_review", "Under review by admin.")
                                 }
-                                className="text-blue-600 border-blue-300 hover:bg-blue-50 text-xs h-8"
+                                className="text-primary border-input hover:bg-muted text-xs h-8"
                               >
                                 Start Review
                               </Button>
@@ -872,12 +872,12 @@ export function AdminTestimonialsView({
             <Card className="rounded-2xl shadow-md border-0 bg-white">
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white">
+                  <div className="w-12 h-12 bg-muted0 rounded-lg flex items-center justify-center text-white">
                     <MessageSquare className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.total}</div>
-                    <div className="text-sm text-gray-600">Total Ratings</div>
+                    <div className="text-2xl font-bold text-foreground">{stats.total}</div>
+                    <div className="text-sm text-muted-foreground">Total Ratings</div>
                   </div>
                 </div>
               </CardContent>
@@ -890,8 +890,8 @@ export function AdminTestimonialsView({
                     <Star className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.avgRating}</div>
-                    <div className="text-sm text-gray-600">Average Rating</div>
+                    <div className="text-2xl font-bold text-foreground">{stats.avgRating}</div>
+                    <div className="text-sm text-muted-foreground">Average Rating</div>
                   </div>
                 </div>
               </CardContent>
@@ -904,10 +904,10 @@ export function AdminTestimonialsView({
                     <ThumbsUp className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-foreground">
                       {enrichedTestimonials.filter((t) => t.rating >= 4).length}
                     </div>
-                    <div className="text-sm text-gray-600">Positive (4-5★)</div>
+                    <div className="text-sm text-muted-foreground">Positive (4-5★)</div>
                   </div>
                 </div>
               </CardContent>
@@ -920,10 +920,10 @@ export function AdminTestimonialsView({
                     <TrendingUp className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-foreground">
                       {stats.total ? Math.round((enrichedTestimonials.filter((t) => t.rating >= 4).length / stats.total) * 100) : 100}%
                     </div>
-                    <div className="text-sm text-gray-600">Satisfaction Rate</div>
+                    <div className="text-sm text-muted-foreground">Satisfaction Rate</div>
                   </div>
                 </div>
               </CardContent>
@@ -942,7 +942,7 @@ export function AdminTestimonialsView({
                   const pct = stats.total ? Math.round((count / stats.total) * 100) : 0;
                   return (
                     <div key={stars} className="flex items-center gap-3">
-                      <div className="flex items-center gap-1 w-16 text-sm font-medium text-gray-700">
+                      <div className="flex items-center gap-1 w-16 text-sm font-medium text-foreground">
                         <span>{stars}</span>
                         <Star className="w-4 h-4 text-yellow-400 fill-current" />
                       </div>
@@ -952,7 +952,7 @@ export function AdminTestimonialsView({
                           style={{ width: `${pct}%` }}
                         />
                       </div>
-                      <div className="w-16 text-right text-xs text-gray-600 font-medium">
+                      <div className="w-16 text-right text-xs text-muted-foreground font-medium">
                         {count} ({pct}%)
                       </div>
                     </div>

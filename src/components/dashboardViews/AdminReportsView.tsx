@@ -138,8 +138,8 @@ export function AdminReportsView({
       {/* Header */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h3 className="text-2xl font-bold text-gray-900">Reports & Analytics</h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <h3 className="text-2xl font-bold text-foreground">Reports & Analytics</h3>
+          <p className="text-sm text-muted-foreground mt-1">
             Comprehensive insights into your healthcare management system
           </p>
         </div>
@@ -165,12 +165,12 @@ export function AdminReportsView({
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 font-medium">Total Users</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">{users.length}</p>
+                <p className="text-sm text-muted-foreground font-medium">Total Users</p>
+                <p className="text-3xl font-bold text-foreground mt-2">{users.length}</p>
                 <p className="text-xs text-green-600 mt-1">↑ 12% from last month</p>
               </div>
-              <div className="bg-blue-50 p-3 rounded-xl">
-                <Users className="w-6 h-6 text-blue-600" />
+              <div className="bg-muted p-3 rounded-xl">
+                <Users className="w-6 h-6 text-primary" />
               </div>
             </div>
           </CardContent>
@@ -180,8 +180,8 @@ export function AdminReportsView({
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 font-medium">Total Bookings</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">{bookings.length}</p>
+                <p className="text-sm text-muted-foreground font-medium">Total Bookings</p>
+                <p className="text-3xl font-bold text-foreground mt-2">{bookings.length}</p>
                 <p className="text-xs text-green-600 mt-1">↑ 5% from last month</p>
               </div>
               <div className="bg-purple-50 p-3 rounded-xl">
@@ -195,8 +195,8 @@ export function AdminReportsView({
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 font-medium">Revenue (MTD)</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">₹{(totalRevenue / 100000).toFixed(1)}L</p>
+                <p className="text-sm text-muted-foreground font-medium">Revenue (MTD)</p>
+                <p className="text-3xl font-bold text-foreground mt-2">₹{(totalRevenue / 100000).toFixed(1)}L</p>
                 <p className="text-xs text-green-600 mt-1">↑ 8% from last month</p>
               </div>
               <div className="bg-yellow-50 p-3 rounded-xl">
@@ -210,9 +210,9 @@ export function AdminReportsView({
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 font-medium">Avg Rating</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">{avgRating}</p>
-                <p className="text-xs text-gray-600 mt-1">From {testimonials.length} reviews</p>
+                <p className="text-sm text-muted-foreground font-medium">Avg Rating</p>
+                <p className="text-3xl font-bold text-foreground mt-2">{avgRating}</p>
+                <p className="text-xs text-muted-foreground mt-1">From {testimonials.length} reviews</p>
               </div>
               <div className="bg-pink-50 p-3 rounded-xl">
                 <MessageSquare className="w-6 h-6 text-pink-600" />
@@ -292,7 +292,7 @@ export function AdminReportsView({
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div className="flex items-center gap-3">
                     <CheckCircle className="w-5 h-5 text-green-600" />
                     <span className="text-sm font-medium">Active Users Online</span>
@@ -300,7 +300,7 @@ export function AdminReportsView({
                   <Badge className="bg-green-100 text-green-800">{activeUsers} Users</Badge>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div className="flex items-center gap-3">
                     <AlertCircle className="w-5 h-5 text-yellow-600" />
                     <span className="text-sm font-medium">Pending Bookings</span>
@@ -310,15 +310,15 @@ export function AdminReportsView({
                   </Badge>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div className="flex items-center gap-3">
-                    <Database className="w-5 h-5 text-blue-600" />
+                    <Database className="w-5 h-5 text-primary" />
                     <span className="text-sm font-medium">Database Status</span>
                   </div>
                   <Badge className="bg-green-100 text-green-800">Healthy</Badge>
                 </div>
 
-                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div className="flex items-center gap-3">
                     <Zap className="w-5 h-5 text-green-600" />
                     <span className="text-sm font-medium">Server Uptime</span>
@@ -386,7 +386,7 @@ export function AdminReportsView({
 
                 <div className="space-y-3">
                   {bookingStatusData.map((item) => (
-                    <div key={item.name} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                    <div key={item.name} className="flex items-center justify-between p-3 border border-border rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.fill }} />
                         <span className="text-sm font-medium">{item.name}</span>
@@ -433,12 +433,12 @@ export function AdminReportsView({
 
                 <div className="space-y-4">
                   {customerSegments.map((segment) => (
-                    <div key={segment.name} className="p-4 border border-gray-200 rounded-lg">
+                    <div key={segment.name} className="p-4 border border-border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium">{segment.name}</span>
                         <Badge>{segment.value} users</Badge>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full bg-border rounded-full h-2">
                         <div
                           className="h-2 rounded-full"
                           style={{
@@ -478,10 +478,10 @@ export function AdminReportsView({
 
                 <div className="space-y-3">
                   {ratingDistribution.map((item) => (
-                    <div key={item.stars} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                    <div key={item.stars} className="flex items-center justify-between p-3 border border-border rounded-lg">
                       <span className="text-sm font-medium">{item.stars}</span>
                       <div className="flex items-center gap-3">
-                        <div className="w-32 bg-gray-200 rounded-full h-2">
+                        <div className="w-32 bg-border rounded-full h-2">
                           <div
                             className="h-2 rounded-full"
                             style={{
@@ -524,9 +524,9 @@ export function AdminReportsView({
                   </div>
                   <div className="text-xs text-red-700 mt-1">Negative Reviews</div>
                 </div>
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <div className="text-2xl font-bold text-blue-600">{testimonials.length}</div>
-                  <div className="text-xs text-blue-700 mt-1">Total Reviews</div>
+                <div className="p-4 bg-muted rounded-lg border border-accent">
+                  <div className="text-2xl font-bold text-primary">{testimonials.length}</div>
+                  <div className="text-xs text-primary mt-1">Total Reviews</div>
                 </div>
               </div>
             </CardContent>
@@ -575,7 +575,7 @@ export function AdminReportsView({
             <Card className="border-0 shadow-md rounded-2xl">
               <CardContent className="p-6">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 font-medium">Total Revenue</p>
+                  <p className="text-sm text-muted-foreground font-medium">Total Revenue</p>
                   <p className="text-3xl font-bold text-green-600 mt-2">
                     ₹{(financialData.reduce((sum, m) => sum + m.revenue, 0) / 100000).toFixed(1)}L
                   </p>
@@ -586,7 +586,7 @@ export function AdminReportsView({
             <Card className="border-0 shadow-md rounded-2xl">
               <CardContent className="p-6">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 font-medium">Total Expenses</p>
+                  <p className="text-sm text-muted-foreground font-medium">Total Expenses</p>
                   <p className="text-3xl font-bold text-red-600 mt-2">
                     ₹{(financialData.reduce((sum, m) => sum + m.expenses, 0) / 100000).toFixed(1)}L
                   </p>
@@ -597,8 +597,8 @@ export function AdminReportsView({
             <Card className="border-0 shadow-md rounded-2xl">
               <CardContent className="p-6">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 font-medium">Net Profit</p>
-                  <p className="text-3xl font-bold text-blue-600 mt-2">
+                  <p className="text-sm text-muted-foreground font-medium">Net Profit</p>
+                  <p className="text-3xl font-bold text-primary mt-2">
                     ₹
                     {(
                       (financialData.reduce((sum, m) => sum + m.revenue, 0) -
@@ -625,12 +625,12 @@ export function AdminReportsView({
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
+            <div className="p-4 border border-border rounded-lg hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex items-start justify-between mb-4">
-                <div className="text-sm font-medium text-gray-900">Customer Report</div>
+                <div className="text-sm font-medium text-foreground">Customer Report</div>
                 <Badge variant="secondary">PDF</Badge>
               </div>
-              <p className="text-xs text-gray-600 mb-4">Complete customer data and analytics</p>
+              <p className="text-xs text-muted-foreground mb-4">Complete customer data and analytics</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -642,12 +642,12 @@ export function AdminReportsView({
               </Button>
             </div>
 
-            <div className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
+            <div className="p-4 border border-border rounded-lg hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex items-start justify-between mb-4">
-                <div className="text-sm font-medium text-gray-900">Appointments Report</div>
+                <div className="text-sm font-medium text-foreground">Appointments Report</div>
                 <Badge variant="secondary">Excel</Badge>
               </div>
-              <p className="text-xs text-gray-600 mb-4">Booking details and statistics</p>
+              <p className="text-xs text-muted-foreground mb-4">Booking details and statistics</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -659,12 +659,12 @@ export function AdminReportsView({
               </Button>
             </div>
 
-            <div className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
+            <div className="p-4 border border-border rounded-lg hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex items-start justify-between mb-4">
-                <div className="text-sm font-medium text-gray-900">Financial Report</div>
+                <div className="text-sm font-medium text-foreground">Financial Report</div>
                 <Badge variant="secondary">PDF</Badge>
               </div>
-              <p className="text-xs text-gray-600 mb-4">Revenue and expense details</p>
+              <p className="text-xs text-muted-foreground mb-4">Revenue and expense details</p>
               <Button
                 variant="outline"
                 size="sm"
