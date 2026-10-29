@@ -1,0 +1,13 @@
+# Stories by Foot — https://www.storiesbyfoot.com
+#
+# NOTE: one single "*" group on purpose. A separate "User-agent: Googlebot" group
+# would make Googlebot IGNORE every rule in the "*" group below.
+User-agent: *
+Allow: /
+# Backend API (never useful in search results)
+Disallow: /api/
+# Private areas (/dashboard, /admin, /booking) are kept out of Google with an
+# "X-Robots-Tag: noindex" header (see vercel.json). They must stay crawlable so
+# Google can actually see that noindex instruction.
+
+Sitemap: https://www.storiesbyfoot.com/sitemap.xml
