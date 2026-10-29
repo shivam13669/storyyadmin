@@ -660,7 +660,7 @@ const LehLadakhTourPackagesPage = () => {
           <div className="relative overflow-hidden rounded-3xl">
             <video
               ref={videoRef}
-              className="h-[328px] w-full object-cover md:h-[336px] 2xl:h-[638px]"
+              className="h-[600px] w-full object-cover md:h-[700px] 2xl:h-[760px]"
               autoPlay
               muted
               loop
