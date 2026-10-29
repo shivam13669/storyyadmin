@@ -656,7 +656,7 @@ const LehLadakhTourPackagesPage = () => {
       </header>
 
       <main className="pb-24 md:pb-16">
-        <section className="mx-auto max-w-[1400px] px-4">
+        <section className="px-4">
           <div className="relative overflow-hidden rounded-3xl">
             <video
               ref={videoRef}
@@ -671,8 +671,8 @@ const LehLadakhTourPackagesPage = () => {
               <source src={HERO_VIDEO} type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-black/55" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center px-6 pb-20 text-center text-white">
-              <h1 className="text-4xl font-bold leading-tight md:text-5xl xl:text-6xl">Leh Ladakh Tour Packages &amp; Bike Trips</h1>
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
+              <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl 2xl:text-7xl">Leh Ladakh Tour Packages &amp; Bike Trips</h1>
               <p className="mt-4 text-lg md:text-2xl">Escape the Ordinary, Embrace the Magic of Ladakh</p>
               <div className="mt-6 rounded-full px-6 py-2 text-sm font-medium text-white" style={{ backgroundColor: PRIMARY }}>
                 Starting from <span className="ml-1 text-lg font-bold">₹21,999</span>
