@@ -660,7 +660,7 @@ const LehLadakhTourPackagesPage = () => {
           <div className="relative overflow-hidden rounded-3xl">
             <video
               ref={videoRef}
-              className="h-[520px] w-full object-cover md:h-[640px]"
+              className="h-[328px] w-full object-cover md:h-[336px] 2xl:h-[638px]"
               autoPlay
               muted
               loop
@@ -712,8 +712,8 @@ const LehLadakhTourPackagesPage = () => {
         </div>
 
         <section className="mx-auto mt-10 max-w-[1000px] px-4">
-          <div className="relative rounded-3xl border border-gray-200 bg-white p-6 shadow-sm md:p-10">
-            <div className={aboutExpanded ? "" : "max-h-[380px] overflow-hidden"}>
+          <div className="relative rounded-2xl border border-gray-200 bg-white p-4 shadow-sm md:p-6">
+            <div className={aboutExpanded ? "" : "max-h-36 overflow-hidden"}>
               <h2 className="text-3xl font-bold text-gray-900">About Leh Ladakh Tour Packages &amp; Bike Trips</h2>
               <div className="mt-5 space-y-4 leading-relaxed text-gray-600">
                 <p>Let&apos;s be honest, Ladakh isn&apos;t just a trip. It&apos;s the one you keep talking about for years after you&apos;re back.</p>
@@ -895,7 +895,7 @@ const LehLadakhTourPackagesPage = () => {
             {!aboutExpanded && (
               <div className="pointer-events-none absolute inset-x-0 bottom-14 h-24 bg-gradient-to-t from-white to-transparent" />
             )}
-            <div className="mt-4 flex justify-center">
+            <div className="mt-4 flex justify-end">
               <button
                 type="button"
                 onClick={() => setAboutExpanded(!aboutExpanded)}
