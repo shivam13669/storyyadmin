@@ -11,6 +11,7 @@ import DestinationsPage from "./pages/Destinations";
 import DestinationDetailPage from "./pages/DestinationDetail";
 import ContactPage from "./pages/Contact";
 import ServicesPage from "./pages/Services";
+import LehLadakhTourPackagesPage from "./pages/LehLadakhTourPackages";
 import TestimonialsPage from "./pages/Testimonials";
 import AboutPage from "./pages/About";
 import CareersPage from "./pages/Careers";
@@ -97,6 +98,7 @@ const AppContent = () => {
           <Route path="/destinations/:slug/:packageSlug" element={<DestinationDetailPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/india-trips/leh-ladakh-tour-packages" element={<LehLadakhTourPackagesPage />} />
           <Route path="/support" element={<SupportPage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="/about" element={<AboutPage />} />
