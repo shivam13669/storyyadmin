@@ -446,8 +446,8 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Right-Side Vertical Slide Pagination Dots (hidden on mobile, visible on sm+) */}
-        <div className="hidden sm:flex absolute right-3.5 sm:right-8 lg:right-10 top-1/2 -translate-y-1/2 z-20 flex-col items-center gap-2.5 sm:gap-3">
+        {/* Right-Side Vertical Slide Pagination Dots (matching original hero) */}
+        <div className="absolute right-3.5 sm:right-8 lg:right-10 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-2.5 sm:gap-3">
           {HERO_SLIDES.map((slide, idx) => (
             <button
               key={slide.image}
