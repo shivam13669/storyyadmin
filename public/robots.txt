@@ -1,0 +1,44 @@
+# Stories by Foot — https://www.storiesbyfoot.com
+#
+# NOTE: Googlebot uses the "*" group below. Do not add a separate
+# "User-agent: Googlebot" group unless you repeat all rules for it.
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# OpenAI / ChatGPT Search & Browsing
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+
+# Google Gemini / AI Overviews
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+
+# Anthropic Claude
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /api/
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+
+# Private areas (/dashboard, /admin, /booking) are kept out of search indexes
+# via "X-Robots-Tag: noindex" in vercel.json so crawlers can still see noindex.
+
+Sitemap: https://www.storiesbyfoot.com/sitemap.xml

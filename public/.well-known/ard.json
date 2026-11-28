@@ -1,0 +1,20 @@
+{
+  "entries": [
+    {
+      "identifier": "urn:air:storiesbyfoot.com:site:llms-guide",
+      "displayName": "Stories by Foot Travel Catalog & Guide",
+      "type": "text/markdown",
+      "url": "https://www.storiesbyfoot.com/llms.txt",
+      "description": "Browse domestic and international tour packages, group trips, bike trips, road trips, and support guides from Stories by Foot.",
+      "tags": ["travel", "tour-packages", "group-trips", "bike-trips"],
+      "capabilities": ["BrowsePackages", "CompareItineraries", "CustomerSupport"],
+      "representativeQueries": [
+        "what upcoming group trips and tour packages does Stories by Foot offer",
+        "how to book a domestic or international tour package on Stories by Foot"
+      ],
+      "trustManifest": {
+        "identity": "https://www.storiesbyfoot.com"
+      }
+    }
+  ]
+}

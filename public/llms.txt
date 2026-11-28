@@ -1,0 +1,22 @@
+# Stories by Foot
+
+> Stories by Foot is a tour and travel company offering domestic and international tour packages, group trips, bike trips, and road trips with verified stays and 24/7 support.
+
+## Core Pages
+
+- [Home](https://www.storiesbyfoot.com/): Overview of tour packages, popular destinations, hot departures, and travel services.
+- [Upcoming Trips & Destinations](https://www.storiesbyfoot.com/destinations): Browse and filter domestic and international group trips and tour packages.
+- [Services](https://www.storiesbyfoot.com/services): Tour logistics, backup vehicles, road captains, medical oxygen support, and custom trip planning.
+- [Support & FAQ](https://www.storiesbyfoot.com/support): Booking help, packing lists, permits, and cancellation/refund policies.
+- [Travel Blog](https://www.storiesbyfoot.com/blog): Route guides, trip cost breakdowns, and seasonal travel tips.
+- [About Us](https://www.storiesbyfoot.com/about): Company background, mission, and team.
+- [Contact](https://www.storiesbyfoot.com/contact): Phone (+91 6205129118), email (contact@storiesbyfoot.com), and callback inquiries.
+
+## Popular Destinations
+
+- [Ladakh Tour Packages](https://www.storiesbyfoot.com/destinations/ladakh)
+- [Zanskar Tour Packages](https://www.storiesbyfoot.com/destinations/zanskar)
+- [Tawang Tour Packages](https://www.storiesbyfoot.com/destinations/tawang)
+- [Bhutan Tour Packages](https://www.storiesbyfoot.com/destinations/bhutan)
+- [Nepal Tour Packages](https://www.storiesbyfoot.com/destinations/nepal)
+- [Meghalaya Tour Packages](https://www.storiesbyfoot.com/destinations/meghalaya)
