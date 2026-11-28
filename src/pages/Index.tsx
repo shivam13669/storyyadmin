@@ -511,7 +511,7 @@ const Index = () => {
                 <span className="ml-1">Popular Destinations</span>
               </div>
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-[42px] font-semibold text-[#181A1F] leading-tight">
-                Journey to <span className="italic font-medium text-[#C25E00]">Incredible</span> Places
+                Journey to <span className="italic font-medium text-[#F29938]">Incredible</span> Places
               </h2>
             </div>
 
@@ -627,7 +627,7 @@ const Index = () => {
                 <span>Curated Departures</span>
               </div>
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-[42px] font-semibold text-[#181A1F] leading-tight">
-                Hot <span className="italic font-medium text-[#C25E00]">Tours</span>
+                Hot <span className="italic font-medium text-[#F29938]">Tours</span>
               </h2>
             </div>
             <Link
