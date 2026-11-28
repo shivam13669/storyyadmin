@@ -202,7 +202,7 @@ const ExploreCategories = () => {
             <span>Curated Experiences</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-[42px] font-semibold leading-tight text-[#181A1F]">
-            Travel Your <span className="italic font-medium text-[#D4770C]">Way</span>
+            Travel Your <span className="italic font-medium text-[#F29938]">Way</span>
           </h2>
           <p className="mt-2 font-sans text-sm sm:text-base text-slate-600 max-w-xl">
             Handpicked journeys crafted around how you love to travel.

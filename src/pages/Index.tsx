@@ -500,7 +500,7 @@ const Index = () => {
       </section>
 
       {/* 2. Popular Destinations Section (Matching Mockup Layout) */}
-      <section id="popular-destinations" className="pt-8 pb-14 sm:pt-10 sm:pb-16 bg-white">
+      <section id="popular-destinations" className="pt-8 pb-14 sm:pt-10 sm:pb-16 bg-gradient-to-b from-white to-[#fefefe]">
         <div className="mx-auto w-full max-w-[1380px] px-5 sm:px-8 lg:px-12">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
@@ -511,7 +511,7 @@ const Index = () => {
                 <span className="ml-1">Popular Destinations</span>
               </div>
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-[42px] font-semibold text-[#181A1F] leading-tight">
-                Journey to <span className="italic font-medium text-[#D4770C]">Incredible</span> Places
+                Journey to <span className="italic font-medium text-[#F29938]">Incredible</span> Places
               </h2>
             </div>
 
@@ -618,7 +618,7 @@ const Index = () => {
       </section>
 
       {/* 3. Hot Tours Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gradient-to-b from-white to-[#fefefe]">
         <div className="mx-auto w-full max-w-[1480px] px-4 sm:px-6 lg:px-10">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
             <div>
@@ -627,7 +627,7 @@ const Index = () => {
                 <span>Curated Departures</span>
               </div>
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-[42px] font-semibold text-[#181A1F] leading-tight">
-                Hot <span className="italic font-medium text-[#D4770C]">Tours</span>
+                Hot <span className="italic font-medium text-[#F29938]">Tours</span>
               </h2>
             </div>
             <Link
